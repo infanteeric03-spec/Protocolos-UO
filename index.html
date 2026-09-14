@@ -271,8 +271,8 @@
     </div>
 
     <div class="protocol-switch" id="protocolSwitch">
-      <button data-protocol="torax" class="">Dolor torácico</button>
-      <button data-protocol="epoc" class="active">Agudización EPOC</button>
+      <button data-protocol="torax" class="active">Dolor torácico</button>
+      <button data-protocol="epoc">Agudización EPOC</button>
       <button data-protocol="asma">Agudización asma</button>
     </div>
 
@@ -281,21 +281,21 @@
 
     <nav class="nav" id="nav">
       <!-- Dolor torácico -->
-      <button data-protocol="torax" data-section="resumen" class="" style="display: none;"><span class="dot"></span>Resumen y algoritmo</button>
-      <button data-protocol="torax" data-section="criterios" style="display: none;"><span class="dot"></span>Inclusión / exclusión</button>
-      <button data-protocol="torax" data-section="edacs" style="display: none;"><span class="dot"></span>Calculadora EDACS</button>
-      <button data-protocol="torax" data-section="evaluacion" style="display: none;"><span class="dot"></span>Evaluación en la UO</button>
-      <button data-protocol="torax" data-section="destino" style="display: none;"><span class="dot"></span>Destino al alta</button>
-      <button data-protocol="torax" data-section="indicadores" style="display: none;"><span class="dot"></span>Indicadores y cardiología</button>
+      <button data-protocol="torax" data-section="resumen" class="active"><span class="dot"></span>Resumen y algoritmo</button>
+      <button data-protocol="torax" data-section="criterios"><span class="dot"></span>Inclusión / exclusión</button>
+      <button data-protocol="torax" data-section="edacs"><span class="dot"></span>Calculadora EDACS</button>
+      <button data-protocol="torax" data-section="evaluacion"><span class="dot"></span>Evaluación en la UO</button>
+      <button data-protocol="torax" data-section="destino"><span class="dot"></span>Destino al alta</button>
+      <button data-protocol="torax" data-section="indicadores"><span class="dot"></span>Indicadores y cardiología</button>
 
       <!-- EPOC -->
-      <button data-protocol="epoc" data-section="epoc-resumen" style="display: flex;" class="active"><span class="dot"></span>Resumen y gravedad</button>
-      <button data-protocol="epoc" data-section="epoc-criterios" style="display: flex;"><span class="dot"></span>Ingreso / exclusión UO</button>
-      <button data-protocol="epoc" data-section="epoc-decaf" style="display: flex;"><span class="dot"></span>Calculadora DECAF</button>
-      <button data-protocol="epoc" data-section="epoc-evaluacion" style="display: flex;"><span class="dot"></span>Evaluación inicial UOME</button>
-      <button data-protocol="epoc" data-section="epoc-tratamiento" style="display: flex;"><span class="dot"></span>Tratamiento</button>
-      <button data-protocol="epoc" data-section="epoc-destino" style="display: flex;"><span class="dot"></span>Alta / ingreso / HAD</button>
-      <button data-protocol="epoc" data-section="epoc-enfermeria" style="display: flex;"><span class="dot"></span>Cuidados de enfermería</button>
+      <button data-protocol="epoc" data-section="epoc-resumen" style="display:none;"><span class="dot"></span>Resumen y gravedad</button>
+      <button data-protocol="epoc" data-section="epoc-criterios" style="display:none;"><span class="dot"></span>Ingreso / exclusión UO</button>
+      <button data-protocol="epoc" data-section="epoc-decaf" style="display:none;"><span class="dot"></span>Calculadora DECAF</button>
+      <button data-protocol="epoc" data-section="epoc-evaluacion" style="display:none;"><span class="dot"></span>Evaluación inicial UOME</button>
+      <button data-protocol="epoc" data-section="epoc-tratamiento" style="display:none;"><span class="dot"></span>Tratamiento</button>
+      <button data-protocol="epoc" data-section="epoc-destino" style="display:none;"><span class="dot"></span>Alta / ingreso / HAD</button>
+      <button data-protocol="epoc" data-section="epoc-enfermeria" style="display:none;"><span class="dot"></span>Cuidados de enfermería</button>
 
       <!-- Asma -->
       <button data-protocol="asma" data-section="asma-resumen" style="display:none;"><span class="dot"></span>Resumen y gravedad</button>
@@ -322,7 +322,7 @@
            PROTOCOLO 1 · DOLOR TORÁCICO
       ======================================================== -->
 
-      <section class="section" data-protocol="torax" id="sec-resumen">
+      <section class="section active" data-protocol="torax" id="sec-resumen">
         <div class="eyebrow">Protocolo · Cardiología</div>
         <h1>Dolor torácico</h1>
         <p class="lede">Circuito estandarizado para evaluar, monitorizar, estratificar el riesgo y decidir el destino de los pacientes que consultan por dolor torácico y requieren un periodo de observación clínica desde Urgencias.</p>
@@ -766,9 +766,9 @@
            PROTOCOLO 2 · AGUDIZACIÓN DE EPOC
       ======================================================== -->
 
-      <section class="section active" data-protocol="epoc" id="sec-epoc-resumen">
+      <section class="section" data-protocol="epoc" id="sec-epoc-resumen">
         <div class="eyebrow">Protocolo · Neumología · UOME</div>
-        <h1>Agudización de EPOC</h1>
+        <h1>Agudización de EPOC en Unidad de Observación</h1>
         <p class="lede">Manejo protocolizado de pacientes diagnosticados de EPOC con crisis de gravedad moderada o grave que no presentan una amenaza vital inmediata, pero requieren monitorización evolutiva y respuesta terapéutica en un margen de 6 a 24 horas.</p>
 
         <div class="card">
