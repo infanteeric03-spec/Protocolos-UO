@@ -1,0 +1,2688 @@
+<!DOCTYPE html>
+<html lang="es"><style>* { -webkit-user-select: text !important; user-select: text !important; }</style><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unidad de Observación · Protocolos clínicos</title>
+<style>
+  :root{
+    --ink: #16324F;
+    --ink-soft: #3B5468;
+    --paper: #F7F5F0;
+    --paper-raised: #FFFFFF;
+    --line: #DCD5C7;
+    --teal: #2F7A78;
+    --teal-dark: #1F5C5A;
+    --low: #3F8F5F;
+    --low-bg: #E8F3EC;
+    --mid: #B9822C;
+    --mid-bg: #FBF1DE;
+    --high: #B7472A;
+    --high-bg: #FBE9E4;
+    --vhigh: #6A4C93;
+    --vhigh-bg: #EFE7F5;
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:var(--serif); font-weight:600; color:var(--ink); margin:0 0 .4em 0;}
+  p{margin:.4em 0 1em 0; max-width:68ch;}
+  a{color:var(--teal-dark);}
+
+  /* ---------- shell ---------- */
+  .shell{display:flex; min-height:100vh;}
+  .sidebar{
+    width:260px; flex-shrink:0;
+    background:var(--ink);
+    color:#EDEFEE;
+    padding:22px 16px 16px;
+    position:sticky; top:0; height:100vh; overflow-y:auto;
+  }
+  .brand{padding:0 6px 14px; border-bottom:1px solid rgba(255,255,255,.15); margin-bottom:14px;}
+  .brand .kicker{font-size:11.5px; letter-spacing:.02em; color:#9FB4C4;}
+  .brand h1{font-family:var(--serif); font-size:18px; line-height:1.25; color:#fff; margin:2px 0 0;}
+
+  .protocol-switch{
+    margin-bottom:16px;
+  }
+  .protocol-switch select{
+    all:unset; box-sizing:border-box;
+    display:block; width:100%; cursor:pointer;
+    font-family:var(--sans); font-size:13.5px; font-weight:600;
+    padding:10px 30px 10px 12px; border-radius:8px;
+    background:var(--teal) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white"><path d="M5.5 7.5l4.5 5 4.5-5z"/></svg>') no-repeat right 8px center;
+    background-size:16px 16px;
+    color:#fff; appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  }
+  .protocol-switch select:focus{outline:2px solid rgba(255,255,255,.5); outline-offset:1px;}
+  .protocol-switch select option{background:var(--ink); color:#fff; font-weight:400;}
+
+  .nav{display:flex; flex-direction:column; gap:2px;}
+  .nav button{
+    all:unset; cursor:pointer;
+    display:flex; align-items:center; gap:10px;
+    padding:9px 10px; border-radius:6px;
+    color:#C9D6DE; font-size:14px;
+  }
+  .nav button:hover{background:rgba(255,255,255,.06); color:#fff;}
+  .nav button.active{background:var(--teal); color:#fff;}
+  .nav .dot{width:6px; height:6px; border-radius:50%; background:currentColor; opacity:.55; flex-shrink:0;}
+  .nav button.active .dot{opacity:1;}
+
+  .sidebar-foot{margin-top:18px; padding-top:14px; border-top:1px solid rgba(255,255,255,.15); font-size:12px; color:#8FA3B0;}
+
+  .main{flex:1; min-width:0;}
+  .topbar{
+    display:none;
+    background:var(--ink); color:#fff; padding:12px 16px;
+    align-items:center; justify-content:space-between;
+  }
+  .topbar button{all:unset; cursor:pointer; font-size:20px; padding:4px 8px;}
+  .content{max-width:920px; margin:0 auto; padding:44px 40px 90px;}
+  .section{display:none;}
+  .section.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+  .section-pager{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:48px; padding-top:18px; border-top:1px solid var(--line);
+  }
+  .pager-btn{
+    all:unset; cursor:pointer; display:flex; align-items:center; gap:6px;
+    font-family:var(--sans); font-size:13.5px; font-weight:600; color:var(--teal-dark);
+    padding:9px 14px; border-radius:8px; background:rgba(24,105,116,.08);
+    max-width:42%;
+  }
+  .pager-btn:hover{background:rgba(24,105,116,.16);}
+  .pager-btn:disabled{opacity:0; pointer-events:none;}
+  .pager-btn span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .pager-pos{font-size:12px; color:var(--ink-soft); flex-shrink:0;}
+
+  .eyebrow{font-size:13px; color:var(--teal-dark); margin-bottom:4px;}
+  .lede{font-size:16.5px; color:var(--ink-soft);}
+
+  .card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:20px 22px;
+    margin:18px 0;
+  }
+  .card h3{font-size:16px;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:720px){ .grid2{grid-template-columns:1fr;} }
+
+  /* ---------- checklist ---------- */
+  .checklist{list-style:none; margin:10px 0; padding:0;}
+  .checklist li{
+    display:flex; align-items:flex-start; gap:10px;
+    padding:8px 4px; border-bottom:1px solid #EFEAE0;
+  }
+  .checklist li:last-child{border-bottom:none;}
+  .checklist input[type=checkbox]{
+    margin-top:3px; width:16px; height:16px; accent-color:var(--teal-dark); flex-shrink:0;
+  }
+  .checklist label{cursor:pointer; font-size:14.5px;}
+  .checklist li.checked label{color:var(--ink-soft);}
+
+  .group-title{
+    font-size:12.5px; font-weight:700; letter-spacing:.02em;
+    color:#fff; background:var(--ink-soft);
+    display:inline-block; padding:2px 9px; border-radius:20px;
+    margin-bottom:8px;
+  }
+  .group-title.exclude{background:var(--high);}
+  .group-title.include{background:var(--low);}
+
+  .status-banner{
+    border-radius:8px; padding:12px 16px; font-size:14.5px; font-weight:600;
+    margin:16px 0; display:flex; align-items:center; gap:10px; border:1px solid transparent;
+  }
+  .status-neutral{background:#EEEAE0; color:var(--ink-soft); border-color:var(--line);}
+  .status-low{background:var(--low-bg); color:var(--low); border-color:#c7e3d1;}
+  .status-mid{background:var(--mid-bg); color:var(--mid); border-color:#f0dcae;}
+  .status-high{background:var(--high-bg); color:var(--high); border-color:#f2c9bd;}
+
+  /* ---------- calculators ---------- */
+  .edacs-item{margin:16px 0;}
+  .edacs-item .q{font-size:14.5px; font-weight:600; margin-bottom:8px;}
+  .opts{display:flex; flex-wrap:wrap; gap:8px;}
+  .opts label{
+    border:1px solid var(--line); border-radius:7px; padding:7px 12px;
+    font-size:13.5px; cursor:pointer; background:#fff; user-select:none;
+  }
+  .opts input{margin-right:6px; accent-color:var(--teal-dark);}
+  .opts label.picked{border-color:var(--teal-dark); background:#EAF3F2; color:var(--teal-dark); font-weight:600;}
+  .edacs-item.disabled{opacity:.4; pointer-events:none;}
+  .score-panel{
+    position:sticky; top:16px;
+    background:var(--ink); color:#fff; border-radius:12px;
+    padding:20px 22px; margin:20px 0;
+  }
+  .score-panel .num{font-family:var(--serif); font-size:44px; line-height:1;}
+  .score-panel .cat{font-size:14.5px; margin-top:6px; opacity:.9;}
+  .score-panel.low{background:var(--low);}
+  .score-panel.high{background:var(--high);}
+  .score-panel.mid{background:var(--mid);}
+
+  /* ---------- flow diagram ---------- */
+  .flow{display:flex; flex-direction:column; gap:0; margin:24px 0;}
+  .flow-box{
+    border:1.5px solid var(--ink); border-radius:8px; padding:10px 16px;
+    background:#fff; font-size:14px; text-align:center; align-self:center; max-width:520px;
+  }
+  .flow-box.wide{max-width:640px;}
+  .flow-arrow{align-self:center; font-size:18px; color:var(--ink-soft); margin:2px 0;}
+  .flow-branch{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin:6px 0;}
+  .flow-branch .flow-box{flex:1; min-width:150px;}
+  .risk-row{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-top:20px;}
+  .risk-row.four{grid-template-columns:1fr 1fr 1fr 1fr;}
+  @media (max-width:820px){ .risk-row, .risk-row.four{grid-template-columns:1fr 1fr;} }
+  @media (max-width:520px){ .risk-row, .risk-row.four{grid-template-columns:1fr;} }
+  .risk-card{border-radius:10px; padding:16px 18px; font-size:13.5px;}
+  .risk-card h4{font-family:var(--sans); font-size:13px; text-transform:uppercase; letter-spacing:.03em; margin-bottom:8px;}
+  .risk-card.low{background:var(--low-bg); color:#245939;}
+  .risk-card.mid{background:var(--mid-bg); color:#7a541c;}
+  .risk-card.high{background:var(--high-bg); color:#7d3019;}
+  .risk-card.vhigh{background:var(--vhigh-bg); color:#4a3566;}
+  .risk-card ul{margin:0; padding-left:18px;}
+
+  table.pain{width:100%; border-collapse:collapse; font-size:13.5px; margin:16px 0;}
+  table.pain th, table.pain td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top;}
+  table.pain th{background:#EFEAE0; font-weight:700; font-size:12.5px;}
+
+  .disclaimer{
+    font-size:12.5px; color:var(--ink-soft); border-top:1px solid var(--line);
+    margin-top:40px; padding-top:16px;
+  }
+  .pill{display:inline-block; font-size:11.5px; padding:2px 8px; border-radius:20px; background:#EFEAE0; color:var(--ink-soft); margin-left:6px;}
+
+  @media (max-width:900px){
+    .sidebar{display:none;}
+    .sidebar.open{display:block; position:fixed; z-index:20; width:78vw; box-shadow:2px 0 20px rgba(0,0,0,.3);}
+    .topbar{display:flex;}
+    .content{padding:28px 20px 70px;}
+  }
+
+  /* ---------- welcome screen ---------- */
+  .welcome-screen{
+    display:flex; align-items:center; justify-content:center;
+    min-height:100vh; background:var(--paper); padding:24px;
+  }
+  .welcome-card{max-width:460px; text-align:center;}
+  .welcome-card .kicker{font-size:13px; letter-spacing:.02em; color:var(--teal-dark); margin-bottom:6px;}
+  .welcome-card h1{font-size:30px; line-height:1.25; margin-bottom:12px;}
+  .welcome-card .lede{margin:0 auto 26px; color:var(--ink-soft);}
+  .welcome-select-wrap{position:relative; display:inline-block; width:100%;}
+  select.welcome-select{
+    all:unset; box-sizing:border-box;
+    display:block; width:100%; cursor:pointer; text-align:center;
+    font-family:var(--sans); font-size:15px; font-weight:600;
+    padding:14px 34px 14px 18px; border-radius:10px;
+    background:var(--teal) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white"><path d="M5.5 7.5l4.5 5 4.5-5z"/></svg>') no-repeat right 14px center;
+    background-size:16px 16px;
+    color:#fff; appearance:none; -webkit-appearance:none; -moz-appearance:none;
+    box-shadow:0 6px 18px rgba(22,50,79,.12);
+  }
+  select.welcome-select:hover{background-color:var(--teal-dark);}
+  select.welcome-select:focus{outline:2px solid var(--teal-dark); outline-offset:2px;}
+  select.welcome-select option{background:var(--ink); color:#fff; font-weight:400; text-align:left;}
+  .welcome-foot{margin-top:26px; font-size:12px; color:var(--ink-soft);}
+
+  /* ---------- edit mode ---------- */
+  .edit-toggle-btn{
+    all:unset; display:block; cursor:pointer; text-align:center;
+    font-size:12.5px; padding:8px 10px; border-radius:6px;
+    background:rgba(255,255,255,.08); color:#DCE6EA; margin-bottom:14px;
+    border:1px dashed rgba(255,255,255,.25);
+  }
+  .edit-toggle-btn:hover{background:rgba(255,255,255,.14); color:#fff;}
+  .edit-toggle-btn.on{background:var(--mid); color:#241a05; border-style:solid; border-color:var(--mid); font-weight:600;}
+
+  body.edit-mode [contenteditable="true"]{
+    outline:1.5px dashed #C98A2C; outline-offset:3px; border-radius:3px; cursor:text;
+  }
+  body.edit-mode [contenteditable="true"]:hover{background:#FBF1DE;}
+  body.edit-mode [contenteditable="true"]:focus{outline:1.5px solid #C98A2C; background:#FBF1DE;}
+  body.edit-mode .content::before{
+    content:"Modo edición activo — haz clic en cualquier texto resaltado para modificarlo.";
+    display:block; background:var(--mid-bg); color:#7a541c; border:1px solid #f0dcae;
+    border-radius:8px; padding:10px 16px; font-size:13.5px; font-weight:600; margin-bottom:20px;
+  }
+
+  .edit-toolbar{
+    display:none; position:fixed; bottom:0; left:260px; right:0; z-index:30;
+    background:var(--ink); color:#fff; padding:12px 24px;
+    align-items:center; gap:10px; flex-wrap:wrap;
+    box-shadow:0 -4px 18px rgba(0,0,0,.25);
+  }
+  .edit-toolbar span{font-size:12.5px; color:#B9C7D0; margin-right:auto;}
+  .edit-toolbar button{
+    all:unset; cursor:pointer; font-size:13px; padding:8px 14px; border-radius:6px;
+  }
+  .edit-toolbar .btn-save{background:var(--teal); color:#fff; font-weight:600;}
+  .edit-toolbar .btn-save:hover{background:var(--teal-dark);}
+  .edit-toolbar .btn-reset{background:rgba(255,255,255,.1); color:#DCE6EA;}
+  .edit-toolbar .btn-reset:hover{background:rgba(255,255,255,.18);}
+  .edit-toolbar .btn-exit{background:transparent; color:#B9C7D0; text-decoration:underline;}
+  @media (max-width:900px){ .edit-toolbar{left:0;} }
+
+  .publish-status{font-size:12.5px;}
+  .publish-status.ok{color:#8FE0B8;}
+  .publish-status.err{color:#F3B7A6;}
+
+  .modal-overlay{
+    display:none; position:fixed; inset:0; background:rgba(10,20,30,.55); z-index:50;
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-box{
+    background:#fff; border-radius:12px; padding:26px 28px; width:min(460px,92vw);
+    max-height:85vh; overflow-y:auto;
+  }
+  .modal-box h3{margin-bottom:4px;}
+  .modal-box .modal-sub{font-size:13px; color:var(--ink-soft); margin-bottom:6px;}
+  .modal-box label{display:block; font-size:13px; font-weight:600; color:var(--ink-soft); margin:14px 0 4px;}
+  .modal-box input[type=text], .modal-box input[type=password]{
+    width:100%; padding:8px 10px; border:1px solid var(--line); border-radius:6px; font-size:13.5px;
+  }
+  .modal-box .checkbox-row{
+    display:flex; align-items:center; gap:8px; font-weight:400; font-size:13px;
+    color:var(--ink-soft); margin-top:12px;
+  }
+  .modal-box .checkbox-row input{width:auto;}
+  .modal-actions{display:flex; gap:10px; margin-top:22px;}
+  .modal-actions button{all:unset; cursor:pointer; padding:9px 16px; border-radius:6px; font-size:13.5px;}
+  .modal-actions .primary{background:var(--teal); color:#fff; font-weight:600;}
+  .modal-actions .primary:hover{background:var(--teal-dark);}
+  .modal-actions .secondary{background:#EEEAE0; color:var(--ink-soft);}
+  .modal-hint{font-size:11.5px; color:var(--ink-soft); margin-top:16px; line-height:1.5;}
+</style>
+<script src="chrome-extension://liecbddmkiiihnedobmlmillhodjkdmb/js/recordConsoleEvents.js"></script></head>
+<body>
+
+<div class="welcome-screen" id="welcomeScreen">
+  <div class="welcome-card">
+    <div class="kicker">Servicio de Urgencias</div>
+    <h1>Protocolos de la Unidad de Observación</h1>
+    <p class="lede">Herramienta de apoyo clínico. Selecciona el protocolo que quieres consultar para empezar.</p>
+    <div class="welcome-select-wrap">
+      <select id="welcomeProtocolSelect" class="welcome-select">
+        <option value="" disabled selected>Elige un protocolo…</option>
+        <option value="torax">Dolor torácico</option>
+        <option value="epoc">Agudización EPOC</option>
+        <option value="asma">Agudización asma</option>
+        <option value="fa">Fibrilación auricular / Flutter</option>
+      </select>
+    </div>
+    <p class="welcome-foot">Basado en los protocolos internos de la Gerencia Área de Salud I Occidente. No sustituye el juicio clínico.</p>
+  </div>
+</div>
+
+<div class="shell" id="shell" style="display:none;">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="kicker">Servicio de Urgencias</div>
+      <h1>Protocolos de la<br>Unidad de Observación</h1>
+    </div>
+
+    <div class="protocol-switch" id="protocolSwitch">
+      <select id="protocolSelect">
+        <option value="torax">Dolor torácico</option>
+        <option value="epoc" selected>Agudización EPOC</option>
+        <option value="asma">Agudización asma</option>
+        <option value="fa">Fibrilación auricular / Flutter</option>
+      </select>
+    </div>
+    <button class="edit-toggle-btn" id="backToWelcome" style="margin-top:-8px;">🏠 Inicio</button>
+
+    <button class="edit-toggle-btn" id="editToggle">✏️ Editar contenido</button>
+    <button class="edit-toggle-btn" id="publishConfigBtn" style="display: none;">⚙️ Configurar publicación en GitHub</button>
+
+    <nav class="nav" id="nav">
+      <!-- Dolor torácico -->
+      <button data-protocol="torax" data-section="resumen" class="" style="display: none;"><span class="dot"></span>Resumen y algoritmo</button>
+      <button data-protocol="torax" data-section="criterios" style="display: none;"><span class="dot"></span>Inclusión / exclusión</button>
+      <button data-protocol="torax" data-section="edacs" style="display: none;"><span class="dot"></span>Calculadora EDACS</button>
+      <button data-protocol="torax" data-section="evaluacion" style="display: none;"><span class="dot"></span>Evaluación en la UO</button>
+      <button data-protocol="torax" data-section="destino" style="display: none;"><span class="dot"></span>Destino al alta</button>
+      <button data-protocol="torax" data-section="indicadores" style="display: none;"><span class="dot"></span>Indicadores y cardiología</button>
+
+      <!-- EPOC -->
+      <button data-protocol="epoc" data-section="epoc-resumen" style="display: flex;" class="active"><span class="dot"></span>Resumen y gravedad</button>
+      <button data-protocol="epoc" data-section="epoc-criterios" style="display: flex;"><span class="dot"></span>Ingreso / exclusión UO</button>
+      <button data-protocol="epoc" data-section="epoc-decaf" style="display: flex;"><span class="dot"></span>Calculadora DECAF</button>
+      <button data-protocol="epoc" data-section="epoc-evaluacion" style="display: flex;"><span class="dot"></span>Evaluación inicial UOME</button>
+      <button data-protocol="epoc" data-section="epoc-tratamiento" style="display: flex;"><span class="dot"></span>Tratamiento</button>
+      <button data-protocol="epoc" data-section="epoc-destino" style="display: flex;"><span class="dot"></span>Alta / ingreso / HAD</button>
+      <button data-protocol="epoc" data-section="epoc-enfermeria" style="display: flex;"><span class="dot"></span>Cuidados de enfermería</button>
+
+      <!-- Asma -->
+      <button data-protocol="asma" data-section="asma-resumen" style="display:none;"><span class="dot"></span>Resumen y gravedad</button>
+      <button data-protocol="asma" data-section="asma-criterios" style="display:none;"><span class="dot"></span>Admisión / exclusión</button>
+      <button data-protocol="asma" data-section="asma-evaluacion" style="display:none;"><span class="dot"></span>Evaluación inicial UOME</button>
+      <button data-protocol="asma" data-section="asma-tratamiento" style="display:none;"><span class="dot"></span>Tratamiento</button>
+      <button data-protocol="asma" data-section="asma-evolucion" style="display:none;"><span class="dot"></span>Monitorización y evolución</button>
+      <button data-protocol="asma" data-section="asma-alta" style="display:none;"><span class="dot"></span>Alta y seguimiento</button>
+      <button data-protocol="asma" data-section="asma-enfermeria" style="display:none;"><span class="dot"></span>Cuidados de enfermería</button>
+
+      <!-- Fibrilación auricular / Flutter -->
+      <button data-protocol="fa" data-section="fa-resumen" style="display:none;"><span class="dot"></span>Objetivo y resumen</button>
+      <button data-protocol="fa" data-section="fa-criterios" style="display:none;"><span class="dot"></span>Inclusión / exclusión</button>
+      <button data-protocol="fa" data-section="fa-valoracion" style="display:none;"><span class="dot"></span>Valoración inicial</button>
+      <button data-protocol="fa" data-section="fa-chadsva" style="display:none;"><span class="dot"></span>Calculadora CHA₂DS₂-VA</button>
+      <button data-protocol="fa" data-section="fa-hasbled" style="display:none;"><span class="dot"></span>Calculadora HAS-BLED</button>
+      <button data-protocol="fa" data-section="fa-factores" style="display:none;"><span class="dot"></span>Factores precipitantes</button>
+      <button data-protocol="fa" data-section="fa-frecuencia" style="display:none;"><span class="dot"></span>Control de frecuencia</button>
+      <button data-protocol="fa" data-section="fa-flutter" style="display:none;"><span class="dot"></span>Flutter / control del ritmo</button>
+      <button data-protocol="fa" data-section="fa-anticoagulacion" style="display:none;"><span class="dot"></span>Anticoagulación</button>
+      <button data-protocol="fa" data-section="fa-seguimiento" style="display:none;"><span class="dot"></span>Monitorización, alta e ingreso</button>
+    </nav>
+
+    <div class="sidebar-foot">Basado en los protocolos internos de la Gerencia Área de Salud I Occidente. Herramienta de apoyo, no sustituye el juicio clínico.</div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <strong style="font-family:Georgia,serif;">Protocolos UO</strong>
+      <button id="menuToggle">☰</button>
+    </div>
+
+    <div class="content">
+
+      <!-- =======================================================
+           PROTOCOLO 1 · DOLOR TORÁCICO
+      ======================================================== -->
+
+      <section class="section" data-protocol="torax" id="sec-resumen">
+        <div class="eyebrow">Protocolo · Cardiología</div>
+        <h1>Dolor torácico</h1>
+        <p class="lede">Circuito estandarizado para evaluar, monitorizar, estratificar el riesgo y decidir el destino de los pacientes que consultan por dolor torácico y requieren un periodo de observación clínica desde Urgencias.</p>
+
+        <div class="card">
+          <h3>Objetivos del protocolo</h3>
+          <ul>
+            <li>Identificar de forma precoz el síndrome coronario agudo (SCA) y otras causas potencialmente letales.</li>
+            <li>Evitar ingresos hospitalarios innecesarios mediante observación protocolizada.</li>
+            <li>Mejorar la seguridad clínica reduciendo altas inapropiadas.</li>
+            <li>Disminuir tiempos de estancia y optimizar el uso de camas hospitalarias.</li>
+            <li>Homogeneizar criterios diagnósticos y terapéuticos entre facultativos.</li>
+          </ul>
+        </div>
+
+        <h3>Características del dolor según probabilidad de isquemia</h3>
+        <table class="pain">
+          <tbody><tr><th>Central (probabilidad alta)</th><th>Izquierdo</th><th>Derecho (probabilidad baja)</th></tr>
+          <tr><td>Localización vaga</td><td></td><td>Localizado, "a punta de dedo"</td></tr>
+          <tr><td>Opresión / peso / agarre</td><td>Insidioso / sordo &gt; urente / desgarrador</td><td>Punzante</td></tr>
+          <tr><td>Relacionado con estrés/esfuerzo (puede aparecer en reposo en SCA)</td><td></td><td>Relacionado con postura y respiración</td></tr>
+          <tr><td>&lt;1h de duración, inicio no súbito</td><td>Horas de duración</td><td>Fugaz</td></tr>
+          <tr><td>Síntomas acompañantes (náuseas, mareo, disnea, presíncope, palpitaciones); más frecuente en mujeres, diabéticos y ancianos</td><td></td><td></td></tr>
+        </tbody></table>
+
+        <h3>Algoritmo de decisión</h3>
+        <div class="flow">
+          <div class="flow-box wide">Dolor torácico con sospecha de origen coronario</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box">Valoración y ECG en &lt; 10 min</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-branch">
+            <div class="flow-box" style="border-color:var(--high); color:var(--high);">Elevación de ST → Código corazón</div>
+            <div class="flow-box">Sin elevación de ST → continuar vía clínica</div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box wide">Troponina I ultrasensible · seriación 0–2 h</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-branch">
+            <div class="flow-box">Inicial &lt;10 ng/L y dolor &gt;3h → alta, descarta origen coronario</div>
+            <div class="flow-box">&lt;LSN o Δ&lt;20% → posible angina inestable, continuar vía clínica</div>
+            <div class="flow-box" style="border-color:var(--high); color:var(--high);">&gt;LSN + Δ&gt;20% → IAM no ST, ingreso UCI/planta</div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-box wide">Estratificación de riesgo</div>
+        </div>
+
+        <div class="risk-row">
+          <div class="risk-card low">
+            <h4>Riesgo bajo → alta</h4>
+            <ul>
+              <li>Sin cambios en ST/T</li>
+              <li>Estabilidad clínica y hemodinámica</li>
+              <li>EDACS &lt; 16 pts</li>
+            </ul>
+          </div>
+          <div class="risk-card mid">
+            <h4>Riesgo intermedio → Unidad de Observación</h4>
+            <ul>
+              <li>Cambios dudosos / no patológicos en ECG</li>
+              <li>Arritmias supraventriculares no controladas</li>
+              <li>No categorizable como bajo o alto riesgo</li>
+              <li>Troponina &gt;LSN pero Δ &lt;20%</li>
+            </ul>
+          </div>
+          <div class="risk-card high">
+            <h4>Riesgo alto → ingreso</h4>
+            <ul>
+              <li>Arritmias ventriculares</li>
+              <li>Cambios dinámicos evidentes en ST/T</li>
+              <li>Dolor recurrente</li>
+              <li>Shock cardiogénico</li>
+              <li>Enfermedad coronaria conocida no revascularizada</li>
+            </ul>
+          </div>
+        </div>
+        <p style="margin-top:16px;">El paciente de <strong>riesgo bajo</strong> puede ser dado de alta con seguridad desde Urgencias. El de <strong>riesgo intermedio</strong> se beneficia de ingreso en la Unidad de Observación. El de <strong>alto riesgo</strong> requiere, por lo general, ingreso en UCI o planta de hospitalización.</p>
+      </section>
+
+      <section class="section" data-protocol="torax" id="sec-criterios">
+        <div class="eyebrow">Puerta de entrada a la UO</div>
+        <h1>Criterios de inclusión y exclusión</h1>
+        <p class="lede">Marca los ítems que cumple el paciente. Para aceptar el ingreso en la Unidad de Observación deben cumplirse <strong>todos</strong> los criterios de inclusión y <strong>ninguno</strong> de exclusión.</p>
+
+        <div id="admission-status" class="status-banner status-neutral">Marca los criterios para ver la recomendación.</div>
+
+        <div class="card">
+          <span class="group-title include">Inclusión · A · Estabilidad clínica</span>
+          <ul class="checklist" data-group="inc-a">
+            <li><input type="checkbox" id="ia1"><label for="ia1">TA sistólica ≥ 90 mmHg sin soporte vasoactivo</label></li>
+            <li><input type="checkbox" id="ia2"><label for="ia2">FC 50–110 lpm</label></li>
+            <li><input type="checkbox" id="ia3"><label for="ia3">Saturación ≥ 92% (o basal conocida)</label></li>
+            <li><input type="checkbox" id="ia4"><label for="ia4">Sin deterioro del nivel de conciencia</label></li>
+            <li><input type="checkbox" id="ia5"><label for="ia5">Ausencia de insuficiencia respiratoria aguda</label></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="group-title include">Inclusión · B · Riesgo cardiovascular intermedio</span>
+          <ul class="checklist" data-group="inc-b">
+            <li><input type="checkbox" id="ib1"><label for="ib1">Sospecha moderada de SCA sin criterios de alto riesgo</label></li>
+            <li><input type="checkbox" id="ib2"><label for="ib2">Antecedentes cardiovasculares que requieren observación</label></li>
+            <li><input type="checkbox" id="ib3"><label for="ib3">Necesidad de completar protocolo seriado</label></li>
+          </ul>
+          <p style="font-size:13px; margin:8px 0 0;">Herramientas orientativas: <strong>EDACS bajo/intermedio</strong> (ver pestaña EDACS). Las escalas son un apoyo y nunca sustituyen el juicio clínico.</p>
+        </div>
+
+        <div class="card">
+          <span class="group-title include">Inclusión · C · Situaciones clínicas frecuentes admitidas</span>
+          <ul class="checklist" data-group="inc-c">
+            <li><input type="checkbox" id="ic1"><label for="ic1">Dolor torácico sugestivo pero no diagnóstico de SCA</label></li>
+            <li><input type="checkbox" id="ic2"><label for="ic2">Dos troponinas iniciales negativas con necesidad de seriación</label></li>
+            <li><input type="checkbox" id="ic3"><label for="ic3">ECG no diagnóstico</label></li>
+            <li><input type="checkbox" id="ic4"><label for="ic4">Duda diagnóstica entre origen cardiológico y no cardiológico</label></li>
+            <li><input type="checkbox" id="ic5"><label for="ic5">Necesidad de observación tras control sintomático</label></li>
+            <li><input type="checkbox" id="ic6"><label for="ic6">Sospecha de angina estable sin criterios de alto riesgo</label></li>
+            <li><input type="checkbox" id="ic7"><label for="ic7">Sospecha de pericarditis / miopericarditis estable</label></li>
+            <li><input type="checkbox" id="ic8"><label for="ic8">Seguimiento postcontrol de crisis hipertensiva asociada</label></li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top:32px;">Criterios de exclusión (cualquiera excluye ingreso en UO)</h3>
+
+        <div class="card">
+          <span class="group-title exclude">A · SCA confirmado o altamente probable</span>
+          <ul class="checklist" data-group="exc">
+            <li><input type="checkbox" id="ea1"><label for="ea1">Elevación persistente del ST</label></li>
+            <li><input type="checkbox" id="ea2"><label for="ea2">Equivalentes de SCACEST</label></li>
+            <li><input type="checkbox" id="ea3"><label for="ea3">Troponina positiva con dinámica compatible</label></li>
+            <li><input type="checkbox" id="ea4"><label for="ea4">Cambios dinámicos en ECG</label></li>
+          </ul>
+          <p style="font-size:13px; margin:8px 0 0; color:var(--high); font-weight:600;">→ Activación del circuito cardiológico.</p>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <span class="group-title exclude">B · Inestabilidad hemodinámica</span>
+            <ul class="checklist" data-group="exc">
+              <li><input type="checkbox" id="eb1"><label for="eb1">Hipotensión persistente</label></li>
+              <li><input type="checkbox" id="eb2"><label for="eb2">Shock</label></li>
+              <li><input type="checkbox" id="eb3"><label for="eb3">Arritmias significativas</label></li>
+              <li><input type="checkbox" id="eb4"><label for="eb4">Necesidad de drogas vasoactivas</label></li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="group-title exclude">C · Angina estable con criterios de ingreso</span>
+            <ul class="checklist" data-group="exc">
+              <li><input type="checkbox" id="ec1"><label for="ec1">Insuficiencia cardíaca o hipotensión acompañantes</label></li>
+              <li><input type="checkbox" id="ec2"><label for="ec2">Angina clase III o mayor, reciente, con mala respuesta al tratamiento</label></li>
+              <li><input type="checkbox" id="ec3"><label for="ec3">Revascularización previa con recurrencia precoz de angina II-III</label></li>
+              <li><input type="checkbox" id="ec4"><label for="ec4">Ergometría de mal pronóstico conocida</label></li>
+              <li><input type="checkbox" id="ec5"><label for="ec5">Secundaria a arritmia ventricular, bloqueo AV u otra causa que requiera ingreso</label></li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="group-title exclude">D · Sospecha de diagnóstico tiempo-dependiente</span>
+            <ul class="checklist" data-group="exc">
+              <li><input type="checkbox" id="ed1"><label for="ed1">Disección aórtica</label></li>
+              <li><input type="checkbox" id="ed2"><label for="ed2">TEP de riesgo intermedio-alto o alto</label></li>
+              <li><input type="checkbox" id="ed3"><label for="ed3">Taponamiento cardiaco</label></li>
+              <li><input type="checkbox" id="ed4"><label for="ed4">Neumotórax significativo</label></li>
+              <li><input type="checkbox" id="ed5"><label for="ed5">Rotura esofágica</label></li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="group-title exclude">E · Complicaciones asociadas</span>
+            <ul class="checklist" data-group="exc">
+              <li><input type="checkbox" id="ee1"><label for="ee1">Insuficiencia cardiaca aguda</label></li>
+              <li><input type="checkbox" id="ee2"><label for="ee2">Edema agudo de pulmón</label></li>
+              <li><input type="checkbox" id="ee3"><label for="ee3">Dolor recurrente refractario</label></li>
+              <li><input type="checkbox" id="ee4"><label for="ee4">Hipoxemia mantenida</label></li>
+              <li><input type="checkbox" id="ee5"><label for="ee5">Síncope de probable origen cardiaco</label></li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <span class="group-title exclude">F · Situaciones organizativas</span>
+          <ul class="checklist" data-group="exc">
+            <li><input type="checkbox" id="ef1"><label for="ef1">Necesidad previsible de estancia &gt; 36 h</label></li>
+            <li><input type="checkbox" id="ef2"><label for="ef2">Necesidad de procedimiento invasivo urgente</label></li>
+            <li><input type="checkbox" id="ef3"><label for="ef3">Dependencia funcional que requiera hospitalización convencional</label></li>
+          </ul>
+          <p style="font-size:13px; margin:8px 0 0;">Los pacientes con alguna condición de exclusión que no hayan sido descartados para revascularización serán ingresados en planta de Cardiología o Medicina Interna.</p>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="torax" id="sec-edacs">
+        <div class="eyebrow">Anexo I</div>
+        <h1>Calculadora EDACS</h1>
+        <p class="lede">ED Assessment of Chest Pain Score. Identifica pacientes de <strong>muy bajo riesgo</strong> de SCA para alta temprana. Forma parte del protocolo EDACS-ADP.</p>
+
+        <div class="score-panel" id="scorePanel">
+          <div class="num" id="scoreNum">—</div>
+          <div class="cat" id="scoreCat">Sin calcular · completa los 6 ítems</div>
+        </div>
+
+        <div class="card">
+          <div class="edacs-item">
+            <div class="q">1 · Edad</div>
+            <div class="opts" data-field="edad">
+              <label data-val="2">18–45 <span class="pill">+2</span></label>
+              <label data-val="4">46–50 <span class="pill">+4</span></label>
+              <label data-val="6">51–55 <span class="pill">+6</span></label>
+              <label data-val="8">56–60 <span class="pill">+8</span></label>
+              <label data-val="10">61–65 <span class="pill">+10</span></label>
+              <label data-val="12">66–70 <span class="pill">+12</span></label>
+              <label data-val="14">71–75 <span class="pill">+14</span></label>
+              <label data-val="16">76–80 <span class="pill">+16</span></label>
+              <label data-val="18">81–85 <span class="pill">+18</span></label>
+              <label data-val="20">≥86 <span class="pill">+20</span></label>
+            </div>
+          </div>
+
+          <div class="edacs-item">
+            <div class="q">2 · Sexo</div>
+            <div class="opts" data-field="sexo">
+              <label data-val="0">Femenino <span class="pill">+0</span></label>
+              <label data-val="6">Masculino <span class="pill">+6</span></label>
+            </div>
+          </div>
+
+          <div class="edacs-item" id="fr-item">
+            <div class="q">3 · Factores de riesgo <span style="font-weight:400; color:var(--ink-soft);">(solo aplica si edad 18–50 y ≥3 FR CV o enfermedad CV conocida)</span></div>
+            <div class="opts" data-field="fr">
+              <label data-val="0">No aplica <span class="pill">+0</span></label>
+              <label data-val="4">Sí: HTA, DM, dislipemia, tabaco, AHF (≥3) o CAD conocida <span class="pill">+4</span></label>
+            </div>
+          </div>
+
+          <div class="edacs-item">
+            <div class="q">4 · Diaforesis (sudoración profusa)</div>
+            <div class="opts" data-field="diaf">
+              <label data-val="0">No <span class="pill">+0</span></label>
+              <label data-val="3">Sí <span class="pill">+3</span></label>
+            </div>
+          </div>
+
+          <div class="edacs-item">
+            <div class="q">5 · Dolor irradiado a brazo, hombro, cuello o mandíbula</div>
+            <div class="opts" data-field="irr">
+              <label data-val="0">No <span class="pill">+0</span></label>
+              <label data-val="5">Sí <span class="pill">+5</span></label>
+            </div>
+          </div>
+
+          <div class="edacs-item">
+            <div class="q">6 · Dolor con la inspiración o reproducible con la palpación</div>
+            <div class="opts" data-field="pleur">
+              <label data-val="0">Ninguno <span class="pill">+0</span></label>
+              <label data-val="-4">Dolor pleurítico <span class="pill">−4</span></label>
+              <label data-val="-6">Reproducible a la palpación <span class="pill">−6</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Protocolo EDACS-ADP: los 3 criterios de alta temprana</h3>
+          <ul class="checklist" data-group="adp">
+            <li><input type="checkbox" id="adp1"><label for="adp1">EDACS &lt; 16</label></li>
+            <li><input type="checkbox" id="adp2"><label for="adp2">ECG sin isquemia</label></li>
+            <li><input type="checkbox" id="adp3"><label for="adp3">Troponina 0h y 2h ambas negativas</label></li>
+          </ul>
+          <div id="adp-status" class="status-banner status-neutral">Completa el score y los 3 criterios para ver la conducta.</div>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="torax" id="sec-evaluacion">
+        <div class="eyebrow">Dentro de la Unidad de Observación</div>
+        <h1>Evaluación inicial y control evolutivo</h1>
+
+        <div class="card">
+          <h3>Evaluación inicial <span class="pill">primera hora</span></h3>
+          <span class="group-title">Revaloración clínica</span>
+          <ul class="checklist" data-group="ev1">
+            <li><input type="checkbox" id="v1"><label for="v1">Características del dolor (OPQRST)</label></li>
+            <li><input type="checkbox" id="v2"><label for="v2">Factores desencadenantes</label></li>
+            <li><input type="checkbox" id="v3"><label for="v3">Equivalentes anginosos</label></li>
+            <li><input type="checkbox" id="v4"><label for="v4">Antecedentes cardiovasculares</label></li>
+            <li><input type="checkbox" id="v5"><label for="v5">Factores de riesgo cardiovascular</label></li>
+            <li><input type="checkbox" id="v6"><label for="v6">Medicación habitual</label></li>
+          </ul>
+          <span class="group-title" style="margin-top:14px;">Exploración física dirigida</span>
+          <ul class="checklist" data-group="ev2">
+            <li><input type="checkbox" id="v7"><label for="v7">Constantes completas</label></li>
+            <li><input type="checkbox" id="v8"><label for="v8">Auscultación cardiopulmonar</label></li>
+            <li><input type="checkbox" id="v9"><label for="v9">Pulsos periféricos</label></li>
+            <li><input type="checkbox" id="v10"><label for="v10">Signos de insuficiencia cardiaca</label></li>
+            <li><input type="checkbox" id="v11"><label for="v11">Exploración vascular</label></li>
+          </ul>
+          <span class="group-title" style="margin-top:14px;">Monitorización</span>
+          <ul class="checklist" data-group="ev3">
+            <li><input type="checkbox" id="v12"><label for="v12">ECG continuo (si sospecha cardiológica)</label></li>
+            <li><input type="checkbox" id="v13"><label for="v13">SatO₂</label></li>
+            <li><input type="checkbox" id="v14"><label for="v14">TA seriada</label></li>
+          </ul>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>ECG</h3>
+            <ul>
+              <li>Inicial ya realizado en Urgencias</li>
+              <li>Repetir ante recurrencia del dolor</li>
+              <li>Repetir cada 2–4 h si sospecha intermedia</li>
+              <li>Repetir previo al alta</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Biomarcadores</h3>
+            <p style="margin-bottom:6px;">Troponina ultrasensible. Tras los dos resultados iniciales (0–2h) normales, repetición a las <strong>4–6 horas</strong> en la UO. Registrar el valor absoluto.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Ecografía clínica (POCUS) — recomendable</h3>
+          <div class="grid2">
+            <div>
+              <strong>Cardiaca</strong>
+              <ul><li>Función VI global</li><li>Alteraciones segmentarias groseras</li><li>Derrame pericárdico</li><li>Signos indirectos de sobrecarga derecha</li></ul>
+            </div>
+            <div>
+              <strong>Pulmonar / aórtica</strong>
+              <ul><li>Neumotórax</li><li>Síndrome intersticial</li><li>Derrame pleural</li><li>Aorta proximal si hay experiencia disponible</li></ul>
+            </div>
+          </div>
+          <p style="font-size:13px; margin:0;">La ecografía no sustituye a los estudios definitivos.</p>
+        </div>
+
+        <div class="card">
+          <h3>Control evolutivo <span class="pill">cada 2–4 horas</span></h3>
+          <ul class="checklist" data-group="ev4">
+            <li><input type="checkbox" id="c1"><label for="c1">Persistencia o recurrencia del dolor</label></li>
+            <li><input type="checkbox" id="c2"><label for="c2">Constantes</label></li>
+            <li><input type="checkbox" id="c3"><label for="c3">ECG si hay cambios clínicos</label></li>
+            <li><input type="checkbox" id="c4"><label for="c4">Respuesta terapéutica</label></li>
+          </ul>
+          <div class="grid2" style="margin-top:12px;">
+            <div>
+              <strong>Sospecha coronaria</strong>
+              <ul><li>Antiagregación si indicada</li><li>Control antianginoso</li><li>Evitar sobremedicación en bajo riesgo</li></ul>
+            </div>
+            <div>
+              <strong>Dolor no coronario</strong>
+              <ul><li>Analgesia escalonada</li><li>Tratamiento etiológico</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="border-color:#f2c9bd;">
+          <span class="group-title exclude">Indicadores de empeoramiento</span>
+          <p style="margin-top:10px;">Requieren reevaluación inmediata:</p>
+          <ul>
+            <li>Recurrencia del dolor típico</li>
+            <li>Elevación de troponina</li>
+            <li>Nuevos cambios en el ECG</li>
+            <li>Arritmias</li>
+            <li>Inestabilidad clínica</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="torax" id="sec-destino">
+        <div class="eyebrow">Resolución</div>
+        <h1>Criterios de destino al alta</h1>
+
+        <div class="card">
+          <span class="group-title include">Alta domiciliaria</span>
+          <p style="margin-top:10px;">Requiere <strong>todos</strong> los siguientes:</p>
+          <ul class="checklist" data-group="alta">
+            <li><input type="checkbox" id="al1"><label for="al1">Asintomático ≥ 4–6 horas</label></li>
+            <li><input type="checkbox" id="al2"><label for="al2">Estabilidad hemodinámica</label></li>
+            <li><input type="checkbox" id="al3"><label for="al3">ECG sin cambios dinámicos</label></li>
+            <li><input type="checkbox" id="al4"><label for="al4">Troponinas negativas según protocolo</label></li>
+            <li><input type="checkbox" id="al5"><label for="al5">Sin datos clínicos de enfermedad tiempo-dependiente</label></li>
+            <li><input type="checkbox" id="al6"><label for="al6">Reevaluación médica favorable</label></li>
+            <li><input type="checkbox" id="al7"><label for="al7">Interconsulta a Cardiología valorada y contestada</label></li>
+          </ul>
+          <div id="alta-status" class="status-banner status-neutral">Marca los 7 criterios para confirmar el alta.</div>
+
+          <h4 style="margin-top:18px;">El informe de alta debe incluir</h4>
+          <ul><li>Diagnóstico probable</li><li>Interconsulta contestada por Cardiología</li><li>Signos de alarma</li><li>Tratamiento</li><li>Seguimiento</li></ul>
+          <p style="font-size:13.5px;">Seguimiento preferente: Atención Primaria y consulta de alta resolución / cardiología según disponibilidad.</p>
+        </div>
+
+        <div class="card">
+          <span class="group-title exclude">Ingreso hospitalario</span>
+          <p style="margin-top:10px;">Indicado si aparece:</p>
+          <ul>
+            <li>Dolor recurrente</li>
+            <li>Troponina positiva</li>
+            <li>Cambios en el ECG</li>
+            <li>Diagnóstico alternativo que precise ingreso</li>
+            <li>Necesidad de estudio avanzado</li>
+          </ul>
+          <p style="font-size:13.5px;">Destino: Cardiología, Medicina Interna, Unidad Coronaria o especialidad correspondiente.</p>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="torax" id="sec-indicadores">
+        <div class="eyebrow">Calidad y seguimiento cardiológico</div>
+        <h1>Indicadores y estudio por Cardiología</h1>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>Indicadores de gestión</h3>
+            <ul>
+              <li>Tiempo puerta–ECG &lt; 10 minutos</li>
+              <li>Tiempo puerta–troponina inicial &lt; 30 minutos</li>
+              <li>Estancia media en UO</li>
+              <li>% de altas desde UO</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Indicadores de calidad asistencial</h3>
+            <ul>
+              <li>Reconsulta a 72 h por dolor torácico</li>
+              <li>Eventos cardiovasculares mayores a 30 días</li>
+              <li>Ingreso diferido &lt; 72 h</li>
+              <li>Adecuación de la indicación de ingreso en UO</li>
+              <li>Cumplimiento del protocolo ECG–troponinas</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Estudio por Cardiología desde la Unidad de Observación</h3>
+          <p>Los pacientes de riesgo intermedio que permanezcan unas horas en observación serán valorados por Cardiología en las primeras horas del próximo día laborable, para decidir si el paciente precisa ingreso, puede ser dado de alta o se beneficiaría de una prueba de detección de isquemia durante la mañana. También podrían requerir un ecocardiograma.</p>
+          <table class="pain">
+            <tbody><tr><th>Prueba</th><th>Indicación / límites</th><th>Sensibilidad</th><th>Especificidad</th></tr>
+            <tr><td>Ergometría convencional</td><td>ECG basal normal y capacidad de caminar/correr en cinta</td><td>58–73%</td><td>60–80%</td></tr>
+            <tr><td>Ecocardiograma de estrés</td><td>Ventana ecoica aceptable y capacidad de caminar/correr en cinta</td><td>80–88%</td><td>80–95%</td></tr>
+          </tbody></table>
+        </div>
+
+        <div class="disclaimer">
+          Referencias: Six AJ, Backus BE, Kelder JC. <em>Chest pain in the emergency room: value of the HEART Score.</em> Neth Heart J 2008;16:191-196. Mahler SA, Hiestand BC, Goff DC, et al. <em>Can the HEART Score safely reduce stress testing and cardiac imaging in patients at low risk for major adverse cardiac events?</em> Crit Pathways in Cardiol 2011;10:128-133.
+        </div>
+      </section>
+
+      <!-- =======================================================
+           PROTOCOLO 2 · AGUDIZACIÓN DE EPOC
+      ======================================================== -->
+
+      <section class="section active" data-protocol="epoc" id="sec-epoc-resumen">
+        <div class="eyebrow">Protocolo · Neumología · UOME</div>
+        <h1>Agudización de EPOC</h1>
+        <p class="lede">Manejo protocolizado de pacientes diagnosticados de EPOC con crisis de gravedad moderada o grave que no presentan una amenaza vital inmediata, pero requieren monitorización evolutiva y respuesta terapéutica en un margen de 6 a 24 horas.</p>
+
+        <div class="card">
+          <h3>Definición de agudización</h3>
+          <p>Empeoramiento agudo de los síntomas respiratorios. Criterios de agudización (síntomas cardinales):</p>
+          <ul>
+            <li>Aumento de disnea</li>
+            <li>Aumento del volumen del esputo</li>
+            <li>Aumento de purulencia del esputo (cambios de color / espesor, sugiriendo inflamación o infección)</li>
+          </ul>
+        </div>
+
+        <h3>Clasificación GOLD según intervención necesaria</h3>
+        <div class="risk-row">
+          <div class="risk-card low">
+            <h4>Leve</h4>
+            <p style="margin:0; font-size:13.5px;">Solo requiere ajustar o aumentar la medicación broncodilatadora de acción corta (SABA/SAMA).</p>
+          </div>
+          <div class="risk-card mid">
+            <h4>Moderada</h4>
+            <p style="margin:0; font-size:13.5px;">Broncodilatadores de acción corta + corticoides orales y/o antibióticos. Ámbito ambulatorio o urgencias.</p>
+          </div>
+          <div class="risk-card high">
+            <h4>Grave</h4>
+            <p style="margin:0; font-size:13.5px;">Insuficiencia respiratoria aguda; requiere hospitalización o ingreso en urgencias. Puede asociar fallo respiratorio agudo.</p>
+          </div>
+        </div>
+
+        <h3 style="margin-top:28px;">Criterios de gravedad del síndrome de agudización (GesEPOC)</h3>
+        <table class="pain">
+          <tbody><tr><th>Categoría</th><th>Riesgo basal</th><th>Disnea (mMRC)</th><th>Nivel de consciencia</th><th>FR (rpm)</th><th>Intercambio de gases</th></tr>
+          <tr><td>Leve</td><td>Bajo riesgo</td><td>≤ 2</td><td>Ausente</td><td>&lt; 24</td><td>SaO₂ ≥ 95%</td></tr>
+          <tr><td>Moderado</td><td>Alto riesgo</td><td>—</td><td>—</td><td>24–30</td><td>SaO₂ 90–94%</td></tr>
+          <tr><td>Grave</td><td>Cualquiera</td><td>≥ 3</td><td>Somnolencia</td><td>≥ 30</td><td>PaCO₂ &lt; 60 o SaO₂ &lt; 90%</td></tr>
+          <tr><td>Muy grave</td><td>Cualquiera</td><td>—</td><td>Estupor / coma</td><td>—</td><td>pH &lt; 7,30, PaCO₂ ≥ 60 mmHg</td></tr>
+        </tbody></table>
+        <p style="font-size:13px;">Leve: deben cumplirse todos los criterios en verde. Moderado: presencia de cualquier criterio en amarillo. Grave: cualquier criterio en rojo, con independencia del riesgo basal. Muy grave: cualquier criterio morado, con independencia del riesgo basal. (Adaptada de Soler JJ, et al. 2022, GesEPOC).</p>
+
+        <div class="card">
+          <h3>Otras escalas pronósticas</h3>
+          <p><strong>BAP-65:</strong> evalúa nitrógeno ureico en sangre (BUN), estado mental, frecuencia cardiaca y edad (&gt;65 años). Una puntuación elevada predice mayor mortalidad intrahospitalaria.</p>
+          <p style="margin-bottom:0;">Las directrices de SEMES aconsejan aplicar la escala <strong>DECAF</strong> al ingreso para estratificar la mortalidad a 30 días: 0–1 puntos = bajo riesgo (manejo en observación o alta corta posible); ≥ 3 puntos = riesgo elevado, exige ingreso hospitalario convencional. Calculadora en la pestaña "DECAF".</p>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="epoc" id="sec-epoc-criterios">
+        <div class="eyebrow">Puerta de entrada a la UOME</div>
+        <h1>Criterios de ingreso y exclusión</h1>
+        <p class="lede">Marca los ítems que cumple el paciente para orientar la indicación de ingreso en la Unidad de Observación.</p>
+
+        <div id="epoc-status" class="status-banner status-neutral">Marca los criterios para ver la recomendación.</div>
+
+        <div class="card">
+          <span class="group-title include">Criterios de ingreso en UO</span>
+          <ul class="checklist" data-group="epoc-inc">
+            <li><input type="checkbox" id="pi1"><label for="pi1">Insuficiencia respiratoria aguda: hipoxemia moderada (PaO₂ &lt; 60 mmHg o SpO₂ 85–89%), corregible con oxigenoterapia convencional de bajo flujo (gafas nasales, Venturi)</label></li>
+            <li><input type="checkbox" id="pi2"><label for="pi2">Hipercapnia leve sin acidosis: PaCO₂ &gt; 45 mmHg con pH compensado (&gt; 7,35)</label></li>
+            <li><input type="checkbox" id="pi3"><label for="pi3">Respuesta parcial inicial tras los primeros ciclos de broncodilatadores nebulizados, sin recuperar aún la situación basal</label></li>
+            <li><input type="checkbox" id="pi4"><label for="pi4">Comorbilidades descompensadas leves: ICC periférica, cardiopatía isquémica estable o arritmias crónicas controladas farmacológicamente</label></li>
+            <li><input type="checkbox" id="pi5"><label for="pi5">Criterio socio-familiar: limitaciones físicas/cognitivas para el tratamiento domiciliario o ausencia de red de apoyo</label></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="group-title exclude">Criterios de exclusión</span>
+          <ul class="checklist" data-group="epoc-exc">
+            <li><input type="checkbox" id="pe1"><label for="pe1">Acidosis respiratoria establecida: pH 7,30–7,35 con PCO₂ elevada (fatiga muscular inicial)</label></li>
+            <li><input type="checkbox" id="pe2"><label for="pe2">Hipoxemia grave persistente: necesita FiO₂ elevadas para saturaciones límite</label></li>
+            <li><input type="checkbox" id="pe3"><label for="pe3">Complicaciones agudas graves: neumonía confirmada por Rx, sospecha/confirmación de TEP, neumotórax, o arritmias de nuevo diagnóstico con repercusión clínica</label></li>
+            <li><input type="checkbox" id="pe4"><label for="pe4">Historial de alto riesgo: agudizador frecuente (≥2 hospitalizaciones el año previo) o EPOC basal muy grave (FEV1 &lt; 30%)</label></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="epoc" id="sec-epoc-decaf">
+        <div class="eyebrow">Índice DECAF</div>
+        <h1>Calculadora DECAF</h1>
+        <p class="lede">Estratifica la mortalidad a 30 días en pacientes hospitalizados por agudización de EPOC (Steer J, et al. 2012).</p>
+
+        <div class="score-panel" id="decafPanel">
+          <div class="num" id="decafNum">—</div>
+          <div class="cat" id="decafCat">Sin calcular · completa los 5 ítems</div>
+        </div>
+
+        <div class="card">
+          <div class="edacs-item">
+            <div class="q">Disnea (eMRCD)</div>
+            <div class="opts" data-field="decaf-disnea">
+              <label data-val="0">&lt; eMRCD 5a <span class="pill">+0</span></label>
+              <label data-val="1">eMRCD 5a — capaz de lavarse/vestirse solo <span class="pill">+1</span></label>
+              <label data-val="2">eMRCD 5b — necesita ayuda para lavarse/vestirse <span class="pill">+2</span></label>
+            </div>
+          </div>
+          <div class="edacs-item">
+            <div class="q">Eosinopenia (&lt; 0,05 × 10⁹/l)</div>
+            <div class="opts" data-field="decaf-eos">
+              <label data-val="0">No <span class="pill">+0</span></label>
+              <label data-val="1">Sí <span class="pill">+1</span></label>
+            </div>
+          </div>
+          <div class="edacs-item">
+            <div class="q">Consolidación radiológica</div>
+            <div class="opts" data-field="decaf-cons">
+              <label data-val="0">No <span class="pill">+0</span></label>
+              <label data-val="1">Sí <span class="pill">+1</span></label>
+            </div>
+          </div>
+          <div class="edacs-item">
+            <div class="q">Acidemia (pH &lt; 7,30)</div>
+            <div class="opts" data-field="decaf-acid">
+              <label data-val="0">No <span class="pill">+0</span></label>
+              <label data-val="1">Sí <span class="pill">+1</span></label>
+            </div>
+          </div>
+          <div class="edacs-item">
+            <div class="q">Fibrilación auricular</div>
+            <div class="opts" data-field="decaf-fa">
+              <label data-val="0">No <span class="pill">+0</span></label>
+              <label data-val="1">Sí <span class="pill">+1</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="status-banner status-neutral" id="decaf-interpret">Completa los 5 ítems para ver la interpretación.</div>
+      </section>
+
+      <section class="section" data-protocol="epoc" id="sec-epoc-evaluacion">
+        <div class="eyebrow">Dentro de la UOME</div>
+        <h1>Evaluación inicial</h1>
+
+        <div class="card">
+          <span class="group-title">Estudios en la evaluación inicial</span>
+          <ul class="checklist" data-group="epoc-ev">
+            <li><input type="checkbox" id="pv1"><label for="pv1">Analítica básica: hemograma, bioquímica</label></li>
+            <li><input type="checkbox" id="pv2"><label for="pv2">Estudio de virus respiratorios: influenza, VRS y SARS-CoV-2</label></li>
+            <li><input type="checkbox" id="pv3"><label for="pv3">Valoración del intercambio gaseoso: pulsioximetría; gasometría arterial si sospecha de acidosis, hipercapnia o flujos altos de O₂</label></li>
+            <li><input type="checkbox" id="pv4"><label for="pv4">Radiografía torácica (a todos los pacientes, para descartar neumonía, neumotórax, etc.)</label></li>
+            <li><input type="checkbox" id="pv5"><label for="pv5">Ecografía torácica (protocolo BLUE) si hay seguridad en la técnica — no rutinaria</label></li>
+            <li><input type="checkbox" id="pv6"><label for="pv6">Cultivo de esputo si agudizador frecuente, obstrucción grave o necesidad de ventilación mecánica — no rutinario</label></li>
+          </ul>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>PAFI (PaO₂/FiO₂)</h3>
+            <ul>
+              <li>Normal &gt; 400 mmHg</li>
+              <li>Lesión leve 201–300 mmHg</li>
+              <li>Moderada 100–200 mmHg</li>
+              <li>Grave &lt; 100 mmHg</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>SaFi (SpO₂/FiO₂)</h3>
+            <ul>
+              <li>Leve 310–460 mmHg</li>
+              <li>Moderado 160–310 mmHg</li>
+              <li>Severo &lt; 160 mmHg</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="epoc" id="sec-epoc-tratamiento">
+        <div class="eyebrow">Manejo terapéutico</div>
+        <h1>Tratamiento y monitorización</h1>
+
+        <div class="card">
+          <h3>Medidas farmacológicas</h3>
+          <ul>
+            <li><strong>Broncodilatadores:</strong> SABA — salbutamol 400–600 mcg/4-6h; SAMA — ipratropio 80–120 mcg/4-6h</li>
+            <li><strong>Corticoides sistémicos:</strong> 0,5 mg/kg/día de prednisona o equivalente; metilprednisolona 20–40 mg/8h ev</li>
+            <li><strong>Oxigenoterapia:</strong> la mínima necesaria para evitar hipoxemia; saturación objetivo 88–92%. Comprobar el equilibrio ácido-base con gasometría tras instaurarla</li>
+            <li><strong>Profilaxis de ETV:</strong> HBPM o anticoagulantes en pacientes de riesgo e inmovilizados</li>
+            <li>Optimización de comorbilidades preexistentes</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Antibioterapia</h3>
+          <p>Indicada ante aumento de purulencia del esputo, fiebre o neumonía; considerar también si PCR ≥ 20 mg/dL aunque el esputo no sea concluyente. <strong>Evitar el uso rutinario.</strong></p>
+          <table class="pain">
+            <tbody><tr><th>Gravedad</th><th>Gérmenes habituales</th><th>Elección</th></tr>
+            <tr><td>Leve</td><td>H. influenzae, S. pneumoniae, M. catarrhalis</td><td>Amoxicilina-ác. clavulánico · Cefditoreno · Levofloxacino* · Moxifloxacino*</td></tr>
+            <tr><td>Moderada</td><td>Igual que leve + S. pneumoniae resistente a penicilina y enterobacterias</td><td>Cefditoreno · Levofloxacino* · Moxifloxacino*</td></tr>
+            <tr><td>Grave-muy grave sin riesgo de Pseudomonas</td><td>Igual que leve + S. pneumoniae con sensibilidad reducida y enterobacterias</td><td>Amoxicilina-ác. clavulánico · Ceftriaxona · Cefotaxima · Levofloxacino* · Moxifloxacino*</td></tr>
+            <tr><td>Grave-muy grave con riesgo de Pseudomonas</td><td>Igual que moderada + P. aeruginosa</td><td>β-lactámico antipseudomónico** · alternativa: quinolona*** antipseudomónica</td></tr>
+          </tbody></table>
+          <p style="font-size:12px; color:var(--ink-soft);">*Evitar fluoroquinolonas si existe alternativa terapéutica (efectos adversos). **Piperacilina-tazobactam, ceftazidima, cefepima, meropenem, ceftolozano-tazobactam, ceftazidima-avibactam. ***Ciprofloxacino 500–750 mg/12h o levofloxacino 500 mg/12h. Tabla adaptada de GesEPOC 2021.</p>
+        </div>
+
+        <div class="card">
+          <h3>Monitorización</h3>
+          <ul>
+            <li>Control de constantes: FR, TA, FC, Tª, SpO₂</li>
+            <li>Reevaluar y vigilar la aparición de nueva sintomatología o el control de la existente</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="epoc" id="sec-epoc-destino">
+        <div class="eyebrow">Resolución</div>
+        <h1>Alta, ingreso y hospitalización a domicilio</h1>
+
+        <div class="card">
+          <span class="group-title include">Criterios de alta</span>
+          <ul class="checklist" data-group="epoc-alta">
+            <li><input type="checkbox" id="pa1"><label for="pa1">Estabilidad clínica (y gasométrica si fue precisa) durante 12–24 h</label></li>
+            <li><input type="checkbox" id="pa2"><label for="pa2">No requiere broncodilatadores con frecuencia inferior a 4 h</label></li>
+            <li><input type="checkbox" id="pa3"><label for="pa3">Capaz de comer y dormir como en su situación basal</label></li>
+            <li><input type="checkbox" id="pa4"><label for="pa4">No cumple ningún criterio de ingreso hospitalario</label></li>
+          </ul>
+          <div id="epoc-alta-status" class="status-banner status-neutral">Marca los 4 criterios para confirmar el alta.</div>
+        </div>
+
+        <div class="card">
+          <span class="group-title exclude">Ingreso hospitalario (Neumología / Medicina Interna)</span>
+          <p style="margin-top:10px;">Indicado si aparece cualquiera de los siguientes:</p>
+          <ul>
+            <li>Ausencia de mejoría a pesar de tratamiento correcto y observación 6–12 h</li>
+            <li>Acidosis respiratoria pH &lt; 7,35</li>
+            <li>PaO₂ &lt; 55 mmHg</li>
+            <li>PaCO₂ &gt; 50 mmHg en pacientes sin hipercapnia previa</li>
+            <li>Necesidad de VMNI</li>
+            <li>Neumonía que cumpla criterios de gravedad</li>
+            <li>Complicaciones o comorbilidades graves: derrame pleural, neumotórax, ETV, alteraciones cardiovasculares, otros</li>
+            <li>Soporte domiciliario insuficiente</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Ingreso en Hospitalización a Domicilio (HAD)</h3>
+          <div class="grid2">
+            <div>
+              <strong>Criterios logísticos y sociofamiliares</strong>
+              <ul>
+                <li>Consentimiento voluntario del paciente y cuidador</li>
+                <li>Cuidador principal responsable si hay dependencia</li>
+                <li>Teléfono operativo en el domicilio</li>
+                <li>Domicilio con condiciones higiénicas mínimas, ≤ 20 min en coche del área de cobertura de HAD</li>
+                <li>Ausencia de problemática social</li>
+                <li>Diagnóstico establecido, o paciente estable pendiente de pruebas realizables durante el ingreso</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Criterios clínicos</strong>
+              <ul>
+                <li>Agudizaciones moderadas con criterios de ingreso hospitalario que no cumplan criterios de exclusión</li>
+                <li>Agudizaciones con respuesta parcial inicial en pacientes crónicos complejos que precisen seguimiento al alta</li>
+              </ul>
+            </div>
+          </div>
+          <span class="group-title exclude" style="margin-top:16px;">Criterios de exclusión de HAD</span>
+          <ul style="margin-top:10px;">
+            <li>Ausencia de respuesta al tratamiento en el hospital</li>
+            <li>Hemoptisis franca</li>
+            <li>Inestabilidad hemodinámica</li>
+            <li>Disminución del nivel de conciencia; agitación o confusión severas</li>
+            <li>Neumotórax o derrame pleural masivo</li>
+            <li>Hipercapnia o acidosis severas</li>
+            <li>No alcanzar SatO₂ &gt; 90% con el flujo máximo de los concentradores (4–5 lpm)</li>
+            <li>Alteraciones electrocardiográficas agudas</li>
+            <li>Trastornos hidroelectrolíticos severos no corregidos</li>
+            <li>Insuficiencia renal aguda; diabetes con descompensación severa; TEP inestable o muy reciente; sepsis</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Recomendaciones al alta</h3>
+          <ul>
+            <li>Abstinencia tabáquica</li>
+            <li>Ejercicio regular; valorar rehabilitación pulmonar</li>
+            <li>Ajustar tratamiento habitual según fenotipo: oxigenoterapia según necesidad; antibióticos 5 días si indicados; corticoides orales 0,5 mg/kg/día durante 5 días (sin pauta descendente)</li>
+            <li>Doble terapia broncodilatadora (LAMA+LABA) si &lt;100 eosinófilos/µl; triple terapia (LABA+LAMA+corticoide inhalado) si &gt;100 eosinófilos y persiste sintomático o exacerbador pese a doble terapia</li>
+            <li>Control clínico en 72 h y revisión en 2–4 semanas</li>
+            <li>Asegurar adherencia terapéutica</li>
+            <li>Intervención educativa mínima: comprobar la técnica de inhalación y entregar plan de acción</li>
+            <li>Garantizar la continuidad asistencial</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="epoc" id="sec-epoc-enfermeria">
+        <div class="eyebrow">Vigilancia en planta / UOME</div>
+        <h1>Cuidados de enfermería · EPOC / asma</h1>
+        <p class="lede">En patologías respiratorias en observación, vigilar especialmente los signos de dificultad respiratoria y empeoramiento del intercambio gaseoso.</p>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>Estado respiratorio</h3>
+            <ul>
+              <li>Disnea progresiva</li>
+              <li>Ortopnea</li>
+              <li>Disnea paroxística nocturna</li>
+              <li>Taquipnea</li>
+              <li>Saturación de oxígeno baja</li>
+              <li>Trabajo respiratorio: musculatura accesoria, tiraje, bamboleo abdominal</li>
+              <li>Sibilancias intensas o ruidos audibles</li>
+              <li>Dificultad para hablar</li>
+              <li>Estridor (compromiso de vía aérea superior)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Otros signos a vigilar</h3>
+            <ul>
+              <li><strong>Neurológico:</strong> confusión, agitación, somnolencia por hipoxia</li>
+              <li><strong>Tos:</strong> frecuencia, persistencia</li>
+              <li><strong>Perfusión:</strong> cianosis (labios o uñas azuladas)</li>
+              <li><strong>Cardiovascular:</strong> taquicardia</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Registros específicos en la historia clínica</h3>
+          <ul>
+            <li>Monitorización de signos vitales</li>
+            <li>Monitorización cardíaca y saturación de oxígeno</li>
+            <li>Vigilar respuesta al tratamiento (inhaladores)</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-color:#f2c9bd;">
+          <span class="group-title exclude">Signos de alarma — avisar inmediatamente</span>
+          <ul style="margin-top:10px;">
+            <li>Disnea intensa o súbita</li>
+            <li>Saturación muy baja</li>
+            <li>Taquicardia</li>
+            <li>Alteración del nivel de conciencia</li>
+            <li>Necesidad de medicación de rescate</li>
+          </ul>
+        </div>
+
+        <div class="disclaimer">
+          Referencias principales: GesEPOC 2021/2022 (Soler JJ, et al.); Steer J, et al. Thorax 2012 (índice DECAF); GEMA 5.3; Global Initiative for Chronic Obstructive Lung Disease (GOLD); SEMES — Manual de actuación en Urgencias.
+        </div>
+      </section>
+
+      <!-- =======================================================
+           PROTOCOLO 3 · AGUDIZACIÓN ASMÁTICA
+      ======================================================== -->
+
+      <section class="section" data-protocol="asma" id="sec-asma-resumen">
+        <div class="eyebrow">Protocolo · Neumología · UOME</div>
+        <h1>Agudización asmática en Unidad de Observación</h1>
+        <p class="lede">Manejo protocolizado de pacientes con agudización asmática leve/moderada, subsidiarios de observación clínica por presentar una respuesta parcial o incompleta al tratamiento inicialmente pautado, evitando un ingreso convencional y garantizando la seguridad y el seguimiento durante su estancia y al alta.</p>
+
+        <h3>Tabla 4.2 · Evaluación de la gravedad de la crisis de asma</h3>
+        <table class="pain">
+          <tbody><tr><th></th><th>Crisis leve</th><th>Crisis moderada</th><th>Crisis grave</th><th>Crisis vital</th></tr>
+          <tr><td>Disnea</td><td>Leve</td><td>Moderada</td><td>Intensa</td><td>Respiración agónica, parada respiratoria</td></tr>
+          <tr><td>Habla</td><td>Párrafos</td><td>Frases</td><td>Palabras</td><td>Ausente</td></tr>
+          <tr><td>Frecuencia respiratoria (x')</td><td>Aumentada</td><td>&gt; 20</td><td>&gt; 25</td><td>Bradipnea, apnea</td></tr>
+          <tr><td>Frecuencia cardiaca (x')</td><td>&lt; 100</td><td>&gt; 100</td><td>&gt; 120</td><td>Bradicardia, parada cardiaca</td></tr>
+          <tr><td>Presión arterial</td><td>Normal</td><td>Normal</td><td>Normal</td><td>Hipotensión</td></tr>
+          <tr><td>Uso musculatura accesoria</td><td>Ausente</td><td>Presente</td><td>Muy evidente</td><td>Movimiento paradójico toracoabdominal, o ausente</td></tr>
+          <tr><td>Sibilancias</td><td>Presentes</td><td>Presentes</td><td>Presentes</td><td>Silencio auscultatorio</td></tr>
+          <tr><td>Nivel de consciencia</td><td>Normal</td><td>Normal</td><td>Normal</td><td>Disminuido o coma</td></tr>
+          <tr><td>FEV₁ o PEF (valores referencia)</td><td>&gt; 70%</td><td>&lt; 70%</td><td>&lt; 50%</td><td>No procede</td></tr>
+          <tr><td>SaO₂</td><td>&gt; 95%</td><td>&lt; 95%</td><td>&lt; 90%</td><td>&lt; 90%</td></tr>
+          <tr><td>PaO₂ mmHg</td><td>Normal</td><td>&lt; 80 (hipoxemia)</td><td>&lt; 60 (insuf. respiratoria parcial)</td><td>&lt; 60</td></tr>
+          <tr><td>PaCO₂</td><td>Normal</td><td>&lt; 40</td><td>&lt; 40</td><td>&gt; 45 (insuf. respiratoria hipercápnica)</td></tr>
+        </tbody></table>
+        <p style="font-size:12px; color:var(--ink-soft);">FEV₁: volumen espiratorio forzado en el primer segundo; PEF: flujo espiratorio máximo; SaO₂: saturación de oxihemoglobina; PaO₂: presión arterial de oxígeno; PaCO₂: presión arterial de anhídrido carbónico.</p>
+      </section>
+
+      <section class="section" data-protocol="asma" id="sec-asma-criterios">
+        <div class="eyebrow">Puerta de entrada a la UOME</div>
+        <h1>Criterios de admisión y exclusión</h1>
+        <p class="lede">Referidos a agudizaciones leves/moderadas (Tabla 4.2) con respuesta incompleta al tratamiento pautado en Urgencias.</p>
+
+        <div id="asma-status" class="status-banner status-neutral">Marca los criterios para ver la recomendación.</div>
+
+        <div class="card">
+          <span class="group-title include">Criterios de admisión</span>
+          <ul class="checklist" data-group="asma-inc">
+            <li><input type="checkbox" id="sai1"><label for="sai1">Persistencia de sibilancias espiratorias o intensas</label></li>
+            <li><input type="checkbox" id="sai2"><label for="sai2">PEF o FEV1 = 50–70%</label></li>
+            <li><input type="checkbox" id="sai3"><label for="sai3">Frecuencia respiratoria &lt; 30 rpm</label></li>
+            <li><input type="checkbox" id="sai4"><label for="sai4">Estabilidad hemodinámica: FC &lt; 120, TA normal</label></li>
+            <li><input type="checkbox" id="sai5"><label for="sai5">Habla con frases cortas / prefiere estar sentado</label></li>
+            <li><input type="checkbox" id="sai6"><label for="sai6">Uso frecuente de musculatura accesoria</label></li>
+            <li><input type="checkbox" id="sai7"><label for="sai7">Sin alteración del nivel de conciencia</label></li>
+            <li><input type="checkbox" id="sai8"><label for="sai8">No asocia complicaciones (neumonía/neumotórax) ni comorbilidades (insuficiencia cardíaca)</label></li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top:32px;">Criterios de exclusión</h3>
+
+        <div class="card">
+          <span class="group-title exclude">1 · Agudizaciones que tras el tratamiento en Urgencias presenten</span>
+          <ul class="checklist" data-group="asma-exc">
+            <li><input type="checkbox" id="sae1"><label for="sae1">FR &gt; 30 rpm y uso continuo de musculatura accesoria</label></li>
+            <li><input type="checkbox" id="sae2"><label for="sae2">SpO₂ &lt; 90%</label></li>
+            <li><input type="checkbox" id="sae3"><label for="sae3">Inestabilidad hemodinámica: hipotensión, FC &gt; 120</label></li>
+            <li><input type="checkbox" id="sae4"><label for="sae4">PEF o FEV1 (valores de referencia) &lt; 50%</label></li>
+            <li><input type="checkbox" id="sae5"><label for="sae5">No puede hablar bien, beber o acostarse</label></li>
+            <li><input type="checkbox" id="sae6"><label for="sae6">Alteración del nivel de conciencia: somnolencia, confusión</label></li>
+            <li><input type="checkbox" id="sae7"><label for="sae7">Tórax silencioso</label></li>
+          </ul>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <span class="group-title exclude">2–4 · Insuficiencia respiratoria y otras causas</span>
+            <ul class="checklist" data-group="asma-exc">
+              <li><input type="checkbox" id="sae8"><label for="sae8">Insuficiencia respiratoria grave: hipercapnia/acidosis respiratoria, alcalosis respiratoria</label></li>
+              <li><input type="checkbox" id="sae9"><label for="sae9">Enfermedad concomitante: insuficiencia cardíaca, alteraciones ECG sugestivas de patología isquémica de base</label></li>
+              <li><input type="checkbox" id="sae10"><label for="sae10">Broncoespasmo secundario a otra etiología (broncoaspiración, cuerpo extraño)</label></li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="group-title exclude">5–6 · Necesidad de tratamiento avanzado</span>
+            <ul class="checklist" data-group="asma-exc">
+              <li><input type="checkbox" id="sae11"><label for="sae11">Necesidad de VMNI</label></li>
+              <li><input type="checkbox" id="sae12"><label for="sae12">Necesidad de sulfato de magnesio y/o adrenalina como tratamiento inicial del cuadro</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="group-title exclude">7 · Riesgo alto de mala evolución (historia)</span>
+          <ul class="checklist" data-group="asma-exc">
+            <li><input type="checkbox" id="sae13"><label for="sae13">≥2 hospitalizaciones o ≥3 visitas a Urgencias en el último año</label></li>
+            <li><input type="checkbox" id="sae14"><label for="sae14">Ingreso previo en UCI, intubación o ventilación mecánica por asma</label></li>
+            <li><input type="checkbox" id="sae15"><label for="sae15">Uso frecuente o abuso de inhaladores de rescate (SABA)</label></li>
+            <li><input type="checkbox" id="sae16"><label for="sae16">Tratamiento con corticoides orales (OCS) recientemente</label></li>
+            <li><input type="checkbox" id="sae17"><label for="sae17">No uso de corticoides inhalados (ICS)</label></li>
+            <li><input type="checkbox" id="sae18"><label for="sae18">Falta de seguimiento médico o problemas psiquiátricos/sociales que dificulten el tratamiento</label></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="asma" id="sec-asma-evaluacion">
+        <div class="eyebrow">Dentro de la UOME</div>
+        <h1>Evaluación inicial</h1>
+
+        <div class="card">
+          <span class="group-title">Estudios en la evaluación inicial</span>
+          <ul class="checklist" data-group="asma-ev">
+            <li><input type="checkbox" id="sav1"><label for="sav1">Constantes al ingreso: TA, FC, SatO₂, FR, Tª</label></li>
+            <li><input type="checkbox" id="sav2"><label for="sav2">Espirometría al ingreso: FEV1 inicial o PEF mediante medidor de Peak-flow</label></li>
+            <li><input type="checkbox" id="sav3"><label for="sav3">Analítica básica: hemograma, bioquímica (función renal, iones, glucosa)</label></li>
+            <li><input type="checkbox" id="sav4"><label for="sav4">Gasometría si pulsioximetría 90–92% con oxígeno suplementario (riesgo de hipercapnia)</label></li>
+            <li><input type="checkbox" id="sav5"><label for="sav5">Electrocardiograma de doce derivaciones</label></li>
+            <li><input type="checkbox" id="sav6"><label for="sav6">Radiografía de tórax — no de rutina, solo si sospecha de complicación o patología concomitante</label></li>
+            <li><input type="checkbox" id="sav7"><label for="sav7">Ecografía torácica clínica (protocolo BLUE) — no de rutina si no hay seguridad en la técnica</label></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="asma" id="sec-asma-tratamiento">
+        <div class="eyebrow">Manejo terapéutico</div>
+        <h1>Tratamiento</h1>
+        <div class="card">
+          <ul>
+            <li><strong>Oxígeno:</strong> &lt; 40% si saturación &lt; 92%</li>
+            <li><strong>Salbutamol + ipratropio:</strong> pMDI + cámara, 4–8 inhalaciones cada 4 horas</li>
+            <li><strong>Corticoides:</strong> hidrocortisona ev 100–200 mg/6h, o metilprednisolona 20–40 mg/8h ev, o prednisona 20–40 mg vo/12h</li>
+            <li><strong>Medidas generales</strong> adaptadas de forma individual a cada paciente según precise</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="asma" id="sec-asma-evolucion">
+        <div class="eyebrow">Seguimiento en la UOME</div>
+        <h1>Monitorización y evolución</h1>
+
+        <div class="card">
+          <h3>Monitorización</h3>
+          <ul>
+            <li>Control de constantes vitales: FR, TA, FC, Tª, SaPO₂</li>
+            <li>Medición del FEV1 o PFE mediante Peak-Flow, previo al alta</li>
+            <li>Reevaluar y vigilar la aparición de nueva sintomatología, o el control de la existente, cada 4–6 h</li>
+          </ul>
+        </div>
+
+        <div id="asma-evol-status" class="status-banner status-neutral">Marca los criterios para ver la evolución.</div>
+
+        <div class="grid2">
+          <div class="card">
+            <span class="group-title include">Criterios de buena evolución</span>
+            <ul class="checklist" data-group="asma-evol-good">
+              <li><input type="checkbox" id="sbe1"><label for="sbe1">FEV1 o PEF &gt; 60%, estable</label></li>
+              <li><input type="checkbox" id="sbe2"><label for="sbe2">Asintomático o mínima sintomatología</label></li>
+              <li><input type="checkbox" id="sbe3"><label for="sbe3">SatO₂ &gt; 95% respirando aire ambiente</label></li>
+              <li><input type="checkbox" id="sbe4"><label for="sbe4">Reducción de la necesidad de medicación de rescate</label></li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="group-title exclude">Criterios de mala evolución / ingreso hospitalario</span>
+            <ul class="checklist" data-group="asma-evol-bad">
+              <li><input type="checkbox" id="sme1"><label for="sme1">FEV1 o PEF &lt; 60%</label></li>
+              <li><input type="checkbox" id="sme2"><label for="sme2">Inestable</label></li>
+              <li><input type="checkbox" id="sme3"><label for="sme3">Sintomático</label></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="asma" id="sec-asma-alta">
+        <div class="eyebrow">Resolución</div>
+        <h1>Recomendaciones al alta y seguimiento</h1>
+
+        <div class="card">
+          <h3>Recomendaciones al alta</h3>
+          <ul>
+            <li>Prednisona 30–50 mg durante 5–7 días</li>
+            <li>CGI y LABA (glucocorticoides inhalados + broncodilatador agonista beta-2 de acción prolongada)</li>
+            <li>Intervención educativa mínima antes del alta: comprobar la técnica de inhalación y entregar un plan de acción</li>
+            <li>Revisión por su médico de familia antes de 5 días; individualizar la necesidad de especialista en el plazo de un mes según los criterios de GEMA 5.3 (tabla 4.5)</li>
+            <li>Incidir en hábitos de salud: abandono del tabaquismo, ejercicio físico adaptado a su patología, otros</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Tabla 4.5 · Criterios que indican evaluación especializada en el plazo de un mes</h3>
+          <ul>
+            <li>Crisis grave o vital</li>
+            <li>Crisis reiteradas que precisan atención en el Servicio de Urgencias</li>
+            <li>Crisis que precisan hospitalización; asma grave no controlada, sobre todo en caso de corticodependencia, aspergilosis broncopulmonar alérgica o vasculitis</li>
+            <li>Gestación</li>
+            <li>Crisis desencadenada por AINE, aeroalérgenos, alérgenos alimentarios o que cursan con anafilaxia</li>
+            <li>Comorbilidades asociadas conocidas</li>
+            <li>Sospecha clínica de disfunción de cuerdas vocales, poliposis nasal, rinosinusitis, reflujo gastroesofágico, síndrome de apnea-hipopnea del sueño, síndrome de solapamiento asma/EPOC</li>
+          </ul>
+          <p style="font-size:12px; color:var(--ink-soft);">AINE: antiinflamatorio no esteroideo; EPOC: enfermedad pulmonar obstructiva crónica.</p>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="asma" id="sec-asma-enfermeria">
+        <div class="eyebrow">Vigilancia en planta / UOME</div>
+        <h1>Cuidados de enfermería · EPOC / asma</h1>
+        <p class="lede">En patologías respiratorias en observación, vigilar especialmente los signos de dificultad respiratoria y empeoramiento del intercambio gaseoso.</p>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>Estado respiratorio</h3>
+            <ul>
+              <li>Disnea progresiva</li>
+              <li>Ortopnea</li>
+              <li>Disnea paroxística nocturna</li>
+              <li>Taquipnea</li>
+              <li>Saturación de oxígeno baja</li>
+              <li>Trabajo respiratorio: musculatura accesoria, tiraje, bamboleo abdominal</li>
+              <li>Sibilancias intensas o ruidos audibles</li>
+              <li>Dificultad para hablar</li>
+              <li>Estridor (compromiso de vía aérea superior)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Otros signos a vigilar</h3>
+            <ul>
+              <li><strong>Neurológico:</strong> confusión, agitación, somnolencia por hipoxia</li>
+              <li><strong>Tos:</strong> frecuencia, persistencia</li>
+              <li><strong>Perfusión:</strong> cianosis (labios o uñas azuladas)</li>
+              <li><strong>Cardiovascular:</strong> taquicardia</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Registros específicos en la historia clínica</h3>
+          <ul>
+            <li>Monitorización de signos vitales</li>
+            <li>Monitorización cardíaca y saturación de oxígeno</li>
+            <li>Vigilar respuesta al tratamiento (inhaladores)</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-color:#f2c9bd;">
+          <span class="group-title exclude">Signos de alarma — avisar inmediatamente</span>
+          <ul style="margin-top:10px;">
+            <li>Disnea intensa o súbita</li>
+            <li>Saturación muy baja</li>
+            <li>Taquicardia</li>
+            <li>Alteración del nivel de conciencia</li>
+            <li>Necesidad de medicación de rescate</li>
+          </ul>
+        </div>
+
+        <div class="disclaimer">
+          Referencias principales: GEMA 5.3 (2023); Global Initiative for Asthma (GINA) 2024; Rodrigo GJ, Plaza V. Manejo de la exacerbación asmática en urgencias. Arch Bronconeumol. 2022;58(5):357-366; SEMES — Manual de actuación en Urgencias; BTS/SIGN British guideline on the management of asthma, 2024.
+        </div>
+      </section>
+
+      <!-- =======================================================
+           PROTOCOLO 4 · FIBRILACIÓN AURICULAR / FLUTTER
+      ======================================================== -->
+
+      <section class="section" data-protocol="fa" id="sec-fa-resumen">
+        <div class="eyebrow">Protocolo · Cardiología / Arritmias</div>
+        <h1>Fibrilación auricular y flutter auricular</h1>
+        <p class="lede">Manejo protocolizado de pacientes con fibrilación auricular (FA) o flutter auricular hemodinámicamente estables que precisan observación clínica, control de frecuencia ventricular, optimización terapéutica y valoración de alta precoz segura. Versión adaptada a la práctica clínica de Observación, recomendaciones ESC 2024 y consenso SEMES.</p>
+
+        <div class="card">
+          <h3>Objetivos del protocolo</h3>
+          <ul>
+            <li>Control sintomático.</li>
+            <li>Control de frecuencia ventricular.</li>
+            <li>Identificación y corrección de factores precipitantes.</li>
+            <li>Evaluación de la anticoagulación.</li>
+            <li>Estratificación del riesgo.</li>
+            <li>Alta precoz segura evitando ingresos innecesarios.</li>
+          </ul>
+        </div>
+
+        <div class="disclaimer">
+          Servicio de Urgencias – Hospital Universitario San Agustín (HUSA) – Avilés.
+        </div>
+      </section>
+
+      <section class="section" data-protocol="fa" id="sec-fa-criterios">
+        <div class="eyebrow">Puerta de entrada a la UOME</div>
+        <h1>Criterios de inclusión y exclusión</h1>
+        <p class="lede">Marca los ítems que cumple el paciente para orientar la indicación de ingreso en la Unidad de Observación.</p>
+
+        <div id="fa-status" class="status-banner status-neutral">Marca los criterios para ver la recomendación.</div>
+
+        <div class="card">
+          <span class="group-title include">Criterios de inclusión — pacientes con:</span>
+          <ul class="checklist" data-group="fa-inc">
+            <li><input type="checkbox" id="fi1"><label for="fi1">FA o flutter auricular conocidos o de nuevo diagnóstico</label></li>
+            <li><input type="checkbox" id="fi2"><label for="fi2">Estabilidad hemodinámica</label></li>
+            <li><input type="checkbox" id="fi3"><label for="fi3">Respuesta ventricular rápida susceptible de tratamiento farmacológico</label></li>
+            <li><input type="checkbox" id="fi4"><label for="fi4">Necesidad de monitorización tras intervención terapéutica</label></li>
+            <li><input type="checkbox" id="fi5"><label for="fi5">Ausencia de indicación de cardioversión urgente</label></li>
+            <li><input type="checkbox" id="fi6"><label for="fi6">Candidato a manejo en Unidad de Observación</label></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="group-title exclude">Criterios de exclusión — derivación a área crítica o ingreso</span>
+          <ul class="checklist" data-group="fa-exc">
+            <li><input type="checkbox" id="fe1"><label for="fe1">Shock</label></li>
+            <li><input type="checkbox" id="fe2"><label for="fe2">PAS &lt;90 mmHg persistente</label></li>
+            <li><input type="checkbox" id="fe3"><label for="fe3">Dolor torácico isquémico</label></li>
+            <li><input type="checkbox" id="fe4"><label for="fe4">Síndrome coronario agudo</label></li>
+            <li><input type="checkbox" id="fe5"><label for="fe5">Edema agudo de pulmón</label></li>
+            <li><input type="checkbox" id="fe6"><label for="fe6">Insuficiencia cardiaca aguda</label></li>
+            <li><input type="checkbox" id="fe7"><label for="fe7">Síncope arrítmico</label></li>
+            <li><input type="checkbox" id="fe8"><label for="fe8">Necesidad de cardioversión eléctrica urgente</label></li>
+            <li><input type="checkbox" id="fe9"><label for="fe9">Síndrome de preexcitación</label></li>
+            <li><input type="checkbox" id="fe10"><label for="fe10">Arritmias complejas asociadas</label></li>
+            <li><input type="checkbox" id="fe11"><label for="fe11">Sepsis grave</label></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="fa" id="sec-fa-valoracion">
+        <div class="eyebrow">Dentro de la UOME</div>
+        <h1>Valoración inicial</h1>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>Historia clínica</h3>
+            <ul>
+              <li>Tiempo de evolución</li>
+              <li>Síntomas</li>
+              <li>Episodios previos</li>
+              <li>Tratamiento habitual</li>
+              <li>Anticoagulación</li>
+              <li>Factores precipitantes</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Exploración</h3>
+            <ul>
+              <li>FC</li>
+              <li>TA</li>
+              <li>Saturación O₂</li>
+              <li>Temperatura</li>
+              <li>Signos de insuficiencia cardiaca</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>ECG</h3>
+            <ul>
+              <li>ECG de 12 derivaciones al ingreso</li>
+              <li>ECG de control según evolución</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Analítica</h3>
+            <ul>
+              <li>Hemograma</li>
+              <li>Bioquímica</li>
+              <li>Función renal</li>
+              <li>Iones</li>
+              <li>Troponina si sospecha clínica</li>
+              <li>NT-proBNP si sospecha de IC</li>
+              <li>Coagulación si anticoagulado</li>
+              <li>TSH según sospecha clínica</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Estratificación del riesgo</h3>
+          <p style="margin-bottom:0;">El riesgo tromboembólico se estima con la escala <strong>CHA₂DS₂-VA</strong> y el riesgo hemorrágico con <strong>HAS-BLED</strong>. Calculadoras disponibles en las pestañas correspondientes.</p>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="fa" id="sec-fa-chadsva">
+        <div class="eyebrow">Riesgo tromboembólico</div>
+        <h1>Calculadora CHA₂DS₂-VA</h1>
+        <p class="lede">Estima el riesgo tromboembólico y orienta la indicación de anticoagulación (ESC 2024). Marca los factores que presenta el paciente.</p>
+
+        <div class="score-panel" id="chadsvaPanel">
+          <div class="num" id="chadsvaNum">0</div>
+          <div class="cat" id="chadsvaCat">Marca los factores de riesgo del paciente</div>
+        </div>
+
+        <div class="card">
+          <ul class="checklist" data-group="chadsva-score">
+            <li><input type="checkbox" id="cv-ic" data-weight="1"><label for="cv-ic">Insuficiencia cardíaca <span class="pill">+1</span></label></li>
+            <li><input type="checkbox" id="cv-htn" data-weight="1"><label for="cv-htn">Hipertensión <span class="pill">+1</span></label></li>
+            <li><input type="checkbox" id="cv-dm" data-weight="1"><label for="cv-dm">Diabetes <span class="pill">+1</span></label></li>
+            <li><input type="checkbox" id="cv-vasc" data-weight="1"><label for="cv-vasc">Enfermedad vascular <span class="pill">+1</span></label></li>
+            <li><input type="checkbox" id="cv-ictus" data-weight="2"><label for="cv-ictus">Ictus / AIT / embolismo previo <span class="pill">+2</span></label></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="group-title">Edad (marca solo una opción)</span>
+          <div class="opts" data-field="cv-edad">
+            <label data-val="0">&lt; 65 años <span class="pill">+0</span></label>
+            <label data-val="1">65–74 años <span class="pill">+1</span></label>
+            <label data-val="2">≥ 75 años <span class="pill">+2</span></label>
+          </div>
+        </div>
+
+        <div class="status-banner status-neutral" id="chadsva-interpret">CHA₂DS₂-VA = 0: no anticoagulación · = 1: considerar anticoagulación · ≥ 2: anticoagulación recomendada.</div>
+      </section>
+
+      <section class="section" data-protocol="fa" id="sec-fa-hasbled">
+        <div class="eyebrow">Riesgo hemorrágico</div>
+        <h1>Calculadora HAS-BLED</h1>
+        <p class="lede">Estima el riesgo hemorrágico de la anticoagulación. Un HAS-BLED elevado no contraindica la anticoagulación: obliga a corregir factores modificables y a un seguimiento estrecho.</p>
+
+        <div class="score-panel" id="hasbledPanel">
+          <div class="num" id="hasbledNum">0</div>
+          <div class="cat" id="hasbledCat">Marca los factores de riesgo del paciente</div>
+        </div>
+
+        <div class="card">
+          <ul class="checklist" data-group="hasbled-score">
+            <li><input type="checkbox" id="hb-hta" data-weight="1"><label for="hb-hta">HTA <span class="pill">+1</span></label></li>
+            <li><input type="checkbox" id="hb-ictus" data-weight="1"><label for="hb-ictus">Ictus previo <span class="pill">+1</span></label></li>
+            <li><input type="checkbox" id="hb-sangrado" data-weight="1"><label for="hb-sangrado">Sangrado previo <span class="pill">+1</span></label></li>
+            <li><input type="checkbox" id="hb-inr" data-weight="1"><label for="hb-inr">INR lábil (si en tratamiento con AVK) <span class="pill">+1</span></label></li>
+            <li><input type="checkbox" id="hb-edad" data-weight="1"><label for="hb-edad">Edad &gt; 65 años <span class="pill">+1</span></label></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="group-title">Alteración renal / hepática</span>
+          <div class="opts" data-field="hb-renal-hep">
+            <label data-val="0">Ninguna <span class="pill">+0</span></label>
+            <label data-val="1">Una (renal o hepática) <span class="pill">+1</span></label>
+            <label data-val="2">Ambas <span class="pill">+2</span></label>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="group-title">Fármacos / alcohol</span>
+          <div class="opts" data-field="hb-farmacos">
+            <label data-val="0">Ninguno <span class="pill">+0</span></label>
+            <label data-val="1">Uno (antiagregantes/AINE o alcohol) <span class="pill">+1</span></label>
+            <label data-val="2">Ambos <span class="pill">+2</span></label>
+          </div>
+        </div>
+
+        <div class="status-banner status-neutral" id="hasbled-interpret">0–1 punto: riesgo bajo · 2 puntos: riesgo moderado · ≥ 3 puntos: riesgo alto.</div>
+      </section>
+
+      <section class="section" data-protocol="fa" id="sec-fa-factores">
+        <div class="eyebrow">Optimización terapéutica</div>
+        <h1>Factores precipitantes</h1>
+        <p class="lede">Investigar y corregir sistemáticamente:</p>
+
+        <div class="card">
+          <ul>
+            <li>Infección</li>
+            <li>Deshidratación</li>
+            <li>Hipovolemia</li>
+            <li>Anemia</li>
+            <li>Dolor</li>
+            <li>Hipoxemia</li>
+            <li>Hipertiroidismo</li>
+            <li>Alcohol</li>
+            <li>Incumplimiento terapéutico</li>
+            <li>Hipopotasemia</li>
+            <li>Hipomagnesemia</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Objetivos analíticos</h3>
+          <ul style="margin-bottom:0;">
+            <li>Potasio ≥ 4 mEq/L</li>
+            <li>Magnesio ≥ 2 mg/dL</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="fa" id="sec-fa-frecuencia">
+        <div class="eyebrow">Tratamiento</div>
+        <h1>Control de frecuencia</h1>
+
+        <div class="card">
+          <h3>Objetivo terapéutico</h3>
+          <p><strong>Control laxo:</strong> FC 80–110 lpm en reposo.</p>
+          <p style="margin-bottom:0;"><strong>Si persisten síntomas</strong> con objetivo más estricto: FC 80–90 lpm en reposo.</p>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>FEVI conservada (&gt;40%) — primera línea</h3>
+            <ul style="margin-bottom:0;">
+              <li>Bisoprolol</li>
+              <li>Metoprolol (no disponible en Urgencias)</li>
+              <li>Atenolol</li>
+              <li>Diltiazem</li>
+              <li>Verapamilo</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>FEVI reducida</h3>
+            <p><strong>Opciones:</strong> betabloqueantes, digoxina.</p>
+            <p style="margin-bottom:0;"><strong>Evitar:</strong> verapamilo, diltiazem.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Tratamiento de primera línea — Bisoprolol VO</h3>
+          <p class="lede" style="margin-bottom:10px;">Fármaco de elección en nuestro ámbito.</p>
+          <ul>
+            <li><strong>Sin tratamiento previo:</strong> bisoprolol 2,5–5 mg VO.</li>
+            <li><strong>En tratamiento habitual:</strong> administrar dosis habitual si omitida; considerar suplemento de 2,5–5 mg VO.</li>
+            <li><strong>Reevaluación a las 2–4 horas:</strong> FC, TA, síntomas, ECG si procede.</li>
+            <li><strong>Escalada</strong> si FC &gt;110 lpm y buena tolerancia: nueva dosis de bisoprolol 2,5–5 mg VO.</li>
+          </ul>
+          <p style="margin-bottom:0;"><strong>Dosis máxima habitual:</strong> 10 mg/día.</p>
+        </div>
+
+        <div class="card">
+          <h3>Alternativa — Atenolol VO</h3>
+          <ul style="margin-bottom:0;">
+            <li>25–50 mg VO, reevaluación clínica a las 2–4 horas.</li>
+            <li>Dosis máxima: 100 mg/día.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Si no se consigue control con monoterapia (ESC 2024)</h3>
+          <p><strong>Asociación recomendada:</strong> betabloqueante + digoxina.</p>
+          <p><strong>Evitar:</strong> betabloqueante + verapamilo; betabloqueante + diltiazem — por riesgo de bradicardia y bloqueo AV.</p>
+        </div>
+
+        <div class="card" style="border-color:#f2c9bd;">
+          <span class="group-title exclude">Insuficiencia cardiaca o contraindicación para betabloqueantes — Digoxina IV</span>
+          <ul style="margin-top:10px;">
+            <li><strong>Dosis de carga:</strong> 0,5 mg IV.</li>
+            <li><strong>Posteriormente:</strong> 0,25 mg IV cada 6 horas.</li>
+            <li><strong>Dosis máxima acumulada:</strong> 1,5 mg/24 horas. Ajustar en insuficiencia renal.</li>
+            <li>Una vez estable, introducir betabloqueantes.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Persistencia de mal control — Amiodarona IV</h3>
+          <p><strong>Valorar en:</strong> IC con FE reducida, intolerancia a betabloqueantes, mal control persistente.</p>
+          <ul>
+            <li><strong>Dosis:</strong> 300 mg IV en 30–60 minutos.</li>
+            <li><strong>Posteriormente:</strong> perfusión continua según evolución clínica.</li>
+          </ul>
+          <p style="margin-bottom:0;"><u>No utilizar dronedarona para control agudo de frecuencia.</u></p>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="fa" id="sec-fa-flutter">
+        <div class="eyebrow">Casos particulares</div>
+        <h1>Flutter auricular y control del ritmo</h1>
+
+        <div class="card">
+          <h3>Flutter auricular</h3>
+          <p class="lede" style="margin-bottom:10px;">El flutter auricular suele responder peor al control farmacológico. Valorar precozmente cardioversión eléctrica, interconsulta con Cardiología y ablación programada.</p>
+          <p style="margin-bottom:0;"><strong>Especialmente si:</strong> FC persistente &gt;120 lpm, síntomas relevantes o fracaso de control farmacológico.</p>
+        </div>
+
+        <div class="card">
+          <h3>Control del ritmo</h3>
+          <p class="lede" style="margin-bottom:10px;">Casos muy individualizados; sería para ámbito de Urgencias, no contemplado inicialmente para la UOME. Valorar estrategia de control del ritmo en: primer episodio, FA de nuevo diagnóstico, FA &lt;48 horas, pacientes jóvenes sintomáticos, flutter típico o recurrencias frecuentes.</p>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>Cardioversión farmacológica — sin cardiopatía estructural</h3>
+            <ul style="margin-bottom:0;">
+              <li>Flecainida</li>
+              <li>Propafenona</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Cardioversión farmacológica — con cardiopatía estructural</h3>
+            <ul style="margin-bottom:0;">
+              <li>Amiodarona</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-protocol="fa" id="sec-fa-anticoagulacion">
+        <div class="eyebrow">Prevención tromboembólica</div>
+        <h1>Anticoagulación</h1>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>Pacientes anticoagulados</h3>
+            <ul style="margin-bottom:0;">
+              <li>Confirmar adherencia</li>
+              <li>Revisar dosis</li>
+              <li>Ajustar según función renal</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Pacientes no anticoagulados</h3>
+            <p style="margin-bottom:0;">Valorar inicio según CHA₂DS₂-VA, HAS-BLED y la estrategia de control del ritmo.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Fármacos preferidos — ACOD</h3>
+          <ul>
+            <li>Apixabán</li>
+            <li>Rivaroxabán</li>
+            <li>Edoxabán</li>
+            <li>Dabigatrán</li>
+          </ul>
+          <p style="margin-bottom:0;"><strong>Preferidos frente a AVK excepto:</strong> prótesis mecánica; estenosis mitral moderada-severa.</p>
+        </div>
+
+        <div class="status-banner status-mid">
+          <strong>Nota:</strong> tras CVE/CVF, cuatro semanas de ACOD en todos los casos aunque CHA₂DS₂-VA sea 0. Solo se podría no dar si la duración del episodio es menor de 24 h y CHA₂DS₂-VA es 0.
+        </div>
+      </section>
+
+      <section class="section" data-protocol="fa" id="sec-fa-seguimiento">
+        <div class="eyebrow">Evolución y destino</div>
+        <h1>Monitorización, alta e ingreso</h1>
+
+        <div class="card">
+          <h3>Monitorización en observación</h3>
+          <ul>
+            <li>Telemetría continua</li>
+            <li>FC y TA cada 2–4 horas</li>
+            <li>Registro clínico seriado</li>
+            <li>Vigilancia de: hipotensión, bradicardia, insuficiencia cardiaca, recurrencia arrítmica, efectos adversos farmacológicos</li>
+          </ul>
+          <p style="margin-bottom:0;"><strong>Tiempo habitual:</strong> 6–24 horas.</p>
+        </div>
+
+        <div class="card">
+          <span class="group-title include">Criterios de alta — todos los siguientes</span>
+          <ul style="margin-top:10px;">
+            <li>Estabilidad hemodinámica</li>
+            <li>FC ≤ 110 lpm</li>
+            <li>Mejoría clínica</li>
+            <li>Ausencia de insuficiencia cardiaca</li>
+            <li>Ausencia de isquemia</li>
+            <li>Tolerancia oral</li>
+            <li>Tratamiento optimizado</li>
+            <li>Anticoagulación revisada</li>
+            <li>Seguimiento garantizado</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Seguimiento tras el alta</h3>
+          <ul style="margin-bottom:0;">
+            <li>Médico de Atención Primaria</li>
+            <li>Cardiología</li>
+            <li>Consulta de arritmias cuando proceda</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-color:#f2c9bd;">
+          <span class="group-title exclude">Criterios de ingreso</span>
+          <ul style="margin-top:10px;">
+            <li>Persistencia de FC &gt;110–120 lpm pese a tratamiento</li>
+            <li>Hipotensión secundaria al tratamiento</li>
+            <li>Insuficiencia cardiaca</li>
+            <li>Sospecha de cardiopatía aguda</li>
+            <li>Necesidad de cardioversión no realizable en Urgencias</li>
+            <li>Complicaciones tromboembólicas</li>
+            <li>Mala evolución clínica durante observación</li>
+          </ul>
+        </div>
+
+        <div class="disclaimer">
+          Referencias principales: European Society of Cardiology. 2024 ESC Guidelines for the Management of Atrial Fibrillation Developed in Collaboration with EACTS. European Heart Journal. 2024; Sociedad Española de Medicina de Urgencias y Emergencias (SEMES). Recomendaciones para el manejo de la fibrilación auricular en los Servicios de Urgencias Hospitalarios; Sociedad Española de Cardiología. Documentos SEC-SEMES de manejo de fibrilación auricular en Urgencias; European Heart Rhythm Association. Practical Guide on Atrial Fibrillation and Oral Anticoagulation. Actualización 2024.
+        </div>
+      </section>
+
+      <nav class="section-pager" id="sectionPager">
+        <button type="button" class="pager-btn" id="pagerPrev" disabled>← <span id="pagerPrevLabel">Anterior</span></button>
+        <span class="pager-pos" id="pagerPos"></span>
+        <button type="button" class="pager-btn" id="pagerNext"><span id="pagerNextLabel">Siguiente</span> →</button>
+      </nav>
+
+      <div class="disclaimer" style="margin-top:50px;">
+        Esta aplicación es una herramienta de apoyo a la decisión clínica basada en los protocolos internos del Servicio de Urgencias. No sustituye el juicio clínico del facultativo responsable. Ningún dato introducido se almacena ni se envía fuera del navegador.
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="edit-toolbar" id="editToolbar" style="display: none;">
+  <span>Modo edición: los cambios solo existen en esta pestaña hasta que los descargues o publiques.</span>
+  <span class="publish-status" id="publishStatus"></span>
+  <button class="btn-reset" id="btnResetChecklists">Restablecer checklists</button>
+  <button class="btn-save" id="btnPublish">🚀 Publicar en GitHub</button>
+  <button class="btn-reset" id="btnSaveEdits">Descargar HTML</button>
+  <button class="btn-exit" id="btnExitEdit">Salir del modo edición</button>
+</div>
+
+<div class="modal-overlay" id="publishModal">
+  <div class="modal-box">
+    <h3>Publicar en GitHub</h3>
+    <p class="modal-sub">Estos datos identifican el repositorio y el archivo que se actualizarán cuando pulses "Publicar en GitHub".</p>
+
+    <label for="ghOwner">Usuario u organización de GitHub</label>
+    <input type="text" id="ghOwner" placeholder="p.ej. hospital-san-agustin">
+
+    <label for="ghRepo">Repositorio</label>
+    <input type="text" id="ghRepo" placeholder="p.ej. protocolos-uo">
+
+    <label for="ghBranch">Rama</label>
+    <input type="text" id="ghBranch" placeholder="main" value="main">
+
+    <label for="ghPath">Ruta del archivo dentro del repositorio</label>
+    <input type="text" id="ghPath" placeholder="index.html" value="index.html">
+
+    <label for="ghToken">Token de acceso personal (con permiso de escritura sobre este repositorio)</label>
+    <input type="password" id="ghToken" placeholder="ghp_...">
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="ghRemember">
+      <label for="ghRemember" style="margin:0; font-weight:400;">Recordar usuario, repositorio, rama y ruta en este navegador</label>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="ghRememberToken">
+      <label for="ghRememberToken" style="margin:0; font-weight:400;">Recordar también el token en este navegador (no recomendado en equipos compartidos)</label>
+    </div>
+
+    <div class="modal-actions">
+      <button class="primary" id="ghSaveConfig">Guardar configuración</button>
+      <button class="secondary" id="ghCloseModal">Cerrar</button>
+    </div>
+
+    <p class="modal-hint">El token se envía directamente de este navegador a api.github.com para hacer el commit; no pasa por ningún otro servidor ni se comparte con Anthropic. Crea el token en GitHub → Settings → Developer settings → Personal access tokens, con permiso de escritura (Contents) limitado a este repositorio, y considera darle una fecha de caducidad.</p>
+  </div>
+</div>
+
+<script>
+  // ---- welcome screen ----
+  const welcomeScreen = document.getElementById('welcomeScreen');
+  const shell = document.getElementById('shell');
+  const welcomeProtocolSelect = document.getElementById('welcomeProtocolSelect');
+  const backToWelcome = document.getElementById('backToWelcome');
+
+  function enterApp(name){
+    welcomeScreen.style.display = 'none';
+    shell.style.display = 'flex';
+    switchProtocol(name);
+  }
+
+  function returnToWelcome(){
+    shell.style.display = 'none';
+    welcomeScreen.style.display = 'flex';
+    welcomeProtocolSelect.value = '';
+    document.getElementById('sidebar').classList.remove('open');
+    window.scrollTo(0,0);
+  }
+
+  welcomeProtocolSelect.addEventListener('change', ()=>{
+    if(welcomeProtocolSelect.value) enterApp(welcomeProtocolSelect.value);
+  });
+  backToWelcome.addEventListener('click', returnToWelcome);
+
+  // ---- protocol switching ----
+  const protocolSelect = document.getElementById('protocolSelect');
+  const allNavButtons = document.querySelectorAll('.nav button');
+  const allSections = document.querySelectorAll('.section');
+
+  function switchProtocol(name){
+    if(protocolSelect.value !== name) protocolSelect.value = name;
+    let firstNav = null;
+    allNavButtons.forEach(b=>{
+      const match = b.dataset.protocol === name;
+      b.style.display = match ? 'flex' : 'none';
+      if(match && !firstNav) firstNav = b;
+    });
+    allNavButtons.forEach(b=>b.classList.remove('active'));
+    allSections.forEach(s=>s.classList.remove('active'));
+    if(firstNav){
+      firstNav.classList.add('active');
+      document.getElementById('sec-'+firstNav.dataset.section).classList.add('active');
+    }
+    updatePager();
+    window.scrollTo(0,0);
+  }
+
+  protocolSelect.addEventListener('change', ()=> switchProtocol(protocolSelect.value));
+
+  // ---- section navigation within a protocol ----
+  function activateNavButton(btn){
+    allNavButtons.forEach(b=>{ if(b.dataset.protocol===btn.dataset.protocol) b.classList.remove('active'); });
+    btn.classList.add('active');
+    allSections.forEach(s=>{ if(s.dataset.protocol===btn.dataset.protocol) s.classList.remove('active'); });
+    document.getElementById('sec-'+btn.dataset.section).classList.add('active');
+    document.getElementById('sidebar').classList.remove('open');
+    updatePager();
+    window.scrollTo(0,0);
+  }
+
+  allNavButtons.forEach(btn=>{
+    btn.addEventListener('click', ()=> activateNavButton(btn));
+  });
+
+  document.getElementById('menuToggle').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+
+  // cerrar la barra lateral en móvil al tocar fuera de ella
+  document.addEventListener('click', (e)=>{
+    const sidebarEl = document.getElementById('sidebar');
+    if(!sidebarEl.classList.contains('open')) return;
+    if(sidebarEl.contains(e.target)) return;
+    if(e.target.closest('#menuToggle')) return;
+    sidebarEl.classList.remove('open');
+  });
+
+  // ---- pager: avanzar/retroceder de sección sin volver al menú lateral ----
+  function navLabel(btn){
+    return btn.textContent.trim();
+  }
+
+  function updatePager(){
+    const pager = document.getElementById('sectionPager');
+    if(!pager) return;
+    const activeBtn = Array.from(allNavButtons).find(b=> b.classList.contains('active'));
+    if(!activeBtn){ pager.style.display = 'none'; return; }
+    pager.style.display = 'flex';
+    const group = Array.from(allNavButtons).filter(b=> b.dataset.protocol === activeBtn.dataset.protocol);
+    const idx = group.indexOf(activeBtn);
+    const prevBtn = document.getElementById('pagerPrev');
+    const nextBtn = document.getElementById('pagerNext');
+    const prevLabel = document.getElementById('pagerPrevLabel');
+    const nextLabel = document.getElementById('pagerNextLabel');
+    const pos = document.getElementById('pagerPos');
+    if(idx > 0){
+      prevBtn.disabled = false;
+      prevLabel.textContent = navLabel(group[idx-1]);
+    } else {
+      prevBtn.disabled = true;
+      prevLabel.textContent = 'Anterior';
+    }
+    if(idx < group.length-1){
+      nextBtn.disabled = false;
+      nextLabel.textContent = navLabel(group[idx+1]);
+    } else {
+      nextBtn.disabled = true;
+      nextLabel.textContent = 'Siguiente';
+    }
+    pos.textContent = (idx+1) + ' / ' + group.length;
+    pager._group = group;
+    pager._idx = idx;
+  }
+
+  document.getElementById('pagerPrev').addEventListener('click', ()=>{
+    const pager = document.getElementById('sectionPager');
+    if(pager._group && pager._idx > 0) activateNavButton(pager._group[pager._idx-1]);
+  });
+  document.getElementById('pagerNext').addEventListener('click', ()=>{
+    const pager = document.getElementById('sectionPager');
+    if(pager._group && pager._idx < pager._group.length-1) activateNavButton(pager._group[pager._idx+1]);
+  });
+  updatePager();
+
+  // ---- checklist visual state ----
+  document.querySelectorAll('.checklist input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change', ()=>{
+      cb.closest('li').classList.toggle('checked', cb.checked);
+      evaluateAdmission();
+      evaluateAlta();
+      evaluateADP();
+      evaluateEpoc();
+      evaluateEpocAlta();
+      evaluateAsma();
+      evaluateAsmaEvolucion();
+      evaluateFA();
+    });
+  });
+
+  function groupChecked(groupName){
+    return Array.from(document.querySelectorAll('[data-group="'+groupName+'"] input[type=checkbox]'));
+  }
+  function allChecked(list){ return list.length>0 && list.every(cb=>cb.checked); }
+  function anyChecked(list){ return list.some(cb=>cb.checked); }
+
+  // ===== Dolor torácico logic =====
+  function evaluateAdmission(){
+    const banner = document.getElementById('admission-status');
+    if(!banner) return;
+    const incA = groupChecked('inc-a'), incB = groupChecked('inc-b');
+    const exclusions = groupChecked('exc');
+    const hasExclusion = anyChecked(exclusions);
+    const stableOk = allChecked(incA);
+    const riskOk = anyChecked(incB);
+    if(hasExclusion){
+      banner.className = 'status-banner status-high';
+      banner.textContent = 'Cumple al menos un criterio de exclusión → no ingresa en UO, activar circuito correspondiente.';
+    } else if(stableOk && riskOk){
+      banner.className = 'status-banner status-low';
+      banner.textContent = 'Cumple estabilidad clínica y riesgo intermedio, sin criterios de exclusión → candidato a Unidad de Observación.';
+    } else if(stableOk && !riskOk){
+      banner.className = 'status-banner status-mid';
+      banner.textContent = 'Estabilidad clínica cumplida, pero aún no se ha marcado ningún criterio de riesgo intermedio (B).';
+    } else {
+      banner.className = 'status-banner status-neutral';
+      banner.textContent = 'Marca los criterios para ver la recomendación.';
+    }
+  }
+
+  function evaluateAlta(){
+    const banner = document.getElementById('alta-status');
+    if(!banner) return;
+    const list = groupChecked('alta');
+    if(allChecked(list)){
+      banner.className = 'status-banner status-low';
+      banner.textContent = 'Cumple los 7 criterios → alta domiciliaria con informe y seguimiento preferente.';
+    } else if(anyChecked(list)){
+      banner.className = 'status-banner status-mid';
+      banner.textContent = 'Criterios de alta incompletos, continuar observación.';
+    } else {
+      banner.className = 'status-banner status-neutral';
+      banner.textContent = 'Marca los 7 criterios para confirmar el alta.';
+    }
+  }
+
+  const edacsValues = {edad:null, sexo:null, fr:null, diaf:null, irr:null, pleur:null};
+  document.querySelectorAll('.opts[data-field^="edad"], .opts[data-field="sexo"], .opts[data-field="fr"], .opts[data-field="diaf"], .opts[data-field="irr"], .opts[data-field="pleur"]').forEach(group=>{
+    const field = group.dataset.field;
+    if(!(field in edacsValues)) return;
+    group.querySelectorAll('label').forEach(label=>{
+      label.addEventListener('click', ()=>{
+        group.querySelectorAll('label').forEach(l=>l.classList.remove('picked'));
+        label.classList.add('picked');
+        edacsValues[field] = parseInt(label.dataset.val, 10);
+        const frItem = document.getElementById('fr-item');
+        if(field === 'edad'){
+          const ageInRange = parseInt(label.dataset.val,10) <= 4;
+          frItem.classList.toggle('disabled', !ageInRange);
+          if(!ageInRange){
+            edacsValues.fr = 0;
+            frItem.querySelectorAll('label').forEach(l=>l.classList.remove('picked'));
+          }
+        }
+        updateScore();
+      });
+    });
+  });
+
+  function updateScore(){
+    const vals = Object.values(edacsValues);
+    const panel = document.getElementById('scorePanel');
+    const numEl = document.getElementById('scoreNum');
+    const catEl = document.getElementById('scoreCat');
+    if(vals.some(v=>v===null)){
+      numEl.textContent = '—';
+      catEl.textContent = 'Sin calcular · completa los 6 ítems';
+      panel.className = 'score-panel';
+      window.__edacsTotal = null;
+      evaluateADP();
+      return;
+    }
+    const total = Object.values(edacsValues).reduce((a,b)=>a+b,0);
+    numEl.textContent = total;
+    window.__edacsTotal = total;
+    if(total < 16){
+      panel.className = 'score-panel low';
+      catEl.textContent = 'Muy bajo riesgo (score < 16). Junto con ECG y troponina normales, compatible con alta temprana.';
+    } else {
+      panel.className = 'score-panel high';
+      catEl.textContent = 'No bajo riesgo (score ≥ 16). Continuar evaluación / observación.';
+    }
+    evaluateADP();
+  }
+
+  function evaluateADP(){
+    const banner = document.getElementById('adp-status');
+    if(!banner) return;
+    const list = groupChecked('adp');
+    const total = window.__edacsTotal;
+    if(total===null || total===undefined){
+      banner.className = 'status-banner status-neutral';
+      banner.textContent = 'Completa el score y los 3 criterios para ver la conducta.';
+      return;
+    }
+    const scoreOk = total < 16;
+    const adpAll = allChecked(list);
+    if(scoreOk && adpAll){
+      banner.className = 'status-banner status-low';
+      banner.textContent = 'EDACS < 16 + ECG normal + troponina 0/2h normal → alta temprana (< 6 h). Riesgo de MACE a 30 días < 1%.';
+    } else if(!scoreOk){
+      banner.className = 'status-banner status-high';
+      banner.textContent = 'EDACS ≥ 16 → no bajo riesgo. Continuar evaluación / observación independientemente de ECG y troponina.';
+    } else {
+      banner.className = 'status-banner status-mid';
+      banner.textContent = 'Completa ECG e troponina 0/2h para confirmar el criterio de alta temprana.';
+    }
+  }
+
+  // ===== EPOC logic =====
+  function evaluateEpoc(){
+    const banner = document.getElementById('epoc-status');
+    if(!banner) return;
+    const inc = groupChecked('epoc-inc');
+    const exc = groupChecked('epoc-exc');
+    const hasExclusion = anyChecked(exc);
+    const hasInclusion = anyChecked(inc);
+    if(hasExclusion){
+      banner.className = 'status-banner status-high';
+      banner.textContent = 'Cumple al menos un criterio de exclusión → no candidato a UOME, valorar ingreso convencional u otro circuito.';
+    } else if(hasInclusion){
+      banner.className = 'status-banner status-low';
+      banner.textContent = 'Cumple criterios de ingreso en UO, sin criterios de exclusión → candidato a la Unidad de Observación (UOME).';
+    } else {
+      banner.className = 'status-banner status-neutral';
+      banner.textContent = 'Marca los criterios para ver la recomendación.';
+    }
+  }
+
+  function evaluateEpocAlta(){
+    const banner = document.getElementById('epoc-alta-status');
+    if(!banner) return;
+    const list = groupChecked('epoc-alta');
+    if(allChecked(list)){
+      banner.className = 'status-banner status-low';
+      banner.textContent = 'Cumple los 4 criterios → alta domiciliaria con recomendaciones y seguimiento.';
+    } else if(anyChecked(list)){
+      banner.className = 'status-banner status-mid';
+      banner.textContent = 'Criterios de alta incompletos, continuar observación.';
+    } else {
+      banner.className = 'status-banner status-neutral';
+      banner.textContent = 'Marca los 4 criterios para confirmar el alta.';
+    }
+  }
+
+  // ===== Asma logic =====
+  function evaluateAsma(){
+    const banner = document.getElementById('asma-status');
+    if(!banner) return;
+    const inc = groupChecked('asma-inc');
+    const exc = groupChecked('asma-exc');
+    const hasExclusion = anyChecked(exc);
+    const hasInclusion = anyChecked(inc);
+    if(hasExclusion){
+      banner.className = 'status-banner status-high';
+      banner.textContent = 'Cumple al menos un criterio de exclusión → no candidato a UOME, valorar ingreso convencional u otro circuito.';
+    } else if(hasInclusion){
+      banner.className = 'status-banner status-low';
+      banner.textContent = 'Cumple criterios de admisión, sin criterios de exclusión → candidato a la Unidad de Observación (UOME).';
+    } else {
+      banner.className = 'status-banner status-neutral';
+      banner.textContent = 'Marca los criterios para ver la recomendación.';
+    }
+  }
+
+  function evaluateAsmaEvolucion(){
+    const banner = document.getElementById('asma-evol-status');
+    if(!banner) return;
+    const good = groupChecked('asma-evol-good');
+    const bad = groupChecked('asma-evol-bad');
+    const hasBad = anyChecked(bad);
+    const allGood = allChecked(good);
+    if(hasBad){
+      banner.className = 'status-banner status-high';
+      banner.textContent = 'Presenta criterios de mala evolución → valorar ingreso hospitalario.';
+    } else if(allGood){
+      banner.className = 'status-banner status-low';
+      banner.textContent = 'Cumple los criterios de buena evolución → candidato a alta.';
+    } else {
+      banner.className = 'status-banner status-neutral';
+      banner.textContent = 'Marca los criterios para ver la evolución.';
+    }
+  }
+
+  // ===== Fibrilación auricular / flutter logic =====
+  function evaluateFA(){
+    const banner = document.getElementById('fa-status');
+    if(!banner) return;
+    const inc = groupChecked('fa-inc');
+    const exc = groupChecked('fa-exc');
+    const hasExclusion = anyChecked(exc);
+    const hasInclusion = anyChecked(inc);
+    if(hasExclusion){
+      banner.className = 'status-banner status-high';
+      banner.textContent = 'Cumple al menos un criterio de exclusión → derivación a área crítica o ingreso, no candidato a UOME.';
+    } else if(hasInclusion){
+      banner.className = 'status-banner status-low';
+      banner.textContent = 'Cumple criterios de inclusión, sin criterios de exclusión → candidato a la Unidad de Observación (UOME).';
+    } else {
+      banner.className = 'status-banner status-neutral';
+      banner.textContent = 'Marca los criterios para ver la recomendación.';
+    }
+  }
+
+  // ---- CHA2DS2-VA calculator ----
+  function updateChadsva(){
+    const panel = document.getElementById('chadsvaPanel');
+    if(!panel) return;
+    const numEl = document.getElementById('chadsvaNum');
+    const catEl = document.getElementById('chadsvaCat');
+    const interp = document.getElementById('chadsva-interpret');
+    let total = 0;
+    document.querySelectorAll('[data-group="chadsva-score"] input[type=checkbox]').forEach(cb=>{
+      if(cb.checked) total += parseInt(cb.dataset.weight, 10) || 0;
+    });
+    const edadPicked = document.querySelector('.opts[data-field="cv-edad"] label.picked');
+    if(edadPicked) total += parseInt(edadPicked.dataset.val, 10);
+    numEl.textContent = total;
+    if(total === 0){
+      panel.className = 'score-panel low';
+      catEl.textContent = 'Riesgo tromboembólico bajo.';
+      interp.className = 'status-banner status-low';
+      interp.textContent = 'CHA₂DS₂-VA = 0 → no anticoagulación.';
+    } else if(total === 1){
+      panel.className = 'score-panel mid';
+      catEl.textContent = 'Riesgo tromboembólico intermedio.';
+      interp.className = 'status-banner status-mid';
+      interp.textContent = 'CHA₂DS₂-VA = 1 → considerar anticoagulación.';
+    } else {
+      panel.className = 'score-panel high';
+      catEl.textContent = 'Riesgo tromboembólico elevado.';
+      interp.className = 'status-banner status-high';
+      interp.textContent = 'CHA₂DS₂-VA ≥ 2 → anticoagulación recomendada.';
+    }
+  }
+  document.querySelectorAll('[data-group="chadsva-score"] input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change', updateChadsva);
+  });
+  document.querySelectorAll('.opts[data-field="cv-edad"] label').forEach(label=>{
+    label.addEventListener('click', ()=>{
+      label.closest('.opts').querySelectorAll('label').forEach(l=>l.classList.remove('picked'));
+      label.classList.add('picked');
+      updateChadsva();
+    });
+  });
+
+  // ---- HAS-BLED calculator ----
+  function updateHasbled(){
+    const panel = document.getElementById('hasbledPanel');
+    if(!panel) return;
+    const numEl = document.getElementById('hasbledNum');
+    const catEl = document.getElementById('hasbledCat');
+    const interp = document.getElementById('hasbled-interpret');
+    let total = 0;
+    document.querySelectorAll('[data-group="hasbled-score"] input[type=checkbox]').forEach(cb=>{
+      if(cb.checked) total += parseInt(cb.dataset.weight, 10) || 0;
+    });
+    const renalPicked = document.querySelector('.opts[data-field="hb-renal-hep"] label.picked');
+    if(renalPicked) total += parseInt(renalPicked.dataset.val, 10);
+    const farmPicked = document.querySelector('.opts[data-field="hb-farmacos"] label.picked');
+    if(farmPicked) total += parseInt(farmPicked.dataset.val, 10);
+    numEl.textContent = total;
+    if(total <= 1){
+      panel.className = 'score-panel low';
+      catEl.textContent = 'Riesgo hemorrágico bajo.';
+      interp.className = 'status-banner status-low';
+      interp.textContent = 'HAS-BLED 0–1 → riesgo bajo.';
+    } else if(total === 2){
+      panel.className = 'score-panel mid';
+      catEl.textContent = 'Riesgo hemorrágico moderado.';
+      interp.className = 'status-banner status-mid';
+      interp.textContent = 'HAS-BLED 2 → riesgo moderado.';
+    } else {
+      panel.className = 'score-panel high';
+      catEl.textContent = 'Riesgo hemorrágico alto.';
+      interp.className = 'status-banner status-high';
+      interp.textContent = 'HAS-BLED ≥ 3 → riesgo alto. No contraindica la anticoagulación: corregir factores modificables y seguimiento estrecho.';
+    }
+  }
+  document.querySelectorAll('[data-group="hasbled-score"] input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change', updateHasbled);
+  });
+  document.querySelectorAll('.opts[data-field="hb-renal-hep"] label, .opts[data-field="hb-farmacos"] label').forEach(label=>{
+    label.addEventListener('click', ()=>{
+      label.closest('.opts').querySelectorAll('label').forEach(l=>l.classList.remove('picked'));
+      label.classList.add('picked');
+      updateHasbled();
+    });
+  });
+
+  // ---- DECAF calculator ----
+  const decafValues = {'decaf-disnea':null,'decaf-eos':null,'decaf-cons':null,'decaf-acid':null,'decaf-fa':null};
+  document.querySelectorAll('.opts[data-field^="decaf-"]').forEach(group=>{
+    const field = group.dataset.field;
+    group.querySelectorAll('label').forEach(label=>{
+      label.addEventListener('click', ()=>{
+        group.querySelectorAll('label').forEach(l=>l.classList.remove('picked'));
+        label.classList.add('picked');
+        decafValues[field] = parseInt(label.dataset.val, 10);
+        updateDecaf();
+      });
+    });
+  });
+
+  function updateDecaf(){
+    const vals = Object.values(decafValues);
+    const panel = document.getElementById('decafPanel');
+    const numEl = document.getElementById('decafNum');
+    const catEl = document.getElementById('decafCat');
+    const interp = document.getElementById('decaf-interpret');
+    if(vals.some(v=>v===null)){
+      numEl.textContent = '—';
+      catEl.textContent = 'Sin calcular · completa los 5 ítems';
+      panel.className = 'score-panel';
+      interp.className = 'status-banner status-neutral';
+      interp.textContent = 'Completa los 5 ítems para ver la interpretación.';
+      return;
+    }
+    const total = vals.reduce((a,b)=>a+b,0);
+    numEl.textContent = total;
+    if(total <= 1){
+      panel.className = 'score-panel low';
+      catEl.textContent = 'Bajo riesgo de mortalidad a 30 días.';
+      interp.className = 'status-banner status-low';
+      interp.textContent = 'DECAF 0–1 → bajo riesgo: potencial manejo en observación o alta corta.';
+    } else if(total === 2){
+      panel.className = 'score-panel mid';
+      catEl.textContent = 'Riesgo intermedio.';
+      interp.className = 'status-banner status-mid';
+      interp.textContent = 'DECAF 2 → riesgo intermedio: valorar individualmente la necesidad de ingreso convencional.';
+    } else {
+      panel.className = 'score-panel high';
+      catEl.textContent = 'Riesgo elevado de mortalidad a 30 días.';
+      interp.className = 'status-banner status-high';
+      interp.textContent = 'DECAF ≥ 3 → riesgo elevado: exige ingreso hospitalario convencional.';
+    }
+  }
+
+  // ---- initial paint ----
+  evaluateAdmission();
+  evaluateAlta();
+  evaluateEpoc();
+  evaluateEpocAlta();
+  evaluateAsma();
+  evaluateAsmaEvolucion();
+  evaluateFA();
+  updateChadsva();
+  updateHasbled();
+
+  // ===================================================
+  // MODO EDICIÓN
+  // ===================================================
+  // Selectores de contenido editable: títulos, párrafos, texto de tarjetas,
+  // celdas de tabla, ítems de listas normales y etiquetas de checklist.
+  // Deliberadamente excluidos: los paneles de score (se recalculan solos),
+  // y las opciones de EDACS/DECAF (su texto está ligado a un valor de
+  // puntuación fijo; cambiarlo aquí generaría inconsistencias).
+  const EDITABLE_SELECTOR = [
+    '.content h1', '.content h2', '.content h3', '.content h4',
+    '.content .eyebrow', '.content .lede', '.content .disclaimer',
+    '.content p:not(.edit-toolbar p)',
+    '.content ul:not(.checklist) li', '.content ol li',
+    '.content td', '.content th',
+    '.content .checklist label',
+    '.content .group-title', '.content .flow-box',
+    '.content .risk-card h4', '.content .risk-card li', '.content .risk-card p'
+  ].join(', ');
+
+  let editing = false;
+  window.__editing = false;
+
+  function setEditMode(on){
+    editing = on;
+    window.__editing = on;
+    document.body.classList.toggle('edit-mode', on);
+    document.querySelectorAll(EDITABLE_SELECTOR).forEach(el=>{
+      el.setAttribute('contenteditable', on ? 'true' : 'false');
+    });
+    document.getElementById('editToggle').classList.toggle('on', on);
+    document.getElementById('editToggle').textContent = on ? '✓ Editando — clic para salir' : '✏️ Editar contenido';
+    document.getElementById('editToolbar').style.display = on ? 'flex' : 'none';
+    document.getElementById('publishConfigBtn').style.display = on ? 'block' : 'none';
+  }
+
+  document.getElementById('editToggle').addEventListener('click', ()=> setEditMode(!editing));
+  document.getElementById('btnExitEdit').addEventListener('click', ()=> setEditMode(false));
+
+  function resetInteractiveState(){
+    document.querySelectorAll('.checklist input[type=checkbox]').forEach(cb=>{
+      cb.checked = false;
+      cb.closest('li').classList.remove('checked');
+    });
+    document.querySelectorAll('.opts label.picked').forEach(l=>l.classList.remove('picked'));
+    Object.keys(edacsValues).forEach(k=> edacsValues[k]=null);
+    Object.keys(decafValues).forEach(k=> decafValues[k]=null);
+    const frItem = document.getElementById('fr-item');
+    if(frItem) frItem.classList.remove('disabled');
+    updateScore();
+    updateDecaf();
+    evaluateAdmission();
+    evaluateAlta();
+    evaluateADP();
+    evaluateEpoc();
+    evaluateEpocAlta();
+    evaluateAsma();
+    evaluateAsmaEvolucion();
+    evaluateFA();
+    updateChadsva();
+    updateHasbled();
+  }
+
+  document.getElementById('btnResetChecklists').addEventListener('click', ()=>{
+    resetInteractiveState();
+  });
+
+  function buildCleanHtmlDocumentString(){
+    // clona el documento actual y lo deja en un estado "de fábrica":
+    // sin contenteditable activo, con el modo edición apagado y el modal cerrado.
+    const clone = document.documentElement.cloneNode(true);
+    const bodyClone = clone.querySelector('body');
+    if(bodyClone) bodyClone.classList.remove('edit-mode');
+    clone.classList.remove('edit-mode');
+    clone.querySelectorAll('[contenteditable]').forEach(el=> el.removeAttribute('contenteditable'));
+    const toolbarClone = clone.querySelector('#editToolbar');
+    if(toolbarClone) toolbarClone.style.display = 'none';
+    const modalClone = clone.querySelector('#publishModal');
+    if(modalClone) modalClone.classList.remove('open');
+    const toggleClone = clone.querySelector('#editToggle');
+    if(toggleClone){ toggleClone.classList.remove('on'); toggleClone.textContent = '✏️ Editar contenido'; }
+    const pubBtnClone = clone.querySelector('#publishConfigBtn');
+    if(pubBtnClone) pubBtnClone.style.display = 'none';
+    const statusClone = clone.querySelector('#publishStatus');
+    if(statusClone){ statusClone.textContent = ''; statusClone.className = 'publish-status'; }
+    // el documento publicado/descargado siempre debe arrancar en la pantalla de inicio,
+    // nunca en la sección donde estuviera situado quien hizo la edición.
+    const welcomeClone = clone.querySelector('#welcomeScreen');
+    if(welcomeClone) welcomeClone.style.display = 'flex';
+    const shellClone = clone.querySelector('#shell');
+    if(shellClone) shellClone.style.display = 'none';
+    const sidebarClone = clone.querySelector('#sidebar');
+    if(sidebarClone) sidebarClone.classList.remove('open');
+    const welcomeSelectClone = clone.querySelector('#welcomeProtocolSelect');
+    if(welcomeSelectClone) welcomeSelectClone.value = '';
+    return '<!DOCTYPE html>\n' + clone.outerHTML;
+  }
+
+  function exportHtml(){
+    const proceed = window.confirm('Antes de descargar se reiniciarán todos los checklists y calculadoras (para entregar un documento limpio). ¿Continuar?');
+    if(!proceed) return;
+    resetInteractiveState();
+
+    const htmlStr = buildCleanHtmlDocumentString();
+    const blob = new Blob([htmlStr], {type:'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const stamp = new Date().toISOString().slice(0,10);
+    a.href = url;
+    a.download = 'protocolos-unidad-observacion-' + stamp + '.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setEditMode(false);
+  }
+
+  document.getElementById('btnSaveEdits').addEventListener('click', exportHtml);
+
+  // ===================================================
+  // PUBLICACIÓN DIRECTA EN GITHUB (opcional)
+  // ===================================================
+  function loadGhConfigIntoForm(){
+    try{
+      document.getElementById('ghOwner').value = localStorage.getItem('uoGhOwner') || '';
+      document.getElementById('ghRepo').value = localStorage.getItem('uoGhRepo') || '';
+      document.getElementById('ghBranch').value = localStorage.getItem('uoGhBranch') || 'main';
+      document.getElementById('ghPath').value = localStorage.getItem('uoGhPath') || 'index.html';
+      const remember = localStorage.getItem('uoGhRemember') === '1';
+      document.getElementById('ghRemember').checked = remember;
+      const rememberToken = localStorage.getItem('uoGhRememberToken') === '1';
+      document.getElementById('ghRememberToken').checked = rememberToken;
+      document.getElementById('ghToken').value = rememberToken ? (localStorage.getItem('uoGhToken') || '') : '';
+    }catch(e){ /* almacenamiento local no disponible; se pedirán los datos cada vez */ }
+  }
+
+  function saveGhConfigFromForm(){
+    try{
+      const remember = document.getElementById('ghRemember').checked;
+      const rememberToken = document.getElementById('ghRememberToken').checked;
+      if(remember){
+        localStorage.setItem('uoGhOwner', document.getElementById('ghOwner').value.trim());
+        localStorage.setItem('uoGhRepo', document.getElementById('ghRepo').value.trim());
+        localStorage.setItem('uoGhBranch', document.getElementById('ghBranch').value.trim() || 'main');
+        localStorage.setItem('uoGhPath', document.getElementById('ghPath').value.trim() || 'index.html');
+        localStorage.setItem('uoGhRemember', '1');
+      } else {
+        ['uoGhOwner','uoGhRepo','uoGhBranch','uoGhPath','uoGhRemember'].forEach(k=> localStorage.removeItem(k));
+      }
+      if(rememberToken){
+        localStorage.setItem('uoGhToken', document.getElementById('ghToken').value.trim());
+        localStorage.setItem('uoGhRememberToken', '1');
+      } else {
+        localStorage.removeItem('uoGhToken');
+        localStorage.removeItem('uoGhRememberToken');
+      }
+    }catch(e){ /* almacenamiento local no disponible */ }
+  }
+
+  function getGhConfig(){
+    return {
+      owner: document.getElementById('ghOwner').value.trim(),
+      repo: document.getElementById('ghRepo').value.trim(),
+      branch: document.getElementById('ghBranch').value.trim() || 'main',
+      path: document.getElementById('ghPath').value.trim() || 'index.html',
+      token: document.getElementById('ghToken').value.trim()
+    };
+  }
+
+  function openPublishModal(){
+    loadGhConfigIntoForm();
+    document.getElementById('publishModal').classList.add('open');
+  }
+  function closePublishModal(){
+    document.getElementById('publishModal').classList.remove('open');
+  }
+
+  document.getElementById('publishConfigBtn').addEventListener('click', openPublishModal);
+  document.getElementById('ghCloseModal').addEventListener('click', closePublishModal);
+  document.getElementById('ghSaveConfig').addEventListener('click', ()=>{
+    saveGhConfigFromForm();
+    closePublishModal();
+    setPublishStatus('Configuración guardada en este navegador.', 'ok');
+  });
+
+  function setPublishStatus(msg, kind){
+    const el = document.getElementById('publishStatus');
+    el.textContent = msg;
+    el.className = 'publish-status' + (kind ? ' ' + kind : '');
+  }
+
+  function utf8ToBase64(str){
+    return btoa(unescape(encodeURIComponent(str)));
+  }
+
+  async function publishToGitHub(){
+    const cfg = getGhConfig();
+    if(!cfg.owner || !cfg.repo || !cfg.token){
+      openPublishModal();
+      setPublishStatus('Completa usuario, repositorio y token antes de publicar.', 'err');
+      return;
+    }
+    const proceed = window.confirm('Antes de publicar se reiniciarán todos los checklists y calculadoras (para dejar un documento limpio). ¿Continuar?');
+    if(!proceed) return;
+    resetInteractiveState();
+
+    const btn = document.getElementById('btnPublish');
+    const originalLabel = btn.textContent;
+    btn.textContent = 'Publicando…';
+    setPublishStatus('Conectando con GitHub…', '');
+
+    try{
+      const apiBase = 'https://api.github.com/repos/' + cfg.owner + '/' + cfg.repo + '/contents/' + cfg.path;
+      const headers = {
+        'Authorization': 'Bearer ' + cfg.token,
+        'Accept': 'application/vnd.github+json'
+      };
+
+      let sha;
+      const getResp = await fetch(apiBase + '?ref=' + encodeURIComponent(cfg.branch), { headers });
+      if(getResp.status === 200){
+        const getData = await getResp.json();
+        sha = getData.sha;
+      } else if(getResp.status !== 404){
+        const errData = await getResp.json().catch(()=>({}));
+        throw new Error('al consultar el archivo (' + getResp.status + '): ' + (errData.message || getResp.statusText));
+      }
+
+      const htmlStr = buildCleanHtmlDocumentString();
+      const content = utf8ToBase64(htmlStr);
+
+      const putResp = await fetch(apiBase, {
+        method: 'PUT',
+        headers: Object.assign({'Content-Type':'application/json'}, headers),
+        body: JSON.stringify({
+          message: 'Actualización de protocolos UO — ' + new Date().toLocaleString('es-ES'),
+          content: content,
+          branch: cfg.branch,
+          sha: sha
+        })
+      });
+
+      if(putResp.status === 200 || putResp.status === 201){
+        setPublishStatus('✓ Publicado. Los cambios estarán visibles en GitHub Pages en 1–2 minutos.', 'ok');
+        setEditMode(false);
+      } else {
+        const errData = await putResp.json().catch(()=>({}));
+        throw new Error('al publicar (' + putResp.status + '): ' + (errData.message || putResp.statusText));
+      }
+    } catch(err){
+      setPublishStatus('No se pudo publicar ' + err.message, 'err');
+    } finally {
+      btn.textContent = originalLabel;
+    }
+  }
+
+  document.getElementById('btnPublish').addEventListener('click', publishToGitHub);
+
+  window.addEventListener('beforeunload', function(e){
+    if(window.__editing){
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+</script>
+
+
+</body></html>
