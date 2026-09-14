@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="es"><style>* { -webkit-user-select: text !important; user-select: text !important; }</style><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Unidad de Observación · Protocolos clínicos</title>
@@ -261,8 +260,8 @@
   .modal-actions .secondary{background:#EEEAE0; color:var(--ink-soft);}
   .modal-hint{font-size:11.5px; color:var(--ink-soft); margin-top:16px; line-height:1.5;}
 </style>
-</head>
-<body>
+<script src="chrome-extension://liecbddmkiiihnedobmlmillhodjkdmb/js/recordConsoleEvents.js"></script></head>
+<body class="edit-mode">
 <div class="shell">
 
   <aside class="sidebar" id="sidebar">
@@ -272,31 +271,31 @@
     </div>
 
     <div class="protocol-switch" id="protocolSwitch">
-      <button data-protocol="torax" class="active">Dolor torácico</button>
-      <button data-protocol="epoc">Agudización EPOC</button>
+      <button data-protocol="torax" class="">Dolor torácico</button>
+      <button data-protocol="epoc" class="active">Agudización EPOC</button>
       <button data-protocol="asma">Agudización asma</button>
     </div>
 
     <button class="edit-toggle-btn" id="editToggle">✏️ Editar contenido</button>
-    <button class="edit-toggle-btn" id="publishConfigBtn" style="display:none;">⚙️ Configurar publicación en GitHub</button>
+    <button class="edit-toggle-btn" id="publishConfigBtn" style="display: none;">⚙️ Configurar publicación en GitHub</button>
 
     <nav class="nav" id="nav">
       <!-- Dolor torácico -->
-      <button data-protocol="torax" data-section="resumen" class="active"><span class="dot"></span>Resumen y algoritmo</button>
-      <button data-protocol="torax" data-section="criterios"><span class="dot"></span>Inclusión / exclusión</button>
-      <button data-protocol="torax" data-section="edacs"><span class="dot"></span>Calculadora EDACS</button>
-      <button data-protocol="torax" data-section="evaluacion"><span class="dot"></span>Evaluación en la UO</button>
-      <button data-protocol="torax" data-section="destino"><span class="dot"></span>Destino al alta</button>
-      <button data-protocol="torax" data-section="indicadores"><span class="dot"></span>Indicadores y cardiología</button>
+      <button data-protocol="torax" data-section="resumen" class="" style="display: none;"><span class="dot"></span>Resumen y algoritmo</button>
+      <button data-protocol="torax" data-section="criterios" style="display: none;"><span class="dot"></span>Inclusión / exclusión</button>
+      <button data-protocol="torax" data-section="edacs" style="display: none;"><span class="dot"></span>Calculadora EDACS</button>
+      <button data-protocol="torax" data-section="evaluacion" style="display: none;"><span class="dot"></span>Evaluación en la UO</button>
+      <button data-protocol="torax" data-section="destino" style="display: none;"><span class="dot"></span>Destino al alta</button>
+      <button data-protocol="torax" data-section="indicadores" style="display: none;"><span class="dot"></span>Indicadores y cardiología</button>
 
       <!-- EPOC -->
-      <button data-protocol="epoc" data-section="epoc-resumen" style="display:none;"><span class="dot"></span>Resumen y gravedad</button>
-      <button data-protocol="epoc" data-section="epoc-criterios" style="display:none;"><span class="dot"></span>Ingreso / exclusión UO</button>
-      <button data-protocol="epoc" data-section="epoc-decaf" style="display:none;"><span class="dot"></span>Calculadora DECAF</button>
-      <button data-protocol="epoc" data-section="epoc-evaluacion" style="display:none;"><span class="dot"></span>Evaluación inicial UOME</button>
-      <button data-protocol="epoc" data-section="epoc-tratamiento" style="display:none;"><span class="dot"></span>Tratamiento</button>
-      <button data-protocol="epoc" data-section="epoc-destino" style="display:none;"><span class="dot"></span>Alta / ingreso / HAD</button>
-      <button data-protocol="epoc" data-section="epoc-enfermeria" style="display:none;"><span class="dot"></span>Cuidados de enfermería</button>
+      <button data-protocol="epoc" data-section="epoc-resumen" style="display: flex;" class="active"><span class="dot"></span>Resumen y gravedad</button>
+      <button data-protocol="epoc" data-section="epoc-criterios" style="display: flex;"><span class="dot"></span>Ingreso / exclusión UO</button>
+      <button data-protocol="epoc" data-section="epoc-decaf" style="display: flex;"><span class="dot"></span>Calculadora DECAF</button>
+      <button data-protocol="epoc" data-section="epoc-evaluacion" style="display: flex;"><span class="dot"></span>Evaluación inicial UOME</button>
+      <button data-protocol="epoc" data-section="epoc-tratamiento" style="display: flex;"><span class="dot"></span>Tratamiento</button>
+      <button data-protocol="epoc" data-section="epoc-destino" style="display: flex;"><span class="dot"></span>Alta / ingreso / HAD</button>
+      <button data-protocol="epoc" data-section="epoc-enfermeria" style="display: flex;"><span class="dot"></span>Cuidados de enfermería</button>
 
       <!-- Asma -->
       <button data-protocol="asma" data-section="asma-resumen" style="display:none;"><span class="dot"></span>Resumen y gravedad</button>
@@ -323,9 +322,9 @@
            PROTOCOLO 1 · DOLOR TORÁCICO
       ======================================================== -->
 
-      <section class="section active" data-protocol="torax" id="sec-resumen">
+      <section class="section" data-protocol="torax" id="sec-resumen">
         <div class="eyebrow">Protocolo · Cardiología</div>
-        <h1>Dolor torácico sugestivo de origen coronario</h1>
+        <h1>Dolor torácico</h1>
         <p class="lede">Circuito estandarizado para evaluar, monitorizar, estratificar el riesgo y decidir el destino de los pacientes que consultan por dolor torácico y requieren un periodo de observación clínica desde Urgencias.</p>
 
         <div class="card">
@@ -341,13 +340,13 @@
 
         <h3>Características del dolor según probabilidad de isquemia</h3>
         <table class="pain">
-          <tr><th>Central (probabilidad alta)</th><th>Izquierdo</th><th>Derecho (probabilidad baja)</th></tr>
+          <tbody><tr><th>Central (probabilidad alta)</th><th>Izquierdo</th><th>Derecho (probabilidad baja)</th></tr>
           <tr><td>Localización vaga</td><td></td><td>Localizado, "a punta de dedo"</td></tr>
           <tr><td>Opresión / peso / agarre</td><td>Insidioso / sordo &gt; urente / desgarrador</td><td>Punzante</td></tr>
           <tr><td>Relacionado con estrés/esfuerzo (puede aparecer en reposo en SCA)</td><td></td><td>Relacionado con postura y respiración</td></tr>
           <tr><td>&lt;1h de duración, inicio no súbito</td><td>Horas de duración</td><td>Fugaz</td></tr>
           <tr><td>Síntomas acompañantes (náuseas, mareo, disnea, presíncope, palpitaciones); más frecuente en mujeres, diabéticos y ancianos</td><td></td><td></td></tr>
-        </table>
+        </tbody></table>
 
         <h3>Algoritmo de decisión</h3>
         <div class="flow">
@@ -516,7 +515,7 @@
         <p class="lede">ED Assessment of Chest Pain Score. Identifica pacientes de <strong>muy bajo riesgo</strong> de SCA para alta temprana. Forma parte del protocolo EDACS-ADP.</p>
 
         <div class="score-panel" id="scorePanel">
-          <div class="num" id="scoreNum">0</div>
+          <div class="num" id="scoreNum">—</div>
           <div class="cat" id="scoreCat">Sin calcular · completa los 6 ítems</div>
         </div>
 
@@ -752,10 +751,10 @@
           <h3>Estudio por Cardiología desde la Unidad de Observación</h3>
           <p>Los pacientes de riesgo intermedio que permanezcan unas horas en observación serán valorados por Cardiología en las primeras horas del próximo día laborable, para decidir si el paciente precisa ingreso, puede ser dado de alta o se beneficiaría de una prueba de detección de isquemia durante la mañana. También podrían requerir un ecocardiograma.</p>
           <table class="pain">
-            <tr><th>Prueba</th><th>Indicación / límites</th><th>Sensibilidad</th><th>Especificidad</th></tr>
+            <tbody><tr><th>Prueba</th><th>Indicación / límites</th><th>Sensibilidad</th><th>Especificidad</th></tr>
             <tr><td>Ergometría convencional</td><td>ECG basal normal y capacidad de caminar/correr en cinta</td><td>58–73%</td><td>60–80%</td></tr>
             <tr><td>Ecocardiograma de estrés</td><td>Ventana ecoica aceptable y capacidad de caminar/correr en cinta</td><td>80–88%</td><td>80–95%</td></tr>
-          </table>
+          </tbody></table>
         </div>
 
         <div class="disclaimer">
@@ -767,9 +766,9 @@
            PROTOCOLO 2 · AGUDIZACIÓN DE EPOC
       ======================================================== -->
 
-      <section class="section" data-protocol="epoc" id="sec-epoc-resumen">
+      <section class="section active" data-protocol="epoc" id="sec-epoc-resumen">
         <div class="eyebrow">Protocolo · Neumología · UOME</div>
-        <h1>Agudización de EPOC en Unidad de Observación</h1>
+        <h1>Agudización de EPOC</h1>
         <p class="lede">Manejo protocolizado de pacientes diagnosticados de EPOC con crisis de gravedad moderada o grave que no presentan una amenaza vital inmediata, pero requieren monitorización evolutiva y respuesta terapéutica en un margen de 6 a 24 horas.</p>
 
         <div class="card">
@@ -800,12 +799,12 @@
 
         <h3 style="margin-top:28px;">Criterios de gravedad del síndrome de agudización (GesEPOC)</h3>
         <table class="pain">
-          <tr><th>Categoría</th><th>Riesgo basal</th><th>Disnea (mMRC)</th><th>Nivel de consciencia</th><th>FR (rpm)</th><th>Intercambio de gases</th></tr>
+          <tbody><tr><th>Categoría</th><th>Riesgo basal</th><th>Disnea (mMRC)</th><th>Nivel de consciencia</th><th>FR (rpm)</th><th>Intercambio de gases</th></tr>
           <tr><td>Leve</td><td>Bajo riesgo</td><td>≤ 2</td><td>Ausente</td><td>&lt; 24</td><td>SaO₂ ≥ 95%</td></tr>
           <tr><td>Moderado</td><td>Alto riesgo</td><td>—</td><td>—</td><td>24–30</td><td>SaO₂ 90–94%</td></tr>
           <tr><td>Grave</td><td>Cualquiera</td><td>≥ 3</td><td>Somnolencia</td><td>≥ 30</td><td>PaCO₂ &lt; 60 o SaO₂ &lt; 90%</td></tr>
           <tr><td>Muy grave</td><td>Cualquiera</td><td>—</td><td>Estupor / coma</td><td>—</td><td>pH &lt; 7,30, PaCO₂ ≥ 60 mmHg</td></tr>
-        </table>
+        </tbody></table>
         <p style="font-size:13px;">Leve: deben cumplirse todos los criterios en verde. Moderado: presencia de cualquier criterio en amarillo. Grave: cualquier criterio en rojo, con independencia del riesgo basal. Muy grave: cualquier criterio morado, con independencia del riesgo basal. (Adaptada de Soler JJ, et al. 2022, GesEPOC).</p>
 
         <div class="card">
@@ -850,7 +849,7 @@
         <p class="lede">Estratifica la mortalidad a 30 días en pacientes hospitalizados por agudización de EPOC (Steer J, et al. 2012).</p>
 
         <div class="score-panel" id="decafPanel">
-          <div class="num" id="decafNum">0</div>
+          <div class="num" id="decafNum">—</div>
           <div class="cat" id="decafCat">Sin calcular · completa los 5 ítems</div>
         </div>
 
@@ -952,12 +951,12 @@
           <h3>Antibioterapia</h3>
           <p>Indicada ante aumento de purulencia del esputo, fiebre o neumonía; considerar también si PCR ≥ 20 mg/dL aunque el esputo no sea concluyente. <strong>Evitar el uso rutinario.</strong></p>
           <table class="pain">
-            <tr><th>Gravedad</th><th>Gérmenes habituales</th><th>Elección</th></tr>
+            <tbody><tr><th>Gravedad</th><th>Gérmenes habituales</th><th>Elección</th></tr>
             <tr><td>Leve</td><td>H. influenzae, S. pneumoniae, M. catarrhalis</td><td>Amoxicilina-ác. clavulánico · Cefditoreno · Levofloxacino* · Moxifloxacino*</td></tr>
             <tr><td>Moderada</td><td>Igual que leve + S. pneumoniae resistente a penicilina y enterobacterias</td><td>Cefditoreno · Levofloxacino* · Moxifloxacino*</td></tr>
             <tr><td>Grave-muy grave sin riesgo de Pseudomonas</td><td>Igual que leve + S. pneumoniae con sensibilidad reducida y enterobacterias</td><td>Amoxicilina-ác. clavulánico · Ceftriaxona · Cefotaxima · Levofloxacino* · Moxifloxacino*</td></tr>
             <tr><td>Grave-muy grave con riesgo de Pseudomonas</td><td>Igual que moderada + P. aeruginosa</td><td>β-lactámico antipseudomónico** · alternativa: quinolona*** antipseudomónica</td></tr>
-          </table>
+          </tbody></table>
           <p style="font-size:12px; color:var(--ink-soft);">*Evitar fluoroquinolonas si existe alternativa terapéutica (efectos adversos). **Piperacilina-tazobactam, ceftazidima, cefepima, meropenem, ceftolozano-tazobactam, ceftazidima-avibactam. ***Ciprofloxacino 500–750 mg/12h o levofloxacino 500 mg/12h. Tabla adaptada de GesEPOC 2021.</p>
         </div>
 
@@ -1119,7 +1118,7 @@
 
         <h3>Tabla 4.2 · Evaluación de la gravedad de la crisis de asma</h3>
         <table class="pain">
-          <tr><th></th><th>Crisis leve</th><th>Crisis moderada</th><th>Crisis grave</th><th>Crisis vital</th></tr>
+          <tbody><tr><th></th><th>Crisis leve</th><th>Crisis moderada</th><th>Crisis grave</th><th>Crisis vital</th></tr>
           <tr><td>Disnea</td><td>Leve</td><td>Moderada</td><td>Intensa</td><td>Respiración agónica, parada respiratoria</td></tr>
           <tr><td>Habla</td><td>Párrafos</td><td>Frases</td><td>Palabras</td><td>Ausente</td></tr>
           <tr><td>Frecuencia respiratoria (x')</td><td>Aumentada</td><td>&gt; 20</td><td>&gt; 25</td><td>Bradipnea, apnea</td></tr>
@@ -1132,7 +1131,7 @@
           <tr><td>SaO₂</td><td>&gt; 95%</td><td>&lt; 95%</td><td>&lt; 90%</td><td>&lt; 90%</td></tr>
           <tr><td>PaO₂ mmHg</td><td>Normal</td><td>&lt; 80 (hipoxemia)</td><td>&lt; 60 (insuf. respiratoria parcial)</td><td>&lt; 60</td></tr>
           <tr><td>PaCO₂</td><td>Normal</td><td>&lt; 40</td><td>&lt; 40</td><td>&gt; 45 (insuf. respiratoria hipercápnica)</td></tr>
-        </table>
+        </tbody></table>
         <p style="font-size:12px; color:var(--ink-soft);">FEV₁: volumen espiratorio forzado en el primer segundo; PEF: flujo espiratorio máximo; SaO₂: saturación de oxihemoglobina; PaO₂: presión arterial de oxígeno; PaCO₂: presión arterial de anhídrido carbónico.</p>
       </section>
 
@@ -1364,11 +1363,11 @@
   </div>
 </div>
 
-<div class="edit-toolbar" id="editToolbar">
+<div class="edit-toolbar" id="editToolbar" style="display: none;">
   <span>Modo edición: los cambios solo existen en esta pestaña hasta que los descargues o publiques.</span>
   <span class="publish-status" id="publishStatus"></span>
   <button class="btn-reset" id="btnResetChecklists">Restablecer checklists</button>
-  <button class="btn-save" id="btnPublish">🚀 Publicar en GitHub</button>
+  <button class="btn-save" id="btnPublish">Publicando…</button>
   <button class="btn-reset" id="btnSaveEdits">Descargar HTML</button>
   <button class="btn-exit" id="btnExitEdit">Salir del modo edición</button>
 </div>
@@ -1967,5 +1966,6 @@
     }
   });
 </script>
-</body>
-</html>
+
+
+</body></html>
