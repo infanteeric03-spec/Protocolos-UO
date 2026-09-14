@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es"><style>* { -webkit-user-select: text !important; user-select: text !important; }</style><head>
+<html lang="es"><style>* { -webkit-user-select: text !important; user-select: text !important; }</style><head><style>* { -webkit-user-select: text !important; user-select: text !important; }</style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Unidad de Observación · Protocolos clínicos</title>
@@ -290,17 +290,17 @@
   .modal-actions .secondary{background:#EEEAE0; color:var(--ink-soft);}
   .modal-hint{font-size:11.5px; color:var(--ink-soft); margin-top:16px; line-height:1.5;}
 </style>
-<script src="chrome-extension://liecbddmkiiihnedobmlmillhodjkdmb/js/recordConsoleEvents.js"></script></head>
-<body>
+<script src="chrome-extension://liecbddmkiiihnedobmlmillhodjkdmb/js/recordConsoleEvents.js"></script><script src="chrome-extension://liecbddmkiiihnedobmlmillhodjkdmb/js/recordConsoleEvents.js"></script></head>
+<body class="">
 
-<div class="welcome-screen" id="welcomeScreen">
+<div class="welcome-screen" id="welcomeScreen" style="display: none;">
   <div class="welcome-card">
     <div class="kicker">Servicio de Urgencias</div>
     <h1>Protocolos de la Unidad de Observación</h1>
     <p class="lede">Herramienta de apoyo clínico. Selecciona el protocolo que quieres consultar para empezar.</p>
     <div class="welcome-select-wrap">
       <select id="welcomeProtocolSelect" class="welcome-select">
-        <option value="" disabled selected>Elige un protocolo…</option>
+        <option value="" disabled="" selected="">Elige un protocolo…</option>
         <option value="torax">Dolor torácico</option>
         <option value="epoc">Agudización EPOC</option>
         <option value="asma">Agudización asma</option>
@@ -310,7 +310,7 @@
   </div>
 </div>
 
-<div class="shell" id="shell" style="display:none;">
+<div class="shell" id="shell" style="display: flex;">
 
   <aside class="sidebar" id="sidebar">
     <div class="brand">
@@ -321,7 +321,7 @@
     <div class="protocol-switch" id="protocolSwitch">
       <select id="protocolSelect">
         <option value="torax">Dolor torácico</option>
-        <option value="epoc" selected>Agudización EPOC</option>
+        <option value="epoc" selected="">Agudización EPOC</option>
         <option value="asma">Agudización asma</option>
       </select>
     </div>
@@ -341,9 +341,9 @@
 
       <!-- EPOC -->
       <button data-protocol="epoc" data-section="epoc-resumen" style="display: flex;" class="active"><span class="dot"></span>Resumen y gravedad</button>
-      <button data-protocol="epoc" data-section="epoc-criterios" style="display: flex;"><span class="dot"></span>Ingreso / exclusión UO</button>
-      <button data-protocol="epoc" data-section="epoc-decaf" style="display: flex;"><span class="dot"></span>Calculadora DECAF</button>
-      <button data-protocol="epoc" data-section="epoc-evaluacion" style="display: flex;"><span class="dot"></span>Evaluación inicial UOME</button>
+      <button data-protocol="epoc" data-section="epoc-criterios" style="display: flex;" class=""><span class="dot"></span>Ingreso / exclusión UO</button>
+      <button data-protocol="epoc" data-section="epoc-decaf" style="display: flex;" class=""><span class="dot"></span>Calculadora DECAF</button>
+      <button data-protocol="epoc" data-section="epoc-evaluacion" style="display: flex;" class=""><span class="dot"></span>Evaluación inicial UOME</button>
       <button data-protocol="epoc" data-section="epoc-tratamiento" style="display: flex;"><span class="dot"></span>Tratamiento</button>
       <button data-protocol="epoc" data-section="epoc-destino" style="display: flex;"><span class="dot"></span>Alta / ingreso / HAD</button>
       <button data-protocol="epoc" data-section="epoc-enfermeria" style="display: flex;"><span class="dot"></span>Cuidados de enfermería</button>
@@ -820,7 +820,7 @@
       <section class="section active" data-protocol="epoc" id="sec-epoc-resumen">
         <div class="eyebrow">Protocolo · Neumología · UOME</div>
         <h1>Agudización de EPOC</h1>
-        <p class="lede">Manejo protocolizado de pacientes diagnosticados de EPOC con crisis de gravedad moderada o grave que no presentan una amenaza vital inmediata, pero requieren monitorización evolutiva y respuesta terapéutica en un margen de 6 a 24 horas.</p>
+        <p class="lede">Manejo protocolizado de pacientes diagnosticados de EPOC con crisis de gravedad moderada o grave que no presentan una amenaza vital inmediata, pero requieren monitorización evolutiva y respuesta terapéutica en un margen de 6 a 24 horas. Prueba.</p>
 
         <div class="card">
           <h3>Definición de agudización</h3>
@@ -875,11 +875,11 @@
         <div class="card">
           <span class="group-title include">Criterios de ingreso en UO</span>
           <ul class="checklist" data-group="epoc-inc">
-            <li><input type="checkbox" id="pi1"><label for="pi1">Insuficiencia respiratoria aguda: hipoxemia moderada (PaO₂ &lt; 60 mmHg o SpO₂ 85–89%), corregible con oxigenoterapia convencional de bajo flujo (gafas nasales, Venturi)</label></li>
-            <li><input type="checkbox" id="pi2"><label for="pi2">Hipercapnia leve sin acidosis: PaCO₂ &gt; 45 mmHg con pH compensado (&gt; 7,35)</label></li>
-            <li><input type="checkbox" id="pi3"><label for="pi3">Respuesta parcial inicial tras los primeros ciclos de broncodilatadores nebulizados, sin recuperar aún la situación basal</label></li>
-            <li><input type="checkbox" id="pi4"><label for="pi4">Comorbilidades descompensadas leves: ICC periférica, cardiopatía isquémica estable o arritmias crónicas controladas farmacológicamente</label></li>
-            <li><input type="checkbox" id="pi5"><label for="pi5">Criterio socio-familiar: limitaciones físicas/cognitivas para el tratamiento domiciliario o ausencia de red de apoyo</label></li>
+            <li class=""><input type="checkbox" id="pi1"><label for="pi1">Insuficiencia respiratoria aguda: hipoxemia moderada (PaO₂ &lt; 60 mmHg o SpO₂ 85–89%), corregible con oxigenoterapia convencional de bajo flujo (gafas nasales, Venturi)</label></li>
+            <li class=""><input type="checkbox" id="pi2"><label for="pi2">Hipercapnia leve sin acidosis: PaCO₂ &gt; 45 mmHg con pH compensado (&gt; 7,35)</label></li>
+            <li class=""><input type="checkbox" id="pi3"><label for="pi3">Respuesta parcial inicial tras los primeros ciclos de broncodilatadores nebulizados, sin recuperar aún la situación basal</label></li>
+            <li class=""><input type="checkbox" id="pi4"><label for="pi4">Comorbilidades descompensadas leves: ICC periférica, cardiopatía isquémica estable o arritmias crónicas controladas farmacológicamente</label></li>
+            <li class=""><input type="checkbox" id="pi5"><label for="pi5">Criterio socio-familiar: limitaciones físicas/cognitivas para el tratamiento domiciliario o ausencia de red de apoyo</label></li>
           </ul>
         </div>
 
@@ -909,14 +909,14 @@
             <div class="q">Disnea (eMRCD)</div>
             <div class="opts" data-field="decaf-disnea">
               <label data-val="0">&lt; eMRCD 5a <span class="pill">+0</span></label>
-              <label data-val="1">eMRCD 5a — capaz de lavarse/vestirse solo <span class="pill">+1</span></label>
+              <label data-val="1" class="">eMRCD 5a — capaz de lavarse/vestirse solo <span class="pill">+1</span></label>
               <label data-val="2">eMRCD 5b — necesita ayuda para lavarse/vestirse <span class="pill">+2</span></label>
             </div>
           </div>
           <div class="edacs-item">
             <div class="q">Eosinopenia (&lt; 0,05 × 10⁹/l)</div>
             <div class="opts" data-field="decaf-eos">
-              <label data-val="0">No <span class="pill">+0</span></label>
+              <label data-val="0" class="">No <span class="pill">+0</span></label>
               <label data-val="1">Sí <span class="pill">+1</span></label>
             </div>
           </div>
@@ -924,20 +924,20 @@
             <div class="q">Consolidación radiológica</div>
             <div class="opts" data-field="decaf-cons">
               <label data-val="0">No <span class="pill">+0</span></label>
-              <label data-val="1">Sí <span class="pill">+1</span></label>
+              <label data-val="1" class="">Sí <span class="pill">+1</span></label>
             </div>
           </div>
           <div class="edacs-item">
             <div class="q">Acidemia (pH &lt; 7,30)</div>
             <div class="opts" data-field="decaf-acid">
               <label data-val="0">No <span class="pill">+0</span></label>
-              <label data-val="1">Sí <span class="pill">+1</span></label>
+              <label data-val="1" class="">Sí <span class="pill">+1</span></label>
             </div>
           </div>
           <div class="edacs-item">
             <div class="q">Fibrilación auricular</div>
             <div class="opts" data-field="decaf-fa">
-              <label data-val="0">No <span class="pill">+0</span></label>
+              <label data-val="0" class="">No <span class="pill">+0</span></label>
               <label data-val="1">Sí <span class="pill">+1</span></label>
             </div>
           </div>
@@ -1418,7 +1418,7 @@
   <span>Modo edición: los cambios solo existen en esta pestaña hasta que los descargues o publiques.</span>
   <span class="publish-status" id="publishStatus"></span>
   <button class="btn-reset" id="btnResetChecklists">Restablecer checklists</button>
-  <button class="btn-save" id="btnPublish">🚀 Publicar en GitHub</button>
+  <button class="btn-save" id="btnPublish">Publicando…</button>
   <button class="btn-reset" id="btnSaveEdits">Descargar HTML</button>
   <button class="btn-exit" id="btnExitEdit">Salir del modo edición</button>
 </div>
@@ -2042,6 +2042,7 @@
     }
   });
 </script>
+
 
 
 </body></html>
