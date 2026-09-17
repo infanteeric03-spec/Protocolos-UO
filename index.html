@@ -438,15 +438,15 @@
   .reorder-handle:active{cursor:grabbing;}
 </style>
 </head>
-<body>
+<body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e">
 
-<div class="welcome-screen" id="welcomeScreen">
+<div class="welcome-screen" id="welcomeScreen" style="display: flex;">
   <div class="welcome-card">
     <div class="kicker">Servicio de Urgencias</div>
     <h1>Unidad de Observación<span class="brand-subtitle">Protocolos</span></h1>
     <div class="welcome-select-wrap">
       <select id="welcomeProtocolSelect" class="welcome-select">
-        <option value="" disabled selected>Seleccionar protocolo</option>
+        <option value="" disabled="" selected="">Seleccionar protocolo</option>
         <option value="torax">Dolor torácico</option>
         <option value="epoc">Agudización EPOC</option>
         <option value="asma">Agudización asma</option>
@@ -459,7 +459,7 @@
   </div>
 </div>
 
-<div class="shell" id="shell" style="display:none;">
+<div class="shell" id="shell" style="display: none;">
 
   <aside class="sidebar" id="sidebar">
     <div class="brand" id="brandHome" role="button" tabindex="0" title="Ir a la pantalla de inicio">
@@ -469,7 +469,7 @@
 
     <div class="protocol-switch" id="protocolSwitch">
       <select id="protocolSelect">
-        <option value="torax" selected>Dolor torácico</option>
+        <option value="torax" selected="">Dolor torácico</option>
         <option value="epoc">Agudización EPOC</option>
         <option value="asma">Agudización asma</option>
         <option value="fa">Fibrilación auricular / Flutter</option>
@@ -583,14 +583,14 @@
         </div>
 
         <h3>Características del dolor según probabilidad de isquemia</h3>
-        <table class="pain">
+        <div class="table-wrap"><table class="pain">
           <tbody><tr><th>Central (probabilidad alta)</th><th>Izquierdo</th><th>Derecho (probabilidad baja)</th></tr>
           <tr><td>Localización vaga</td><td></td><td>Localizado, "a punta de dedo"</td></tr>
           <tr><td>Opresión / peso / agarre</td><td>Insidioso / sordo &gt; urente / desgarrador</td><td>Punzante</td></tr>
           <tr><td>Relacionado con estrés/esfuerzo (puede aparecer en reposo en SCA)</td><td></td><td>Relacionado con postura y respiración</td></tr>
           <tr><td>&lt;1h de duración, inicio no súbito</td><td>Horas de duración</td><td>Fugaz</td></tr>
           <tr><td>Síntomas acompañantes (náuseas, mareo, disnea, presíncope, palpitaciones); más frecuente en mujeres, diabéticos y ancianos</td><td></td><td></td></tr>
-        </tbody></table>
+        </tbody></table><span class="table-tap-hint">🔍 Toca para ampliar</span></div>
 
         <h3>Algoritmo de decisión</h3>
         <div class="flow">
@@ -655,7 +655,7 @@
 
         <div class="card">
           <span class="group-title include">Inclusión · A · Estabilidad clínica</span>
-          <ul class="checklist" data-group="inc-a">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="inc-a">
             <li><input type="checkbox" id="ia1"><label for="ia1">TA sistólica ≥ 90 mmHg sin soporte vasoactivo</label></li>
             <li><input type="checkbox" id="ia2"><label for="ia2">FC 50–110 lpm</label></li>
             <li><input type="checkbox" id="ia3"><label for="ia3">Saturación ≥ 92% (o basal conocida)</label></li>
@@ -676,7 +676,7 @@
 
         <div class="card">
           <span class="group-title include">Inclusión · C · Situaciones clínicas frecuentes admitidas</span>
-          <ul class="checklist" data-group="inc-c">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="inc-c">
             <li><input type="checkbox" id="ic1"><label for="ic1">Dolor torácico sugestivo pero no diagnóstico de SCA</label></li>
             <li><input type="checkbox" id="ic2"><label for="ic2">Dos troponinas iniciales negativas con necesidad de seriación</label></li>
             <li><input type="checkbox" id="ic3"><label for="ic3">ECG no diagnóstico</label></li>
@@ -824,7 +824,7 @@
 
         <div class="card">
           <h3>Protocolo EDACS-ADP: los 3 criterios de alta temprana</h3>
-          <ul class="checklist" data-group="adp">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="adp">
             <li><input type="checkbox" id="adp1"><label for="adp1">EDACS &lt; 16</label></li>
             <li><input type="checkbox" id="adp2"><label for="adp2">ECG sin isquemia</label></li>
             <li><input type="checkbox" id="adp3"><label for="adp3">Troponina 0h y 2h ambas negativas</label></li>
@@ -840,7 +840,7 @@
         <div class="card">
           <h3>Evaluación inicial <span class="pill">primera hora</span></h3>
           <span class="group-title">Revaloración clínica</span>
-          <ul class="checklist" data-group="ev1">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="ev1">
             <li><input type="checkbox" id="v1"><label for="v1">Características del dolor (OPQRST)</label></li>
             <li><input type="checkbox" id="v2"><label for="v2">Factores desencadenantes</label></li>
             <li><input type="checkbox" id="v3"><label for="v3">Equivalentes anginosos</label></li>
@@ -849,7 +849,7 @@
             <li><input type="checkbox" id="v6"><label for="v6">Medicación habitual</label></li>
           </ul>
           <span class="group-title" style="margin-top:14px;">Exploración física dirigida</span>
-          <ul class="checklist" data-group="ev2">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="ev2">
             <li><input type="checkbox" id="v7"><label for="v7">Constantes completas</label></li>
             <li><input type="checkbox" id="v8"><label for="v8">Auscultación cardiopulmonar</label></li>
             <li><input type="checkbox" id="v9"><label for="v9">Pulsos periféricos</label></li>
@@ -857,7 +857,7 @@
             <li><input type="checkbox" id="v11"><label for="v11">Exploración vascular</label></li>
           </ul>
           <span class="group-title" style="margin-top:14px;">Monitorización</span>
-          <ul class="checklist" data-group="ev3">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="ev3">
             <li><input type="checkbox" id="v12"><label for="v12">ECG continuo (si sospecha cardiológica)</label></li>
             <li><input type="checkbox" id="v13"><label for="v13">SatO₂</label></li>
             <li><input type="checkbox" id="v14"><label for="v14">TA seriada</label></li>
@@ -897,7 +897,7 @@
 
         <div class="card">
           <h3>Control evolutivo <span class="pill">cada 2–4 horas</span></h3>
-          <ul class="checklist" data-group="ev4">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="ev4">
             <li><input type="checkbox" id="c1"><label for="c1">Persistencia o recurrencia del dolor</label></li>
             <li><input type="checkbox" id="c2"><label for="c2">Constantes</label></li>
             <li><input type="checkbox" id="c3"><label for="c3">ECG si hay cambios clínicos</label></li>
@@ -935,7 +935,7 @@
         <div class="card">
           <span class="group-title include">Alta domiciliaria</span>
           <p style="margin-top:10px;">Requiere <strong>todos</strong> los siguientes:</p>
-          <ul class="checklist" data-group="alta">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="alta">
             <li><input type="checkbox" id="al1"><label for="al1">Asintomático ≥ 4–6 horas</label></li>
             <li><input type="checkbox" id="al2"><label for="al2">Estabilidad hemodinámica</label></li>
             <li><input type="checkbox" id="al3"><label for="al3">ECG sin cambios dinámicos</label></li>
@@ -995,11 +995,11 @@
         <div class="card">
           <h3>Estudio por Cardiología desde la Unidad de Observación</h3>
           <p>Los pacientes de riesgo intermedio que permanezcan unas horas en observación serán valorados por Cardiología en las primeras horas del próximo día laborable, para decidir si el paciente precisa ingreso, puede ser dado de alta o se beneficiaría de una prueba de detección de isquemia durante la mañana. También podrían requerir un ecocardiograma.</p>
-          <table class="pain">
+          <div class="table-wrap"><table class="pain">
             <tbody><tr><th>Prueba</th><th>Indicación / límites</th><th>Sensibilidad</th><th>Especificidad</th></tr>
             <tr><td>Ergometría convencional</td><td>ECG basal normal y capacidad de caminar/correr en cinta</td><td>58–73%</td><td>60–80%</td></tr>
             <tr><td>Ecocardiograma de estrés</td><td>Ventana ecoica aceptable y capacidad de caminar/correr en cinta</td><td>80–88%</td><td>80–95%</td></tr>
-          </tbody></table>
+          </tbody></table><span class="table-tap-hint">🔍 Toca para ampliar</span></div>
         </div>
 
         <div class="disclaimer">
@@ -1043,7 +1043,7 @@
         </div>
 
         <h3 style="margin-top:28px;">Criterios de gravedad del síndrome de agudización (GesEPOC)</h3>
-        <table class="pain">
+        <div class="table-wrap"><table class="pain">
           <tbody><tr><th>Categoría</th><th>Riesgo basal</th><th>Disnea (mMRC)</th><th>Nivel de consciencia</th><th>FR (rpm)</th><th>Intercambio de gases</th></tr>
           <tr>
             <td class="sev-label leve">Leve</td>
@@ -1077,7 +1077,7 @@
             <td class="sev-cell muygrave">—</td>
             <td class="sev-cell muygrave">pH &lt; 7,30, PaCO₂ ≥ 60 mmHg</td>
           </tr>
-        </tbody></table>
+        </tbody></table><span class="table-tap-hint">🔍 Toca para ampliar</span></div>
         <p style="font-size:13px;">Leve: deben cumplirse todos los criterios en <strong style="color:var(--low);">verde</strong>. Moderado: presencia de cualquier criterio en <strong style="color:var(--mid);">amarillo</strong>. Grave: cualquier criterio en <strong style="color:var(--high);">rojo</strong>, con independencia del riesgo basal. Muy grave: cualquier criterio en <strong style="color:var(--vhigh);">morado</strong>, con independencia del riesgo basal. (Adaptada de Soler JJ, et al. 2022, GesEPOC).</p>
 
         <div class="card">
@@ -1174,7 +1174,7 @@
 
         <div class="card">
           <span class="group-title">Estudios en la evaluación inicial</span>
-          <ul class="checklist" data-group="epoc-ev">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="epoc-ev">
             <li><input type="checkbox" id="pv1"><label for="pv1">Analítica básica: hemograma, bioquímica</label></li>
             <li><input type="checkbox" id="pv2"><label for="pv2">Estudio de virus respiratorios: influenza, VRS y SARS-CoV-2</label></li>
             <li><input type="checkbox" id="pv3"><label for="pv3">Valoración del intercambio gaseoso: pulsioximetría; gasometría arterial si sospecha de acidosis, hipercapnia o flujos altos de O₂</label></li>
@@ -1223,13 +1223,13 @@
         <div class="card">
           <h3>Antibioterapia</h3>
           <p>Indicada ante aumento de purulencia del esputo, fiebre o neumonía; considerar también si PCR ≥ 20 mg/dL aunque el esputo no sea concluyente. <strong>Evitar el uso rutinario.</strong></p>
-          <table class="pain">
+          <div class="table-wrap"><table class="pain">
             <tbody><tr><th>Gravedad</th><th>Gérmenes habituales</th><th>Elección</th></tr>
             <tr><td>Leve</td><td>H. influenzae, S. pneumoniae, M. catarrhalis</td><td>Amoxicilina-ác. clavulánico · Cefditoreno · Levofloxacino* · Moxifloxacino*</td></tr>
             <tr><td>Moderada</td><td>Igual que leve + S. pneumoniae resistente a penicilina y enterobacterias</td><td>Cefditoreno · Levofloxacino* · Moxifloxacino*</td></tr>
             <tr><td>Grave-muy grave sin riesgo de Pseudomonas</td><td>Igual que leve + S. pneumoniae con sensibilidad reducida y enterobacterias</td><td>Amoxicilina-ác. clavulánico · Ceftriaxona · Cefotaxima · Levofloxacino* · Moxifloxacino*</td></tr>
             <tr><td>Grave-muy grave con riesgo de Pseudomonas</td><td>Igual que moderada + P. aeruginosa</td><td>β-lactámico antipseudomónico** · alternativa: quinolona*** antipseudomónica</td></tr>
-          </tbody></table>
+          </tbody></table><span class="table-tap-hint">🔍 Toca para ampliar</span></div>
           <p style="font-size:12px; color:var(--ink-soft);">*Evitar fluoroquinolonas si existe alternativa terapéutica (efectos adversos). **Piperacilina-tazobactam, ceftazidima, cefepima, meropenem, ceftolozano-tazobactam, ceftazidima-avibactam. ***Ciprofloxacino 500–750 mg/12h o levofloxacino 500 mg/12h. Tabla adaptada de GesEPOC 2021.</p>
         </div>
 
@@ -1248,7 +1248,7 @@
 
         <div class="card">
           <span class="group-title include">Criterios de alta</span>
-          <ul class="checklist" data-group="epoc-alta">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="epoc-alta">
             <li><input type="checkbox" id="pa1"><label for="pa1">Estabilidad clínica (y gasométrica si fue precisa) durante 12–24 h</label></li>
             <li><input type="checkbox" id="pa2"><label for="pa2">No requiere broncodilatadores con frecuencia inferior a 4 h</label></li>
             <li><input type="checkbox" id="pa3"><label for="pa3">Capaz de comer y dormir como en su situación basal</label></li>
@@ -1278,7 +1278,7 @@
           <div class="grid2">
             <div>
               <strong>Criterios logísticos y sociofamiliares — todos</strong>
-              <ul class="checklist" data-group="epoc-had-log">
+              <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="epoc-had-log">
                 <li><input type="checkbox" id="ehl1"><label for="ehl1">Consentimiento voluntario del paciente y cuidador</label></li>
                 <li><input type="checkbox" id="ehl2"><label for="ehl2">Cuidador principal responsable si hay dependencia</label></li>
                 <li><input type="checkbox" id="ehl3"><label for="ehl3">Teléfono operativo en el domicilio</label></li>
@@ -1392,7 +1392,7 @@
         <p class="lede">Manejo protocolizado de pacientes con agudización asmática leve/moderada, subsidiarios de observación clínica por presentar una respuesta parcial o incompleta al tratamiento inicialmente pautado, evitando un ingreso convencional y garantizando la seguridad y el seguimiento durante su estancia y al alta.</p>
 
         <h3>Tabla 4.2 · Evaluación de la gravedad de la crisis de asma</h3>
-        <table class="pain">
+        <div class="table-wrap"><table class="pain">
           <tbody><tr><th></th><th>Crisis leve</th><th>Crisis moderada</th><th>Crisis grave</th><th>Crisis vital</th></tr>
           <tr><td>Disnea</td><td>Leve</td><td>Moderada</td><td>Intensa</td><td>Respiración agónica, parada respiratoria</td></tr>
           <tr><td>Habla</td><td>Párrafos</td><td>Frases</td><td>Palabras</td><td>Ausente</td></tr>
@@ -1406,7 +1406,7 @@
           <tr><td>SaO₂</td><td>&gt; 95%</td><td>&lt; 95%</td><td>&lt; 90%</td><td>&lt; 90%</td></tr>
           <tr><td>PaO₂ mmHg</td><td>Normal</td><td>&lt; 80 (hipoxemia)</td><td>&lt; 60 (insuf. respiratoria parcial)</td><td>&lt; 60</td></tr>
           <tr><td>PaCO₂</td><td>Normal</td><td>&lt; 40</td><td>&lt; 40</td><td>&gt; 45 (insuf. respiratoria hipercápnica)</td></tr>
-        </tbody></table>
+        </tbody></table><span class="table-tap-hint">🔍 Toca para ampliar</span></div>
         <p style="font-size:12px; color:var(--ink-soft);">FEV₁: volumen espiratorio forzado en el primer segundo; PEF: flujo espiratorio máximo; SaO₂: saturación de oxihemoglobina; PaO₂: presión arterial de oxígeno; PaCO₂: presión arterial de anhídrido carbónico.</p>
       </section>
 
@@ -1483,7 +1483,7 @@
 
         <div class="card">
           <span class="group-title">Estudios en la evaluación inicial</span>
-          <ul class="checklist" data-group="asma-ev">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="asma-ev">
             <li><input type="checkbox" id="sav1"><label for="sav1">Constantes al ingreso: TA, FC, SatO₂, FR, Tª</label></li>
             <li><input type="checkbox" id="sav2"><label for="sav2">Espirometría al ingreso: FEV1 inicial o PEF mediante medidor de Peak-flow</label></li>
             <li><input type="checkbox" id="sav3"><label for="sav3">Analítica básica: hemograma, bioquímica (función renal, iones, glucosa)</label></li>
@@ -1526,7 +1526,7 @@
         <div class="grid2">
           <div class="card">
             <span class="group-title include">Criterios de buena evolución</span>
-            <ul class="checklist" data-group="asma-evol-good">
+            <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="asma-evol-good">
               <li><input type="checkbox" id="sbe1"><label for="sbe1">FEV1 o PEF &gt; 60%, estable</label></li>
               <li><input type="checkbox" id="sbe2"><label for="sbe2">Asintomático o mínima sintomatología</label></li>
               <li><input type="checkbox" id="sbe3"><label for="sbe3">SatO₂ &gt; 95% respirando aire ambiente</label></li>
@@ -1701,7 +1701,7 @@
         <div class="grid2">
           <div class="card">
             <h3>Historia clínica</h3>
-            <ul class="checklist" data-group="fa-val-historia">
+            <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="fa-val-historia">
               <li><input type="checkbox" id="fvh1"><label for="fvh1">Tiempo de evolución</label></li>
               <li><input type="checkbox" id="fvh2"><label for="fvh2">Síntomas</label></li>
               <li><input type="checkbox" id="fvh3"><label for="fvh3">Episodios previos</label></li>
@@ -1712,7 +1712,7 @@
           </div>
           <div class="card">
             <h3>Exploración</h3>
-            <ul class="checklist" data-group="fa-val-exploracion">
+            <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="fa-val-exploracion">
               <li><input type="checkbox" id="fve1"><label for="fve1">FC</label></li>
               <li><input type="checkbox" id="fve2"><label for="fve2">TA</label></li>
               <li><input type="checkbox" id="fve3"><label for="fve3">Saturación O₂</label></li>
@@ -1725,14 +1725,14 @@
         <div class="grid2">
           <div class="card">
             <h3>ECG</h3>
-            <ul class="checklist" data-group="fa-val-ecg">
+            <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="fa-val-ecg">
               <li><input type="checkbox" id="fvecg1"><label for="fvecg1">ECG de 12 derivaciones al ingreso</label></li>
               <li><input type="checkbox" id="fvecg2"><label for="fvecg2">ECG de control según evolución</label></li>
             </ul>
           </div>
           <div class="card">
             <h3>Analítica</h3>
-            <ul class="checklist" data-group="fa-val-analitica">
+            <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="fa-val-analitica">
               <li><input type="checkbox" id="fvan1"><label for="fvan1">Hemograma</label></li>
               <li><input type="checkbox" id="fvan2"><label for="fvan2">Bioquímica</label></li>
               <li><input type="checkbox" id="fvan3"><label for="fvan3">Función renal</label></li>
@@ -1756,13 +1756,13 @@
         <h1>Calculadora CHA₂DS₂-VA</h1>
         <p class="lede">Estima el riesgo tromboembólico y orienta la indicación de anticoagulación (ESC 2024). Marca los factores que presenta el paciente.</p>
 
-        <div class="score-panel" id="chadsvaPanel">
+        <div class="score-panel low" id="chadsvaPanel">
           <div class="num" id="chadsvaNum">0</div>
-          <div class="cat" id="chadsvaCat">Marca los factores de riesgo del paciente</div>
+          <div class="cat" id="chadsvaCat">Riesgo tromboembólico bajo.</div>
         </div>
 
         <div class="card">
-          <ul class="checklist" data-group="chadsva-score">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="chadsva-score">
             <li><input type="checkbox" id="cv-ic" data-weight="1"><label for="cv-ic">Insuficiencia cardíaca <span class="pill">+1</span></label></li>
             <li><input type="checkbox" id="cv-htn" data-weight="1"><label for="cv-htn">Hipertensión <span class="pill">+1</span></label></li>
             <li><input type="checkbox" id="cv-dm" data-weight="1"><label for="cv-dm">Diabetes <span class="pill">+1</span></label></li>
@@ -1780,7 +1780,7 @@
           </div>
         </div>
 
-        <div class="status-banner status-neutral" id="chadsva-interpret">CHA₂DS₂-VA = 0: no anticoagulación · = 1: considerar anticoagulación · ≥ 2: anticoagulación recomendada.</div>
+        <div class="status-banner status-low" id="chadsva-interpret">CHA₂DS₂-VA = 0 → no anticoagulación.</div>
       </section>
 
       <section class="section" data-protocol="fa" id="sec-fa-hasbled">
@@ -1788,13 +1788,13 @@
         <h1>Calculadora HAS-BLED</h1>
         <p class="lede">Estima el riesgo hemorrágico de la anticoagulación. Un HAS-BLED elevado no contraindica la anticoagulación: obliga a corregir factores modificables y a un seguimiento estrecho.</p>
 
-        <div class="score-panel" id="hasbledPanel">
+        <div class="score-panel low" id="hasbledPanel">
           <div class="num" id="hasbledNum">0</div>
-          <div class="cat" id="hasbledCat">Marca los factores de riesgo del paciente</div>
+          <div class="cat" id="hasbledCat">Riesgo hemorrágico bajo.</div>
         </div>
 
         <div class="card">
-          <ul class="checklist" data-group="hasbled-score">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="hasbled-score">
             <li><input type="checkbox" id="hb-hta" data-weight="1"><label for="hb-hta">HTA <span class="pill">+1</span></label></li>
             <li><input type="checkbox" id="hb-ictus" data-weight="1"><label for="hb-ictus">Ictus previo <span class="pill">+1</span></label></li>
             <li><input type="checkbox" id="hb-sangrado" data-weight="1"><label for="hb-sangrado">Sangrado previo <span class="pill">+1</span></label></li>
@@ -1821,7 +1821,7 @@
           </div>
         </div>
 
-        <div class="status-banner status-neutral" id="hasbled-interpret">0–1 punto: riesgo bajo · 2 puntos: riesgo moderado · ≥ 3 puntos: riesgo alto.</div>
+        <div class="status-banner status-low" id="hasbled-interpret">HAS-BLED 0–1 → riesgo bajo.</div>
       </section>
 
       <section class="section" data-protocol="fa" id="sec-fa-factores">
@@ -1830,7 +1830,7 @@
         <p class="lede">Investigar y corregir sistemáticamente:</p>
 
         <div class="card">
-          <ul class="checklist" data-group="fa-factores">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="fa-factores">
             <li><input type="checkbox" id="ffp1"><label for="ffp1">Infección</label></li>
             <li><input type="checkbox" id="ffp2"><label for="ffp2">Deshidratación</label></li>
             <li><input type="checkbox" id="ffp3"><label for="ffp3">Hipovolemia</label></li>
@@ -2002,7 +2002,7 @@
 
         <div class="card">
           <h3>Monitorización en observación</h3>
-          <ul class="checklist" data-group="fa-monitor">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="fa-monitor">
             <li><input type="checkbox" id="fm1"><label for="fm1">Telemetría continua</label></li>
             <li><input type="checkbox" id="fm2"><label for="fm2">FC y TA cada 2–4 horas</label></li>
             <li><input type="checkbox" id="fm3"><label for="fm3">Registro clínico seriado</label></li>
@@ -2013,7 +2013,7 @@
 
         <div class="card">
           <span class="group-title include">Criterios de alta — todos los siguientes</span>
-          <ul class="checklist" data-group="fa-alta">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="fa-alta">
             <li><input type="checkbox" id="fal1"><label for="fal1">Estabilidad hemodinámica</label></li>
             <li><input type="checkbox" id="fal2"><label for="fal2">FC ≤ 110 lpm</label></li>
             <li><input type="checkbox" id="fal3"><label for="fal3">Mejoría clínica</label></li>
@@ -2075,20 +2075,20 @@
         <p class="lede">Pacientes estables con gastroenteritis aguda (diarrea ± vómitos) con deshidratación leve-moderada, que puedan asociar o no otras alteraciones subsidiarias de mejora en el plazo establecido (lesión renal aguda prerrenal o alteraciones hidroelectrolíticas), o que mantengan intolerancia oral a pesar de antieméticos.</p>
 
         <h3>Grado de deshidratación</h3>
-        <table class="pain">
+        <div class="table-wrap"><table class="pain">
           <tbody><tr><th>Leve</th><th>Moderada</th><th>Grave</th></tr>
           <tr><td>Sed</td><td>Mucha sed</td><td>Taqui/bradicardia</td></tr>
           <tr><td>Orina concentrada</td><td>Oliguria</td><td>Hipoperfusión</td></tr>
           <tr><td></td><td>Mucosas secas y ojos hundidos</td><td>Hipotensión marcada</td></tr>
           <tr><td></td><td>Debilidad y mareo</td><td>Confusión</td></tr>
           <tr><td></td><td>Hipotensión ortostática</td><td>Letargo</td></tr>
-        </tbody></table>
+        </tbody></table><span class="table-tap-hint">🔍 Toca para ampliar</span></div>
 
         <div id="gea-status" class="status-banner status-banner-criteria status-neutral">Marca los criterios para ver la recomendación.</div>
 
         <div class="card">
           <span class="group-title include">Condiciones mínimas — deben cumplirse todas</span>
-          <ul class="checklist" data-group="gea-inc">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="gea-inc">
             <li><input type="checkbox" id="gi1"><label for="gi1">Estabilidad hemodinámica sin criterios de shock</label></li>
             <li><input type="checkbox" id="gi2"><label for="gi2">Sin datos de patología quirúrgica abdominal</label></li>
             <li><input type="checkbox" id="gi3"><label for="gi3">Lesión renal aguda de perfil prerrenal sin criterios de hemodiálisis urgente</label></li>
@@ -2104,13 +2104,13 @@
             <li><strong>Sodio</strong> &lt; 160 mEq/L</li>
             <li><strong>pH</strong> &gt; 7 o pH &lt; 7,60</li>
           </ul>
-          <table class="pain">
+          <div class="table-wrap"><table class="pain">
             <tbody>
               <tr><th>Cambios ECG</th><th>Potasio 5,0–5,9</th><th>Potasio 6,0–6,4</th><th>Potasio &gt;6,4</th></tr>
               <tr><td>Presentes</td><td><span style="color:var(--mid); font-weight:700;">Moderado</span></td><td><span style="color:var(--high); font-weight:700;">Grave</span></td><td><span style="color:var(--high); font-weight:700;">Grave</span></td></tr>
               <tr><td>Ausentes</td><td><span style="color:var(--low); font-weight:700;">Leve</span></td><td><span style="color:var(--mid); font-weight:700;">Moderado</span></td><td><span style="color:var(--high); font-weight:700;">Grave</span></td></tr>
             </tbody>
-          </table>
+          </table><span class="table-tap-hint">🔍 Toca para ampliar</span></div>
         </div>
 
         <div class="card">
@@ -2228,7 +2228,7 @@
         </div>
 
         <h3>Criterios de gravedad de la infección por <em>C. difficile</em></h3>
-        <table class="pain">
+        <div class="table-wrap"><table class="pain">
           <tbody>
             <tr><th>Grave</th><th>Muy grave</th></tr>
             <tr><td>Leucocitos &gt;15.000/mcl</td><td>Hipotensión, sepsis o shock</td></tr>
@@ -2237,7 +2237,7 @@
             <tr><td>Pseudomembranas</td><td>Alteración del estado mental</td></tr>
             <tr><td></td><td>Lactato &gt;2,2 mmol/l o PCT elevada</td></tr>
           </tbody>
-        </table>
+        </table><span class="table-tap-hint">🔍 Toca para ampliar</span></div>
       </section>
 
       <section class="section" data-protocol="gea" id="sec-gea-electrolitos">
@@ -2310,7 +2310,7 @@
 
         <div class="card">
           <h3>Monitorización</h3>
-          <ul class="checklist" data-group="gea-monitor">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="gea-monitor">
             <li><input type="checkbox" id="gm1"><label for="gm1">Constantes cada 4–6h</label></li>
             <li><input type="checkbox" id="gm2"><label for="gm2">Monitorización electrocardiográfica si alteraciones iónicas</label></li>
             <li><input type="checkbox" id="gm3"><label for="gm3">Diuresis y balance (sondaje si es necesario para monitorización estricta en pacientes seleccionados)</label></li>
@@ -2322,7 +2322,7 @@
 
         <div class="card">
           <span class="group-title include">Alta domiciliaria — todos los siguientes</span>
-          <ul class="checklist" data-group="gea-alta-domicilio">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="gea-alta-domicilio">
             <li><input type="checkbox" id="gad1"><label for="gad1">Mejoría clínica de la deshidratación (mucosas, perfusión, mareo/ortostatismo, estado general)</label></li>
             <li><input type="checkbox" id="gad2"><label for="gad2">Tolerancia oral suficiente (SRO + dieta) sin vómitos persistentes</label></li>
             <li><input type="checkbox" id="gad3"><label for="gad3">Constantes estables</label></li>
@@ -2512,7 +2512,7 @@
 
         <div class="card">
           <span class="group-title include">Criterios de admisión — todos los siguientes</span>
-          <ul class="checklist" data-group="hematuria-inc">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="hematuria-inc">
             <li><input type="checkbox" id="hai1"><label for="hai1">Etiología urológica filiada que no precisa ampliar estudios en el momento actual</label></li>
             <li><input type="checkbox" id="hai2"><label for="hai2">Estabilidad hemodinámica: TAS ≥ 100 mmHg, FC &lt; 110 lpm</label></li>
             <li><input type="checkbox" id="hai3"><label for="hai3">SatO₂ &gt; 92%</label></li>
@@ -2626,7 +2626,7 @@
 
         <div class="card">
           <span class="group-title include">Criterios de alta — todos los siguientes</span>
-          <ul class="checklist" data-group="hematuria-alta">
+          <div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="hematuria-alta">
             <li><input type="checkbox" id="had1"><label for="had1">Estabilidad hemodinámica</label></li>
             <li><input type="checkbox" id="had2"><label for="had2">Ausencia de retención</label></li>
             <li><input type="checkbox" id="had3"><label for="had3">Hematuria leve tolerable y Hb estable</label></li>
@@ -2729,10 +2729,10 @@
         </div>
       </section>
 
-      <nav class="section-pager" id="sectionPager">
-        <button type="button" class="pager-btn" id="pagerPrev" disabled>← <span id="pagerPrevLabel">Anterior</span></button>
-        <span class="pager-pos" id="pagerPos"></span>
-        <button type="button" class="pager-btn" id="pagerNext"><span id="pagerNextLabel">Siguiente</span> →</button>
+      <nav class="section-pager" id="sectionPager" style="display: none;">
+        <button type="button" class="pager-btn" id="pagerPrev" disabled="">← <span id="pagerPrevLabel">Anterior</span></button>
+        <span class="pager-pos" id="pagerPos">1 / 6</span>
+        <button type="button" class="pager-btn" id="pagerNext"><span id="pagerNextLabel">Inclusión / exclusión</span> →</button>
       </nav>
 
       <div class="disclaimer" style="margin-top:50px;">
@@ -2807,7 +2807,7 @@
     <p class="modal-sub">Elige un protocolo y arrastra ☰ para cambiar el orden de sus apartados en el menú lateral.</p>
 
     <select class="reorder-select" id="reorderProtocolSelect">
-      <option value="torax" selected>Dolor torácico</option>
+      <option value="torax" selected="">Dolor torácico</option>
       <option value="epoc">Agudización EPOC</option>
       <option value="asma">Agudización asma</option>
       <option value="fa">Fibrilación auricular / Flutter</option>
@@ -4362,6 +4362,7 @@
     }
   });
 </script>
+
 
 
 </body></html>
