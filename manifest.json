@@ -1,6 +1,6 @@
 {
-  "name": "UOME",
-  "short_name": "Protocolos UO",
+  "name": "",
+  "short_name": "",
   "description": "Protocolos clínicos de la Unidad de Observación del Servicio de Urgencias.",
   "start_url": "./index.html",
   "scope": "./",
