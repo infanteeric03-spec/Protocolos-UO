@@ -570,7 +570,7 @@
   .reorder-handle:active{cursor:grabbing;}
 </style>
 </head>
-<body class="pager-floating-active" data-wip-hidden="true">
+<body class="pager-floating-active" data-wip-hidden="false" data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e">
 
 <div class="welcome-screen" id="welcomeScreen" style="display: flex;">
   <div class="welcome-card">
@@ -622,7 +622,7 @@
       <div class="sidebar-protocol-toggle" id="sidebarProtocolToggle" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
         <span id="sidebarProtocolLabel">Dolor torácico</span><span class="sidebar-protocol-caret">▾</span>
       </div>
-      <ul class="sidebar-protocol-menu" id="sidebarProtocolMenu"><li data-value="torax" class="active">Dolor torácico</li><li data-value="fa">Fibrilación auricular / Flutter</li><li data-value="epoc">Agudización EPOC</li><li data-value="asma">Agudización asma</li><li data-value="neumonia">Neumonía leve / infección respiratoria</li><li data-value="gea">Gastroenteritis aguda</li><li data-value="hda">Hemorragia digestiva alta</li><li data-value="hematuria">Hematuria macroscópica</li><li data-value="pielonefritis">Pielonefritis aguda</li><li data-value="policontusionado">Paciente policontusionado</li></ul>
+      <ul class="sidebar-protocol-menu" id="sidebarProtocolMenu"><li data-value="torax" class="active">Dolor torácico</li><li data-value="fa">Fibrilación auricular / Flutter</li><li data-value="epoc" class="">Agudización EPOC</li><li data-value="asma">Agudización asma</li><li data-value="neumonia">Neumonía leve / infección respiratoria</li><li data-value="gea">Gastroenteritis aguda</li><li data-value="hda">Hemorragia digestiva alta</li><li data-value="hematuria">Hematuria macroscópica</li><li data-value="pielonefritis">Pielonefritis aguda</li><li data-value="policontusionado">Paciente policontusionado</li></ul>
     </div>
 
     <nav class="nav" id="nav">
@@ -631,11 +631,11 @@
       <button data-protocol="torax" data-section="criterios" style="display: none;"><span class="dot"></span>Inclusión / exclusión</button>
       <button data-protocol="torax" data-section="edacs" style="display: none;"><span class="dot"></span>Calculadora EDACS</button>
       <button data-protocol="torax" data-section="evaluacion" style="display: none;"><span class="dot"></span>Evaluación en la UO</button>
-      <button data-protocol="torax" data-section="destino" style="display: none;"><span class="dot"></span>Destino al alta</button>
-      <button data-protocol="torax" data-section="indicadores" style="display: none;"><span class="dot"></span>Indicadores y cardiología</button>
+      <button data-protocol="torax" data-section="destino" style="display: none;" class=""><span class="dot"></span>Destino al alta</button>
+      <button data-protocol="torax" data-section="indicadores" style="display: none;" class=""><span class="dot"></span>Indicadores y cardiología</button>
 
       <!-- EPOC -->
-      <button data-protocol="epoc" data-section="epoc-resumen" style="display: none;"><span class="dot"></span>Resumen y gravedad</button>
+      <button data-protocol="epoc" data-section="epoc-resumen" style="display: none;" class=""><span class="dot"></span>Resumen y gravedad</button>
       <button data-protocol="epoc" data-section="epoc-criterios" style="display: none;"><span class="dot"></span>Inclusión / exclusión</button>
       <button data-protocol="epoc" data-section="epoc-decaf" style="display: none;"><span class="dot"></span>Calculadora DECAF</button>
       <button data-protocol="epoc" data-section="epoc-evaluacion" style="display: none;"><span class="dot"></span>Evaluación inicial UOME</button>
@@ -734,7 +734,7 @@
         <strong id="topbarHome" role="button" tabindex="0" title="Ir a la pantalla de inicio" style="font-family:Georgia,serif; cursor:pointer;">Protocolos UO</strong>
         <div class="topbar-protocol" id="topbarProtocol" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
           <span id="topbarProtocolLabel">Dolor torácico</span><span class="topbar-protocol-caret">▾</span>
-          <ul class="topbar-protocol-menu" id="topbarProtocolMenu"><li data-value="torax" class="active">Dolor torácico</li><li data-value="fa">Fibrilación auricular / Flutter</li><li data-value="epoc">Agudización EPOC</li><li data-value="asma">Agudización asma</li><li data-value="neumonia">Neumonía leve / infección respiratoria</li><li data-value="gea">Gastroenteritis aguda</li><li data-value="hda">Hemorragia digestiva alta</li><li data-value="hematuria">Hematuria macroscópica</li><li data-value="pielonefritis">Pielonefritis aguda</li><li data-value="policontusionado">Paciente policontusionado</li></ul>
+          <ul class="topbar-protocol-menu" id="topbarProtocolMenu"><li data-value="torax" class="active">Dolor torácico</li><li data-value="fa">Fibrilación auricular / Flutter</li><li data-value="epoc" class="">Agudización EPOC</li><li data-value="asma">Agudización asma</li><li data-value="neumonia">Neumonía leve / infección respiratoria</li><li data-value="gea">Gastroenteritis aguda</li><li data-value="hda">Hemorragia digestiva alta</li><li data-value="hematuria">Hematuria macroscópica</li><li data-value="pielonefritis">Pielonefritis aguda</li><li data-value="policontusionado">Paciente policontusionado</li></ul>
         </div>
       </div>
       <button id="menuToggle">☰</button>
@@ -4335,7 +4335,7 @@
       <button class="edit-toggle-btn" id="publishConfigBtn" style="display: none;">⚙️ Configurar publicación en GitHub</button>
       <button class="edit-toggle-btn" id="reorderProtocolsBtn">↕️ Reordenar protocolos</button>
       <button class="edit-toggle-btn" id="reorderBtn">↕️ Reordenar apartados</button>
-      <button class="edit-toggle-btn" id="hideWipBtn">🚧 Mostrar aviso "En obras"</button>
+      <button class="edit-toggle-btn" id="hideWipBtn">🚧 Ocultar aviso "En obras"</button>
       <button class="edit-toggle-btn" id="passwordSettingsBtn">🔒 Contraseña de edición</button>
     </div>
     <div class="modal-actions">
@@ -6617,7 +6617,7 @@
   }
 </script>
 
-<div class="wip-badge" style="display: none;">🚧 En obras</div>
+<div class="wip-badge" style="">🚧 En obras</div>
 
 
 </body></html>
