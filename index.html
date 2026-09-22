@@ -678,7 +678,7 @@
   }
 </style>
 </head>
-<body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e" class="pager-floating-active" data-wip-hidden="true">
+<body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e" class="" data-wip-hidden="false">
 
 <div class="welcome-screen" id="welcomeScreen" style="display: flex;">
   <button type="button" class="welcome-settings-btn" id="welcomeSettingsBtn" aria-haspopup="dialog" aria-label="Configuración" title="Configuración"><span class="icon-gear" aria-hidden="true"></span></button>
@@ -700,7 +700,7 @@
         
         
       <option value="torax">Dolor torácico</option><option value="fa">Fibrilación auricular / Flutter</option><option value="epoc">Agudización EPOC</option><option value="asma">Agudización Asma</option><option value="neumonia" style="color: rgb(185, 178, 162);">Neumonía leve / infección respiratoria</option><option value="gea">Gastroenteritis aguda</option><option value="hda" style="color: rgb(185, 178, 162);">Hemorragia digestiva alta</option><option value="hematuria">Hematuria macroscópica</option><option value="pielonefritis" style="color: rgb(185, 178, 162);">Pielonefritis aguda</option><option value="policontusionado" style="color: rgb(185, 178, 162);">Politrauma</option></select>
-      <ul class="welcome-protocol-menu" id="welcomeProtocolMenu" role="listbox" aria-label="Protocolos"></ul>
+      <ul class="welcome-protocol-menu" id="welcomeProtocolMenu" role="listbox" aria-label="Protocolos"><li data-value="torax" role="option" tabindex="-1">Dolor torácico</li><li data-value="fa" role="option" tabindex="-1">Fibrilación auricular / Flutter</li><li data-value="epoc" role="option" tabindex="-1">Agudización EPOC</li><li data-value="asma" role="option" tabindex="-1">Agudización Asma</li><li data-value="neumonia" role="option" tabindex="-1" class="nav-dim">Neumonía leve / infección respiratoria</li><li data-value="gea" role="option" tabindex="-1">Gastroenteritis aguda</li><li data-value="hda" role="option" tabindex="-1" class="nav-dim">Hemorragia digestiva alta</li><li data-value="hematuria" role="option" tabindex="-1">Hematuria macroscópica</li><li data-value="pielonefritis" role="option" tabindex="-1" class="nav-dim">Pielonefritis aguda</li><li data-value="policontusionado" role="option" tabindex="-1" class="nav-dim">Politrauma</li></ul>
     </div>
     <p class="welcome-foot">Basado en los protocolos internos de la Gerencia Área de Salud I Occidente.</p>
     <p class="welcome-foot welcome-foot-disclaimer">No sustituye el juicio clínico.</p>
@@ -731,9 +731,9 @@
         
       <option value="torax" data-hidden="false" selected="">Dolor torácico</option><option value="fa" data-hidden="false">Fibrilación auricular / Flutter</option><option value="epoc" data-hidden="false">Agudización EPOC</option><option value="asma" data-hidden="false">Agudización Asma</option><option value="neumonia" data-hidden="true">Neumonía leve / infección respiratoria</option><option value="gea" data-hidden="false">Gastroenteritis aguda</option><option value="hda" data-hidden="true">Hemorragia digestiva alta</option><option value="hematuria" data-hidden="false">Hematuria macroscópica</option><option value="pielonefritis" data-hidden="true">Pielonefritis aguda</option><option value="policontusionado" data-hidden="true">Politrauma</option></select>
       <div class="sidebar-protocol-toggle" id="sidebarProtocolToggle" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
-        <span id="sidebarProtocolLabel">Hematuria macroscópica</span><span class="sidebar-protocol-caret">▾</span>
+        <span id="sidebarProtocolLabel">Dolor torácico</span><span class="sidebar-protocol-caret">▾</span>
       </div>
-      <ul class="sidebar-protocol-menu" id="sidebarProtocolMenu" style="top: 205.889px; left: 6px; width: 287.517px;"><li data-value="torax" class="">Dolor torácico</li><li data-value="fa">Fibrilación auricular / Flutter</li><li data-value="epoc">Agudización EPOC</li><li data-value="asma">Agudización Asma</li><li data-value="neumonia" class="nav-dim">Neumonía leve / infección respiratoria</li><li data-value="gea">Gastroenteritis aguda</li><li data-value="hda" class="nav-dim">Hemorragia digestiva alta</li><li data-value="hematuria" class="active">Hematuria macroscópica</li><li data-value="pielonefritis" class="nav-dim">Pielonefritis aguda</li><li data-value="policontusionado" class="nav-dim">Politrauma</li></ul>
+      <ul class="sidebar-protocol-menu" id="sidebarProtocolMenu" style="top: 205.889px; left: 6px; width: 287.517px;"><li data-value="torax" class="active">Dolor torácico</li><li data-value="fa">Fibrilación auricular / Flutter</li><li data-value="epoc">Agudización EPOC</li><li data-value="asma">Agudización Asma</li><li data-value="neumonia" class="nav-dim">Neumonía leve / infección respiratoria</li><li data-value="gea">Gastroenteritis aguda</li><li data-value="hda" class="nav-dim">Hemorragia digestiva alta</li><li data-value="hematuria">Hematuria macroscópica</li><li data-value="pielonefritis" class="nav-dim">Pielonefritis aguda</li><li data-value="policontusionado" class="nav-dim">Politrauma</li></ul>
     </div>
 
     <nav class="nav" id="nav">
@@ -844,8 +844,8 @@
       <div class="topbar-title-wrap">
         <strong id="topbarHome" role="button" tabindex="0" title="Ir a la pantalla de inicio" style="font-family:Georgia,serif; cursor:pointer;">Protocolos UO</strong>
         <div class="topbar-protocol" id="topbarProtocol" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
-          <span id="topbarProtocolLabel">Hematuria macroscópica</span><span class="topbar-protocol-caret">▾</span>
-          <ul class="topbar-protocol-menu" id="topbarProtocolMenu"><li data-value="torax" class="">Dolor torácico</li><li data-value="fa">Fibrilación auricular / Flutter</li><li data-value="epoc">Agudización EPOC</li><li data-value="asma">Agudización Asma</li><li data-value="neumonia" class="nav-dim">Neumonía leve / infección respiratoria</li><li data-value="gea">Gastroenteritis aguda</li><li data-value="hda" class="nav-dim">Hemorragia digestiva alta</li><li data-value="hematuria" class="active">Hematuria macroscópica</li><li data-value="pielonefritis" class="nav-dim">Pielonefritis aguda</li><li data-value="policontusionado" class="nav-dim">Politrauma</li></ul>
+          <span id="topbarProtocolLabel">Dolor torácico</span><span class="topbar-protocol-caret">▾</span>
+          <ul class="topbar-protocol-menu" id="topbarProtocolMenu"><li data-value="torax" class="active">Dolor torácico</li><li data-value="fa">Fibrilación auricular / Flutter</li><li data-value="epoc">Agudización EPOC</li><li data-value="asma">Agudización Asma</li><li data-value="neumonia" class="nav-dim">Neumonía leve / infección respiratoria</li><li data-value="gea">Gastroenteritis aguda</li><li data-value="hda" class="nav-dim">Hemorragia digestiva alta</li><li data-value="hematuria">Hematuria macroscópica</li><li data-value="pielonefritis" class="nav-dim">Pielonefritis aguda</li><li data-value="policontusionado" class="nav-dim">Politrauma</li></ul>
         </div>
       </div>
       <button id="menuToggle">☰</button>
@@ -2815,7 +2815,7 @@
             <li>Evitar retención por coágulos.</li>
             <li>Detectar anemización progresiva.</li>
             <li>Evitar ingreso innecesario.</li>
-          </ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div><button type="button" class="card-toggle">Ver más</button></div>
+          </ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div><button type="button" class="card-toggle">Ver más</button><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
       </section>
 
       <section class="section" data-protocol="hematuria" id="sec-hematuria-criterios">
@@ -4334,7 +4334,7 @@
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
       </section>
 
-      <nav class="section-pager pager-floating" id="sectionPager" style="display: none;">
+      <nav class="section-pager" id="sectionPager" style="display: none;">
         <button type="button" class="pager-btn" id="pagerPrev" disabled=""><span class="pager-arrow">←</span> <span id="pagerPrevLabel">Anterior</span></button>
         <span class="pager-pos" id="pagerPos">1 / 6</span>
         <button type="button" class="pager-btn" id="pagerNext"><span id="pagerNextLabel">Inclusión / exclusión</span> <span class="pager-arrow">→</span></button>
@@ -4460,22 +4460,22 @@
       <button class="edit-toggle-btn" id="editToggle">✏️ Editar contenido</button>
       <button class="edit-toggle-btn" id="publishConfigBtn" style="display: none;"><span class="icon-gear" aria-hidden="true" style="margin-right:6px;"></span>Configurar publicación en GitHub</button>
       <button class="edit-toggle-btn" id="reorderBtn">↕️ Reordenar protocolos y apartados</button>
-      <button class="edit-toggle-btn" id="hideWipBtn">🚧 Mostrar aviso "En obras"</button>
+      <button class="edit-toggle-btn" id="hideWipBtn">🚧 Ocultar aviso "En obras"</button>
       <button class="edit-toggle-btn" id="passwordSettingsBtn">🔑 Editar contraseña</button>
     </div>
     <div class="modal-actions">
       <button class="secondary" id="settingsCloseBtn">Cerrar</button>
-      <button class="secondary" id="sessionLockBtn" type="button" aria-label="Desbloquear sesión" title="Desbloquear sesión">🔒</button>
+      <button class="secondary unlocked" id="sessionLockBtn" type="button" aria-label="Bloquear sesión" title="Bloquear sesión">🔓</button>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="passwordSettingsModal">
   <div class="modal-box">
-    <h3 id="pwSettingsTitle">Crear contraseña de edición</h3>
+    <h3 id="pwSettingsTitle">Cambiar contraseña de edición</h3>
     <p class="modal-sub">Protege "Editar contenido" y "Reordenar apartados" con una contraseña.</p>
 
-    <div id="pwCurrentRow" style="display:none;">
+    <div id="pwCurrentRow" style="display: block;">
       <label for="pwCurrentInput">Contraseña actual</label>
       <input type="password" id="pwCurrentInput" autocomplete="off">
     </div>
@@ -4490,7 +4490,7 @@
       <button class="primary" id="pwSettingsSave">Guardar contraseña</button>
       <button class="secondary" id="pwSettingsCancel">Cancelar</button>
     </div>
-    <button class="edit-toggle-btn" id="pwSettingsRemove" style="display:none; margin-top:12px; width:100%; background:rgba(179,58,36,.1); color:var(--high); text-align:center;">Quitar contraseña</button>
+    <button class="edit-toggle-btn" id="pwSettingsRemove" style="display: block; margin-top: 12px; width: 100%; background: rgba(179, 58, 36, 0.1); color: var(--high); text-align: center;">Quitar contraseña</button>
 
     <p class="modal-hint">La contraseña se guarda cifrada (hash) dentro de este mismo archivo, no en ningún servidor externo. Al ser un archivo estático, esto es una protección básica frente a ediciones accidentales, no una medida de seguridad robusta frente a alguien con conocimientos técnicos. <strong>Al guardar, se te pedirá publicar o descargar el archivo</strong>: si no lo haces, la contraseña solo estará activa en esta pestaña y se perderá al recargar la página.</p>
   </div>
@@ -7287,7 +7287,8 @@
   }
 </script>
 
-<div class="wip-badge" style="display: none;">🚧 En obras</div>
+<div class="wip-badge" style="">🚧 En obras</div>
+
 
 
 </body></html>
