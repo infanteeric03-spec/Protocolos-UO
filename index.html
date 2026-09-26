@@ -678,7 +678,7 @@
   }
 </style>
 </head>
-<body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e" class="" data-wip-hidden="true">
+<body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e" class="" data-wip-hidden="false">
 
 <div class="welcome-screen" id="welcomeScreen" style="display: flex;">
   <button type="button" class="welcome-settings-btn" id="welcomeSettingsBtn" aria-haspopup="dialog" aria-label="Configuración" title="Configuración"><span class="icon-gear" aria-hidden="true"></span></button>
@@ -700,7 +700,7 @@
         
         
       <option value="torax">Dolor torácico</option><option value="fa">Fibrilación auricular / Flutter</option><option value="epoc">Agudización EPOC</option><option value="asma">Agudización Asma</option><option value="gea">Gastroenteritis aguda</option><option value="hematuria" style="color: rgb(185, 178, 162);">Hematuria macroscópica</option><option value="neumonia" style="color: rgb(185, 178, 162);">Neumonía leve / infección respiratoria</option><option value="hda" style="color: rgb(185, 178, 162);">Hemorragia digestiva alta</option><option value="pielonefritis" style="color: rgb(185, 178, 162);">Pielonefritis aguda</option><option value="policontusionado" style="color: rgb(185, 178, 162);">Politrauma</option></select>
-      <ul class="welcome-protocol-menu" id="welcomeProtocolMenu" role="listbox" aria-label="Protocolos"><li data-value="torax" role="option" tabindex="-1">Dolor torácico</li><li data-value="fa" role="option" tabindex="-1">Fibrilación auricular / Flutter</li><li data-value="epoc" role="option" tabindex="-1">Agudización EPOC</li><li data-value="asma" role="option" tabindex="-1">Agudización Asma</li><li data-value="gea" role="option" tabindex="-1">Gastroenteritis aguda</li><li data-value="hematuria" role="option" tabindex="-1" class="nav-dim">Hematuria macroscópica</li><li data-value="neumonia" role="option" tabindex="-1" class="nav-dim" aria-disabled="true">Neumonía leve / infección respiratoria</li><li data-value="hda" role="option" tabindex="-1" class="nav-dim" aria-disabled="true">Hemorragia digestiva alta</li><li data-value="pielonefritis" role="option" tabindex="-1" class="nav-dim" aria-disabled="true">Pielonefritis aguda</li><li data-value="policontusionado" role="option" tabindex="-1" class="nav-dim" aria-disabled="true">Politrauma</li></ul>
+      <ul class="welcome-protocol-menu" id="welcomeProtocolMenu" role="listbox" aria-label="Protocolos"><li data-value="torax" role="option" tabindex="-1">Dolor torácico</li><li data-value="fa" role="option" tabindex="-1">Fibrilación auricular / Flutter</li><li data-value="epoc" role="option" tabindex="-1">Agudización EPOC</li><li data-value="asma" role="option" tabindex="-1">Agudización Asma</li><li data-value="gea" role="option" tabindex="-1">Gastroenteritis aguda</li><li data-value="hematuria" role="option" tabindex="-1" class="nav-dim">Hematuria macroscópica</li><li data-value="neumonia" role="option" tabindex="-1" class="nav-dim">Neumonía leve / infección respiratoria</li><li data-value="hda" role="option" tabindex="-1" class="nav-dim">Hemorragia digestiva alta</li><li data-value="pielonefritis" role="option" tabindex="-1" class="nav-dim">Pielonefritis aguda</li><li data-value="policontusionado" role="option" tabindex="-1" class="nav-dim">Politrauma</li></ul>
     </div>
     <p class="welcome-foot">Basado en los protocolos internos de la Gerencia Área de Salud I Occidente.</p>
     <p class="welcome-foot welcome-foot-disclaimer">No sustituye el juicio clínico.</p>
@@ -4453,7 +4453,7 @@
       <button class="edit-toggle-btn" id="editToggle">✏️ Editar contenido</button>
       <button class="edit-toggle-btn" id="publishConfigBtn" style="display: none;"><span class="icon-gear" aria-hidden="true" style="margin-right:6px;"></span>Configurar publicación en GitHub</button>
       <button class="edit-toggle-btn" id="reorderBtn">↕️ Reordenar protocolos y apartados</button>
-      <button class="edit-toggle-btn" id="hideWipBtn">🚧 Mostrar aviso "En obras"</button>
+      <button class="edit-toggle-btn" id="hideWipBtn">🚧 Ocultar aviso "En obras"</button>
       <button class="edit-toggle-btn" id="passwordSettingsBtn">🔑 Editar contraseña</button>
     </div>
     <div class="modal-actions">
@@ -4494,7 +4494,7 @@
     <h3>Contraseña necesaria</h3>
     <p class="modal-sub">Introduce la contraseña para desbloquear la sesión.</p>
     <input type="password" id="pwUnlockInput" autocomplete="off" placeholder="Contraseña" style="margin-top:4px;">
-    <p id="pwUnlockError" style="color: var(--high); font-size: 12.5px; display: block; margin-top: 10px;">Contraseña incorrecta.</p>
+    <p id="pwUnlockError" style="color: var(--high); font-size: 12.5px; display: none; margin-top: 10px;">Contraseña incorrecta.</p>
     <div class="modal-actions">
       <button class="primary" id="pwUnlockSubmit">Entrar</button>
       <button class="secondary" id="pwUnlockCancel">Cancelar</button>
@@ -7280,7 +7280,7 @@
   }
 </script>
 
-<div class="wip-badge" style="display: none;">🚧 En obras</div>
+<div class="wip-badge" style="">🚧 En obras</div>
 
 
 
