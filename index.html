@@ -5116,8 +5116,31 @@
   // ---- comprimir párrafos/listados de "resumen y objetivos" en la primera pestaña ----
   // Se llama cada vez que una sección se activa (las secciones empiezan con display:none,
   // así que medir el texto solo funciona una vez que son visibles).
+  (function(){
+    const mq = window.matchMedia('(min-width:768px)');
+    const rerun = ()=>{ const sec = document.querySelector('.section.active'); if(sec) setupResumenCardCollapse(sec); };
+    if(mq.addEventListener) mq.addEventListener('change', rerun); else if(mq.addListener) mq.addListener(rerun);
+  })();
   function setupResumenCardCollapse(section){
     if(!section || !/resumen$/.test(section.id)) return;
+    // En ordenador y tablet (>= 768 px) las tarjetas se muestran siempre desplegadas.
+    const wide = window.matchMedia('(min-width:768px)').matches;
+    if(wide){
+      section.querySelectorAll('.card-collapsible.collapsed').forEach(w=>{
+        w.dataset.wasCollapsed = '1';
+        w.classList.remove('collapsed');
+      });
+      section.querySelectorAll('.card > .card-toggle').forEach(b=>{ b.style.display = 'none'; });
+      return;
+    }
+    // Pantalla estrecha: restaurar el plegado si antes se desplegó por ser pantalla ancha.
+    section.querySelectorAll('.card-collapsible[data-was-collapsed]').forEach(w=>{
+      w.classList.add('collapsed');
+      delete w.dataset.wasCollapsed;
+      const tb = w.parentElement && w.parentElement.querySelector(':scope > .card-toggle');
+      if(tb){ tb.style.display = ''; tb.textContent = 'Ver más'; }
+    });
+    section.querySelectorAll('.card > .card-toggle').forEach(b=>{ b.style.display = ''; });
     section.querySelectorAll('.card').forEach(card=>{
       let wrap = card.querySelector(':scope > .card-collapsible');
       let btn = card.querySelector(':scope > .card-toggle');
