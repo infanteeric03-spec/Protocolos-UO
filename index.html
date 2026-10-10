@@ -272,6 +272,9 @@
   table.pain td.scale-result{min-width:110px; font-weight:700; white-space:normal;}
   .sr-low{color:var(--low);} .sr-mid{color:#b7791f;} .sr-high{color:var(--high);}
   #scaleCalcModal .modal-box{width:min(520px,94vw);}
+  .scale-field label{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .scale-pt{white-space:nowrap;flex:none;font-weight:700;font-size:12px;padding:1px 8px;border-radius:999px;margin-left:8px}
+  .scale-pt.pt0{background:#e3f1e6;color:#1f6b36}.scale-pt.pt1{background:#fff3cc;color:#7a5b00}.scale-pt.pt2{background:#ffe2c2;color:#8a4500}.scale-pt.pt3{background:#fbd5d5;color:#a11f1f}
   .scale-grid{display:grid; grid-template-columns:1fr 1fr; gap:0 14px;}
   @media (max-width:520px){.scale-grid{grid-template-columns:1fr;}}
   .scale-grid select, .scale-grid input[type=number], #scaleCalcModal .scale-body select{width:100%; padding:8px 10px; border:1px solid var(--line); border-radius:6px; font-size:14px; background:#fff;}
@@ -7090,7 +7093,7 @@
     let cur=null, curVals={};
     const fmt=n=>String(n).replace('.',',');
     const opt=(arr,sel)=>'<option value="">—</option>'+arr.map(([v,t])=>'<option value="'+v+'"'+(String(sel)===String(v)?' selected':'')+'>'+t+'</option>').join('');
-    const field=(label,inner)=>'<div class="scale-field"><label>'+label+'</label>'+inner+'</div>';
+    const field=(label,inner,pt)=>'<div class="scale-field"><label>'+label+(pt?'<span class="scale-pt" data-pt="'+pt+'"></span>':'')+'</label>'+inner+'</div>';
     const num=(name,ph,v,step)=>'<input type="number" inputmode="decimal" step="'+(step||'any')+'" data-name="'+name+'" placeholder="'+ph+'" value="'+(v==null?'':v)+'">';
     const sel=(name,arr,v)=>'<select data-name="'+name+'">'+opt(arr,v)+'</select>';
     const pend={pending:true};
@@ -7111,27 +7114,31 @@
           return {short:'GCS '+t+' (O'+o+' V'+vv+' M'+m+') · alteración '+c,long:'GCS '+t+'/15 (O'+o+' V'+vv+' M'+m+') · alteración '+c+' del nivel de conciencia',level:lv}; }},
       news2:{title:'NEWS2 · National Early Warning Score 2',
         render:v=>'<div class="scale-grid">'+
-          field('Frecuencia respiratoria (rpm)',num('fr','p. ej. 16',v.fr))+
-          field('SatO₂ (%)',num('spo2','p. ej. 96',v.spo2))+
+          field('Frec. respiratoria (rpm)',num('fr','p. ej. 16',v.fr),'fr')+
+          field('SatO₂ (%)',num('spo2','p. ej. 96',v.spo2),'spo2')+
           field('Escala de SatO₂',sel('scale',[[1,'Escala 1 (habitual)'],[2,'Escala 2 (fallo hipercápnico, p. ej. EPOC)']],v.scale||1).replace('<option value="">—</option>',''))+
-          field('Aire u oxígeno suplementario',sel('o2',[['air','Aire ambiente'],['o2','Oxígeno suplementario']],v.o2||'air').replace('<option value="">—</option>',''))+
-          field('PAS (mmHg)',num('pas','p. ej. 120',v.pas))+
-          field('Frecuencia cardiaca (lpm)',num('fc','p. ej. 80',v.fc))+
-          field('Nivel de consciencia',sel('cons',[['A','Alerta'],['C','Confusión nueva, V, P o U']],v.cons||'A').replace('<option value="">—</option>',''))+
-          field('Temperatura (°C)',num('temp','p. ej. 36,8',v.temp,'0.1'))+'</div>',
-        calc:v=>{ const g=k=>(v[k]===undefined||v[k]===''||isNaN(+v[k]))?null:+v[k];
+          field('Aire / oxígeno',sel('o2',[['air','Aire ambiente'],['o2','Oxígeno suplementario']],v.o2||'air').replace('<option value="">—</option>',''),'o2')+
+          field('PAS (mmHg)',num('pas','p. ej. 120',v.pas),'pas')+
+          field('Frecuencia cardiaca (lpm)',num('fc','p. ej. 80',v.fc),'fc')+
+          field('Nivel de consciencia',sel('cons',[['A','Alerta'],['C','Confusión nueva, V, P o U']],v.cons||'A').replace('<option value="">—</option>',''),'cons')+
+          field('Temperatura (°C)',num('temp','p. ej. 36,8',v.temp,'0.1'),'temp')+'</div>',
+        pts:v=>{ const g=k=>(v[k]===undefined||v[k]===''||isNaN(+v[k]))?null:+v[k];
           const fr=g('fr'),sp=g('spo2'),pas=g('pas'),fc=g('fc'),t=g('temp');
-          if([fr,sp,pas,fc,t].some(x=>x===null)) return pend;
           const sc=+(v.scale||1), o2=(v.o2||'air')==='o2', cons=(v.cons||'A');
-          const frS=fr<=8?3:fr<=11?1:fr<=20?0:fr<=24?2:3;
-          let spS;
-          if(sc===1) spS=sp<=91?3:sp<=93?2:sp<=95?1:0;
-          else if(!o2) spS=sp<=83?3:sp<=85?2:sp<=87?1:0;
-          else spS=sp<=83?3:sp<=85?2:sp<=87?1:sp<=92?0:sp<=94?1:sp<=96?2:3;
-          const o2S=o2?2:0, pasS=pas<=90?3:pas<=100?2:pas<=110?1:pas<=219?0:3;
-          const fcS=fc<=40?3:fc<=50?1:fc<=90?0:fc<=110?1:fc<=130?2:3;
-          const cS=cons==='A'?0:3, tS=t<=35?3:t<=36?1:t<=38?0:t<=39?1:2;
-          const parts=[frS,spS,o2S,pasS,fcS,cS,tS], tot=parts.reduce((a,b)=>a+b,0), any3=parts.some(x=>x===3);
+          const r={};
+          if(fr!==null) r.fr=fr<=8?3:fr<=11?1:fr<=20?0:fr<=24?2:3;
+          if(sp!==null){ if(sc===1) r.spo2=sp<=91?3:sp<=93?2:sp<=95?1:0;
+            else if(!o2) r.spo2=sp<=83?3:sp<=85?2:sp<=87?1:0;
+            else r.spo2=sp<=83?3:sp<=85?2:sp<=87?1:sp<=92?0:sp<=94?1:sp<=96?2:3; }
+          r.o2=o2?2:0;
+          if(pas!==null) r.pas=pas<=90?3:pas<=100?2:pas<=110?1:pas<=219?0:3;
+          if(fc!==null) r.fc=fc<=40?3:fc<=50?1:fc<=90?0:fc<=110?1:fc<=130?2:3;
+          r.cons=cons==='A'?0:3;
+          if(t!==null) r.temp=t<=35?3:t<=36?1:t<=38?0:t<=39?1:2;
+          return r; },
+        calc:v=>{ const p=defs.news2.pts(v);
+          if(['fr','spo2','pas','fc','temp'].some(k=>p[k]===undefined)) return pend;
+          const parts=['fr','spo2','o2','pas','fc','cons','temp'].map(k=>p[k]), tot=parts.reduce((a,b)=>a+b,0), any3=parts.some(x=>x===3);
           let c,lv; if(tot>=7){c='riesgo clínico alto';lv='high';} else if(tot>=5){c='riesgo clínico medio';lv='mid';} else if(any3){c='riesgo bajo-medio (3 en un parámetro)';lv='mid';} else {c='riesgo clínico bajo';lv='low';}
           return {short:'NEWS2 '+tot+' · '+c,long:'NEWS2 '+tot+' · '+c,level:lv}; }},
       shock:{title:'Índice de shock',
@@ -7154,6 +7161,8 @@
     }
     function refresh(){
       curVals=readVals(); const r=defs[cur].calc(curVals);
+      if(defs[cur].pts){ const p=defs[cur].pts(curVals);
+        bodyEl.querySelectorAll('[data-pt]').forEach(el=>{ const x=p[el.dataset.pt]; el.className='scale-pt'+(x===undefined?'':' pt'+Math.min(x,3)); el.textContent=x===undefined?'':(x+' pt'+(x===1?'':'s')); }); }
       liveEl.className='scale-live';
       if(r.pending){ liveEl.innerHTML='Completa los datos para calcular.'; okBtn.disabled=true; }
       else { liveEl.classList.add('sr-'+r.level); liveEl.innerHTML='<strong>'+r.long+'</strong>'; okBtn.disabled=false; }
