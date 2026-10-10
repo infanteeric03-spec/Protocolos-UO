@@ -268,6 +268,21 @@
   .group-title + .group-title.sub-gt{margin-top:2px;}
   .card:not(.risk-card) > h3 + ul, .card:not(.risk-card) > h3 + ol, .card:not(.risk-card) > h3 + .card-collapsible > ul:first-child, .card:not(.risk-card) > h3 + .card-collapsible > ol:first-child{margin-top:6px !important;}
   .card:not(.risk-card) > h3 + .card-collapsible{margin-top:0;}
+  .scale-link{text-align:left;}
+  table.pain td.scale-result{min-width:110px; font-weight:700; white-space:normal;}
+  .sr-low{color:var(--low);} .sr-mid{color:#b7791f;} .sr-high{color:var(--high);}
+  #scaleCalcModal .modal-box{width:min(520px,94vw);}
+  .scale-grid{display:grid; grid-template-columns:1fr 1fr; gap:0 14px;}
+  @media (max-width:520px){.scale-grid{grid-template-columns:1fr;}}
+  .scale-grid select, .scale-grid input[type=number], #scaleCalcModal .scale-body select{width:100%; padding:8px 10px; border:1px solid var(--line); border-radius:6px; font-size:14px; background:#fff;}
+  .scale-chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;}
+  .scale-chips button{all:unset; cursor:pointer; min-width:38px; height:38px; display:flex; align-items:center; justify-content:center; border:1px solid var(--line); border-radius:8px; font-weight:700; background:#fff;}
+  .scale-chips button.sel{background:var(--teal); color:#fff; border-color:var(--teal);}
+  .scale-live{margin-top:14px; padding:10px 12px; border-radius:8px; background:rgba(24,105,116,.08); font-size:14px;}
+  .scale-live strong{display:block; font-size:15px;}
+  .scale-live.sr-low strong{color:var(--low);} .scale-live.sr-mid strong{color:#b7791f;} .scale-live.sr-high strong{color:var(--high);}
+  .scale-btn-row{display:flex; justify-content:flex-end; gap:10px; margin-top:16px;}
+  .scale-btn-row button:disabled{opacity:.45; cursor:not-allowed;}
   .group-title.exclude{background:var(--high);}
   .group-title.include{background:var(--low);}
 
@@ -4314,15 +4329,16 @@
 
         <div class="card section-block">
           <h3>Escalas recomendadas</h3>
-          <div class="table-wrap"><table class="pain">
+          <p style="margin:0 0 6px; font-size:12.5px; color:var(--ink-soft);">Pulsa el nombre de la escala para calcularla; el resultado se añade a la columna «Resultado».</p>
+          <div class="table-wrap" data-no-zoom="true"><table class="pain">
             <tbody>
-              <tr><th>Escala</th><th>Uso</th></tr>
-              <tr><td>EVA dolor</td><td>0 sin dolor · 1–3 leve · 4–6 moderado · 7–9 intenso · 10 peor dolor imaginable</td></tr>
-              <tr><td>Glasgow</td><td>Valoración del nivel de conciencia (ocular + verbal + motora)</td></tr>
-              <tr><td>NEWS2</td><td>Escala de alerta temprana (FR, SatO₂, aporte de O₂, PAS, FC, nivel de consciencia, temperatura)</td></tr>
-              <tr><td>Índice de shock</td><td>FC / PAS · normal 0,5–0,7 · shock ≥ 0,8 (trauma: ≥0,8 predictor de transfusión masiva; ≥1 predictor de mortalidad)</td></tr>
+              <tr><th>Escala</th><th>Uso</th><th>Resultado</th></tr>
+              <tr><td><button type="button" class="gbs-link scale-link" data-scale="eva" title="Abrir calculadora">EVA dolor</button></td><td>0 sin dolor · 1–3 leve · 4–6 moderado · 7–9 intenso · 10 peor dolor imaginable</td><td class="scale-result" data-scale="eva">—</td></tr>
+              <tr><td><button type="button" class="gbs-link scale-link" data-scale="gcs" title="Abrir calculadora">Glasgow</button></td><td>Valoración del nivel de conciencia (ocular + verbal + motora)</td><td class="scale-result" data-scale="gcs">—</td></tr>
+              <tr><td><button type="button" class="gbs-link scale-link" data-scale="news2" title="Abrir calculadora">NEWS2</button></td><td>Escala de alerta temprana (FR, SatO₂, aporte de O₂, PAS, FC, nivel de consciencia, temperatura)</td><td class="scale-result" data-scale="news2">—</td></tr>
+              <tr><td><button type="button" class="gbs-link scale-link" data-scale="shock" title="Abrir calculadora">Índice de shock</button></td><td>FC / PAS · normal 0,5–0,7 · shock ≥ 0,8 (trauma: ≥0,8 predictor de transfusión masiva; ≥1 predictor de mortalidad)</td><td class="scale-result" data-scale="shock">—</td></tr>
             </tbody>
-          </table><span class="table-tap-hint">🔍 Toca para ampliar</span></div>
+          </table></div>
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
 
         <div class="card section-block">
@@ -4805,6 +4821,18 @@
     <p class="gbs-foot">*Known history or clinical/laboratory evidence of acute or chronic disease.<br>**Known history or clinical/echocardiographic evidence of heart failure.</p>
     <p class="gbs-foot gbs-ref-cite"><strong>Fuente:</strong> Recio-Ramírez JM, Sánchez-Sánchez MP, Peña-Ojeda JA, Fernández-Romero E, Aguilera-Peña M, del-Campo-Molina E, Zambrana-García JL. The predictive capacity of the Glasgow-Blatchford score for the risk stratification of upper gastrointestinal bleeding in an emergency department. Rev Esp Enferm Dig. 2015;107(5):262-267.</p>
     <div class="modal-actions"><button class="secondary" type="button" id="gbsTableClose">Cerrar</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="scaleCalcModal" role="dialog" aria-modal="true" aria-label="Calculadora de escala">
+  <div class="modal-box">
+    <h3 id="scaleCalcTitle"></h3>
+    <div class="scale-body" id="scaleCalcBody"></div>
+    <div class="scale-live" id="scaleCalcLive"></div>
+    <div class="scale-btn-row">
+      <button type="button" class="secondary" id="scaleCalcCancel">Cancelar</button>
+      <button type="button" class="primary" id="scaleCalcOk">Aceptar</button>
+    </div>
   </div>
 </div>
 
@@ -7053,6 +7081,106 @@
     if(el) el.addEventListener('input', updateDAL);
   });
 
+  // ---- Calculadoras de escalas (policontusionado) ----
+  (function(){
+    const ov=document.getElementById('scaleCalcModal'); if(!ov) return;
+    const titleEl=document.getElementById('scaleCalcTitle'), bodyEl=document.getElementById('scaleCalcBody'),
+          liveEl=document.getElementById('scaleCalcLive'), okBtn=document.getElementById('scaleCalcOk'), cancelBtn=document.getElementById('scaleCalcCancel');
+    const saved={};      // valores introducidos por escala
+    let cur=null, curVals={};
+    const fmt=n=>String(n).replace('.',',');
+    const opt=(arr,sel)=>'<option value="">—</option>'+arr.map(([v,t])=>'<option value="'+v+'"'+(String(sel)===String(v)?' selected':'')+'>'+t+'</option>').join('');
+    const field=(label,inner)=>'<div class="scale-field"><label>'+label+'</label>'+inner+'</div>';
+    const num=(name,ph,v,step)=>'<input type="number" inputmode="decimal" step="'+(step||'any')+'" data-name="'+name+'" placeholder="'+ph+'" value="'+(v==null?'':v)+'">';
+    const sel=(name,arr,v)=>'<select data-name="'+name+'">'+opt(arr,v)+'</select>';
+    const pend={pending:true};
+
+    const defs={
+      eva:{title:'EVA · Escala visual analógica del dolor',
+        render:v=>'<label>Intensidad del dolor (0–10)</label><div class="scale-chips" data-chips="eva">'+[0,1,2,3,4,5,6,7,8,9,10].map(i=>'<button type="button" data-v="'+i+'"'+(String(v.eva)===String(i)?' class="sel"':'')+'>'+i+'</button>').join('')+'</div>',
+        calc:v=>{ if(v.eva===undefined||v.eva==='') return pend; const n=+v.eva;
+          const c=n===0?'sin dolor':n<=3?'leve':n<=6?'moderado':n<=9?'intenso':'peor dolor imaginable';
+          const lv=n<=3?'low':n<=6?'mid':'high';
+          return {short:n+'/10 · '+c,long:n+'/10 · dolor '+c,level:lv}; }},
+      gcs:{title:'Escala de coma de Glasgow',
+        render:v=>field('Apertura ocular',sel('o',[[4,'4 · Espontánea'],[3,'3 · Al estímulo verbal'],[2,'2 · Al dolor'],[1,'1 · Ninguna']],v.o))+
+          field('Respuesta verbal',sel('v',[[5,'5 · Orientado'],[4,'4 · Confuso'],[3,'3 · Palabras inapropiadas'],[2,'2 · Sonidos incomprensibles'],[1,'1 · Ninguna']],v.v))+
+          field('Respuesta motora',sel('m',[[6,'6 · Obedece órdenes'],[5,'5 · Localiza el dolor'],[4,'4 · Retirada al dolor'],[3,'3 · Flexión anormal (decorticación)'],[2,'2 · Extensión anormal (descerebración)'],[1,'1 · Ninguna']],v.m)),
+        calc:v=>{ if(!v.o||!v.v||!v.m) return pend; const o=+v.o,vv=+v.v,m=+v.m,t=o+vv+m;
+          const c=t>=13?'leve':t>=9?'moderada':'grave'; const lv=t>=13?'low':t>=9?'mid':'high';
+          return {short:'GCS '+t+' (O'+o+' V'+vv+' M'+m+') · alteración '+c,long:'GCS '+t+'/15 (O'+o+' V'+vv+' M'+m+') · alteración '+c+' del nivel de conciencia',level:lv}; }},
+      news2:{title:'NEWS2 · National Early Warning Score 2',
+        render:v=>'<div class="scale-grid">'+
+          field('Frecuencia respiratoria (rpm)',num('fr','p. ej. 16',v.fr))+
+          field('SatO₂ (%)',num('spo2','p. ej. 96',v.spo2))+
+          field('Escala de SatO₂',sel('scale',[[1,'Escala 1 (habitual)'],[2,'Escala 2 (fallo hipercápnico, p. ej. EPOC)']],v.scale||1).replace('<option value="">—</option>',''))+
+          field('Aire u oxígeno suplementario',sel('o2',[['air','Aire ambiente'],['o2','Oxígeno suplementario']],v.o2||'air').replace('<option value="">—</option>',''))+
+          field('PAS (mmHg)',num('pas','p. ej. 120',v.pas))+
+          field('Frecuencia cardiaca (lpm)',num('fc','p. ej. 80',v.fc))+
+          field('Nivel de consciencia',sel('cons',[['A','Alerta'],['C','Confusión nueva, V, P o U']],v.cons||'A').replace('<option value="">—</option>',''))+
+          field('Temperatura (°C)',num('temp','p. ej. 36,8',v.temp,'0.1'))+'</div>',
+        calc:v=>{ const g=k=>(v[k]===undefined||v[k]===''||isNaN(+v[k]))?null:+v[k];
+          const fr=g('fr'),sp=g('spo2'),pas=g('pas'),fc=g('fc'),t=g('temp');
+          if([fr,sp,pas,fc,t].some(x=>x===null)) return pend;
+          const sc=+(v.scale||1), o2=(v.o2||'air')==='o2', cons=(v.cons||'A');
+          const frS=fr<=8?3:fr<=11?1:fr<=20?0:fr<=24?2:3;
+          let spS;
+          if(sc===1) spS=sp<=91?3:sp<=93?2:sp<=95?1:0;
+          else if(!o2) spS=sp<=83?3:sp<=85?2:sp<=87?1:0;
+          else spS=sp<=83?3:sp<=85?2:sp<=87?1:sp<=92?0:sp<=94?1:sp<=96?2:3;
+          const o2S=o2?2:0, pasS=pas<=90?3:pas<=100?2:pas<=110?1:pas<=219?0:3;
+          const fcS=fc<=40?3:fc<=50?1:fc<=90?0:fc<=110?1:fc<=130?2:3;
+          const cS=cons==='A'?0:3, tS=t<=35?3:t<=36?1:t<=38?0:t<=39?1:2;
+          const parts=[frS,spS,o2S,pasS,fcS,cS,tS], tot=parts.reduce((a,b)=>a+b,0), any3=parts.some(x=>x===3);
+          let c,lv; if(tot>=7){c='riesgo clínico alto';lv='high';} else if(tot>=5){c='riesgo clínico medio';lv='mid';} else if(any3){c='riesgo bajo-medio (3 en un parámetro)';lv='mid';} else {c='riesgo clínico bajo';lv='low';}
+          return {short:'NEWS2 '+tot+' · '+c,long:'NEWS2 '+tot+' · '+c,level:lv}; }},
+      shock:{title:'Índice de shock',
+        render:v=>'<div class="scale-grid">'+field('Frecuencia cardiaca (lpm)',num('fc','p. ej. 100',v.fc))+field('PAS (mmHg)',num('pas','p. ej. 110',v.pas))+'</div>',
+        calc:v=>{ const fc=+v.fc, pas=+v.pas; if(!v.fc||!v.pas||!(fc>0)||!(pas>0)) return pend;
+          const r=fc/pas, rs=fmt(r.toFixed(2)); let c,l,lv;
+          if(r>=1){c='≥ 1 · predictor de mortalidad';l='Índice de shock ≥ 1: predictor de mortalidad en trauma';lv='high';}
+          else if(r>=0.8){c='≥ 0,8 · shock';l='Índice de shock ≥ 0,8: shock; predictor de transfusión masiva en trauma';lv='high';}
+          else if(r>0.7){c='zona límite';l='Entre 0,7 y 0,8: zona límite, vigilar evolución';lv='mid';}
+          else if(r>=0.5){c='normal';l='Rango normal (0,5–0,7)';lv='low';}
+          else {c='por debajo de 0,5';l='Por debajo del rango habitual (0,5–0,7)';lv='low';}
+          return {short:rs+' · '+c,long:'IS '+rs+' · '+l,level:lv}; }}
+    };
+
+    function readVals(){
+      const v=Object.assign({},curVals);
+      bodyEl.querySelectorAll('[data-name]').forEach(el=>{ v[el.dataset.name]=el.value; });
+      bodyEl.querySelectorAll('[data-chips]').forEach(ch=>{ const s=ch.querySelector('.sel'); v[ch.dataset.chips]=s?s.dataset.v:undefined; });
+      return v;
+    }
+    function refresh(){
+      curVals=readVals(); const r=defs[cur].calc(curVals);
+      liveEl.className='scale-live';
+      if(r.pending){ liveEl.innerHTML='Completa los datos para calcular.'; okBtn.disabled=true; }
+      else { liveEl.classList.add('sr-'+r.level); liveEl.innerHTML='<strong>'+r.long+'</strong>'; okBtn.disabled=false; }
+    }
+    function open(key){
+      cur=key; curVals=Object.assign({},saved[key]||{});
+      titleEl.textContent=defs[key].title; bodyEl.innerHTML=defs[key].render(curVals);
+      bodyEl.querySelectorAll('[data-chips] button').forEach(b=>b.addEventListener('click',()=>{
+        b.parentNode.querySelectorAll('button').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); refresh(); }));
+      bodyEl.querySelectorAll('[data-name]').forEach(el=>{ el.addEventListener('input',refresh); el.addEventListener('change',refresh); });
+      ov.classList.add('open'); refresh();
+    }
+    function close(){ ov.classList.remove('open'); cur=null; }
+    function setCell(key,res){
+      document.querySelectorAll('td.scale-result[data-scale="'+key+'"]').forEach(td=>{
+        td.innerHTML=''; if(!res){ td.textContent='—'; return; }
+        const sp=document.createElement('span'); sp.className='sr-'+res.level; sp.textContent=res.short; td.appendChild(sp); });
+    }
+    okBtn.addEventListener('click',()=>{ if(!cur) return; const r=defs[cur].calc(readVals()); if(r.pending) return;
+      saved[cur]=readVals(); setCell(cur,r); close(); });
+    cancelBtn.addEventListener('click',close);
+    ov.addEventListener('click',e=>{ if(e.target===ov) close(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape' && ov.classList.contains('open')) close(); });
+    document.querySelectorAll('.scale-link').forEach(b=>b.addEventListener('click',e=>{ e.preventDefault(); open(b.dataset.scale); }));
+    window.resetScaleResults=function(){ Object.keys(saved).forEach(k=>delete saved[k]); Object.keys(defs).forEach(k=>setCell(k,null)); };
+  })();
+
   // ---- Tabla GBS flotante ----
   (function(){
     const ov=document.getElementById('gbsTableModal'), ln=document.getElementById('gbsTableLink');
@@ -7486,6 +7614,7 @@
     document.querySelectorAll('.curb-row.picked').forEach(r=> r.classList.remove('picked'));
     if(typeof window.updateCurb === 'function') window.updateCurb();
     if(typeof window.resetPafiCalc === 'function') window.resetPafiCalc();
+    if(typeof window.resetScaleResults === 'function') window.resetScaleResults();
     Object.keys(edacsValues).forEach(k=> edacsValues[k]=null);
     Object.keys(decafValues).forEach(k=> decafValues[k]=null);
     const frItem = document.getElementById('fr-item');
