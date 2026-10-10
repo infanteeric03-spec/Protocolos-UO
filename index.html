@@ -416,6 +416,18 @@
     }
   }
 
+  @media (max-width:900px){
+    .scale-table-wrap{max-height:none; overflow:visible; cursor:default; border:0;}
+    .scale-table-wrap::after{display:none;}
+    table.scale-table, table.scale-table tbody{display:block; width:100%;}
+    table.scale-table tr:first-child{display:none;}
+    table.scale-table tr{display:block; border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin-bottom:10px; background:#fff;}
+    table.scale-table td{display:block; border:0; padding:0; width:auto;}
+    table.scale-table td:first-child .scale-link{font-size:16px;}
+    table.scale-table td:nth-child(2){margin:4px 0 8px; font-size:13.5px; color:var(--ink-soft); line-height:1.45;}
+    table.scale-table td.scale-result{padding-top:8px; border-top:1px dashed var(--line); font-size:14px;}
+    table.scale-table td.scale-result::before{content:'Resultado: '; font-weight:700; color:var(--ink-soft);}
+  }
   .gbs-link{color:var(--teal); font-weight:700; text-decoration:underline; text-underline-offset:2px; cursor:pointer; background:none; border:0; padding:0; font:inherit; font-weight:700;}
   #gbsTableModal .modal-box{width:min(560px,94vw); padding:20px 22px;}
   .gbs-img-title{font-weight:700; text-align:center; font-size:15px; margin:0 0 10px;}
@@ -4332,8 +4344,8 @@
 
         <div class="card section-block">
           <h3>Escalas recomendadas</h3>
-          <p style="margin:0 0 6px; font-size:12.5px; color:var(--ink-soft);">Pulsa el nombre de la escala para calcularla; el resultado se añade a la columna «Resultado».</p>
-          <div class="table-wrap" data-no-zoom="true"><table class="pain">
+          <p style="margin:0 0 6px; font-size:12.5px; color:var(--ink-soft);">Pulsa el nombre de la escala para calcularla; el resultado queda registrado en «Resultado».</p>
+          <div class="table-wrap scale-table-wrap" data-no-zoom="true"><table class="pain scale-table">
             <tbody>
               <tr><th>Escala</th><th>Uso</th><th>Resultado</th></tr>
               <tr><td><button type="button" class="gbs-link scale-link" data-scale="eva" title="Abrir calculadora">EVA dolor</button></td><td>0 sin dolor · 1–3 leve · 4–6 moderado · 7–9 intenso · 10 peor dolor imaginable</td><td class="scale-result" data-scale="eva">—</td></tr>
