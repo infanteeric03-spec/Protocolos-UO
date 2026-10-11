@@ -288,6 +288,8 @@
   .scale-btn-row button:disabled{opacity:.45; cursor:not-allowed;}
   .group-title.exclude{background:var(--high);}
   .group-title.include{background:var(--low);}
+  .group-title.alarm{background:#D62828; color:#fff; box-shadow:0 1px 0 rgba(0,0,0,.12), 0 0 0 2px rgba(214,40,40,.18); text-transform:none;}
+  .group-title.alarm::before{content:'\26A0\FE0E'; margin-right:5px;}
 
   .status-banner{
     border-radius:8px; padding:12px 16px; font-size:14.5px; font-weight:600;
@@ -1794,7 +1796,7 @@
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
 
         <div class="card section-block" style="border-color:#f2c9bd;">
-          <span class="group-title exclude">Signos de alarma — avisar inmediatamente</span>
+          <span class="group-title exclude alarm">Signos de alarma — avisar inmediatamente</span>
           <ul style="margin-top:10px;">
             <li>Disnea intensa o súbita</li>
             <li>Saturación muy baja</li>
@@ -2047,7 +2049,7 @@
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
 
         <div class="card section-block" style="border-color:#f2c9bd;">
-          <span class="group-title exclude">Signos de alarma — avisar inmediatamente</span>
+          <span class="group-title exclude alarm">Signos de alarma — avisar inmediatamente</span>
           <ul style="margin-top:10px;">
             <li>Disnea intensa o súbita</li>
             <li>Saturación muy baja</li>
@@ -2896,7 +2898,7 @@
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
 
         <div class="card section-block" style="border-color:#f2c9bd;">
-          <span class="group-title exclude">Signos de alarma — avisar de inmediato</span>
+          <span class="group-title exclude alarm">Signos de alarma — avisar de inmediato</span>
           <ul style="margin-top:10px;">
             <li>Dolor intenso no controlado</li>
             <li>Signos de peritonismo (defensa, rebote)</li>
@@ -3023,7 +3025,7 @@
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
 
         <div class="card section-block" style="border-color:#f2c9bd;">
-          <span class="group-title exclude">Signos de alarma</span>
+          <span class="group-title exclude alarm">Signos de alarma</span>
           <ul style="margin-top:10px; margin-bottom:0;">
             <li>Descenso de Hb &gt; 2 g/dL.</li>
             <li>Hb &lt; 8–9 g/dL.</li>
@@ -3114,7 +3116,7 @@
 
         <div class="card section-block">
           <h3>Recomendaciones al alta</h3>
-          <span class="group-title exclude">Nueva consulta inmediata si</span>
+          <span class="group-title exclude alarm">Nueva consulta inmediata si</span>
           <ul style="margin-top:10px;">
             <li>Obstrucción de sonda o ausencia de diuresis.</li>
             <li>Aumento brusco de hematuria o coágulos abundantes.</li>
@@ -3179,7 +3181,7 @@
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
 
         <div class="card section-block" style="border-color:#f2c9bd;">
-          <span class="group-title exclude">Signos de alarma — avisar inmediatamente</span>
+          <span class="group-title exclude alarm">Signos de alarma — avisar inmediatamente</span>
           <ul style="margin-top:10px; margin-bottom:0;">
             <li>Hipotensión, taquicardia (posible sepsis).</li>
             <li>Alteración del estado mental (confusión, desorientación).</li>
@@ -3500,7 +3502,7 @@
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
 
         <div class="card section-block" style="border-color:#f2c9bd;">
-          <span class="group-title exclude">Signos de alarma — acudir de nuevo a Urgencias</span>
+          <span class="group-title exclude alarm">Signos de alarma — acudir de nuevo a Urgencias</span>
           <ul style="margin-top:10px; margin-bottom:0;">
             <li>Vómitos con sangre roja o "en posos de café".</li>
             <li>Heces negras abundantes, persistentes o recurrentes.</li>
@@ -3547,7 +3549,7 @@
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
 
         <div class="card section-block" style="border-color:#f2c9bd;">
-          <span class="group-title exclude">Signos de alarma — shock hipovolémico</span>
+          <span class="group-title exclude alarm">Signos de alarma — shock hipovolémico</span>
           <ul style="margin-top:10px; margin-bottom:0;">
             <li>Hipotensión, taquicardia.</li>
             <li>Palidez, sudoración fría.</li>
@@ -3854,7 +3856,7 @@
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
 
         <div class="card section-block" style="border-color:#f2c9bd;">
-          <span class="group-title exclude">Signos de alarma — avisar de inmediato</span>
+          <span class="group-title exclude alarm">Signos de alarma — avisar de inmediato</span>
           <ul style="margin-top:10px; margin-bottom:0;">
             <li>Saturación &lt; 90% o descenso progresivo</li>
             <li>FR &gt; 30 rpm</li>
@@ -4133,7 +4135,7 @@
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
 
         <div class="card section-block" style="border-color:#f2c9bd;">
-          <span class="group-title exclude">Recomendaciones al alta — signos de alarma</span>
+          <span class="group-title exclude alarm">Recomendaciones al alta — signos de alarma</span>
           <p style="margin-top:10px;">Explicar al paciente que debe consultar si aparece:</p>
           <ul>
             <li>Fiebre persistente &gt; 48 h</li>
@@ -4185,7 +4187,7 @@
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
 
         <div class="card section-block" style="border-color:#f2c9bd;">
-          <span class="group-title exclude">Signos de alarma — avisar de inmediato</span>
+          <span class="group-title exclude alarm">Signos de alarma — avisar de inmediato</span>
           <ul style="margin-top:10px;">
             <li>Anuria o diuresis &lt; 200 ml/6h</li>
             <li>Vómitos que no ceden y no tolera el antibiótico oral</li>
@@ -4534,7 +4536,7 @@
         <span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
 
         <div class="card section-block" style="border-color:#f2c9bd;">
-          <span class="group-title exclude">Signos de alarma — avisar de inmediato</span>
+          <span class="group-title exclude alarm">Signos de alarma — avisar de inmediato</span>
           <ul style="margin-top:10px; margin-bottom:0;">
             <li>Dificultad respiratoria</li>
             <li>Dolor abdominal intenso</li>
@@ -4708,7 +4710,7 @@
 
         <div class="card section-block"><h3>Evaluación inicial</h3><ul style="margin-bottom:0;"><li><strong>Constantes:</strong> TA, FC, FR, SatO₂ y temperatura.</li><li><strong>Analítica:</strong> hemograma, bioquímica con función renal, iones, PCR y coagulación.</li><li>Valorar lactato, procalcitonina y hemocultivos si fiebre &gt; 38,5 ºC, sospecha de bacteriemia o inmunosupresión.</li><li>Cultivo de exudado de herida/puerta de entrada visible con supuración.</li><li>Comprobar correcta vacunación de <strong>tétanos</strong>.</li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><h3>Control evolutivo</h3><ul style="margin-bottom:0;"><li>Constantes cada 4 horas durante las primeras 12 horas; posteriormente cada 6–8 horas si estabilidad.</li><li><strong>Reevaluación médica a las 6–8 horas y a las 24 horas:</strong> signos inflamatorios (dolor, extensión del eritema y fiebre), respuesta clínica, necesidad de pruebas complementarias y valoración de destino.</li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
-        <div class="card section-block" style="border-color:#f2c9bd;"><h3>Control analítico y signos de alarma</h3><span class="group-title sub-gt">Control a las 12–24 horas si</span><ul style="margin-bottom:0;"><li>Fiebre persistente.</li><li>PCR y lactato elevados.</li><li>Leucocitosis importante.</li><li>Insuficiencia renal.</li><li>Fragilidad.</li></ul><span class="group-title sub-gt">Signos de alarma</span><ul style="margin-bottom:0;"><li>Signos clínicos y analíticos sugestivos de toxicidad sistémica (sepsis): incremento de PCR, leucocitosis progresiva, lactato elevado, hipotensión arterial, fiebre persistente, deterioro de la función renal…</li><li>Progresión rápida de la lesión a pesar de &gt; 24 horas de antibioterapia IV.</li><li>Sospecha de infección necrotizante (dolor desproporcionado, ampollas hemorrágicas, crepitación).</li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
+        <div class="card section-block" style="border-color:#f2c9bd;"><h3>Control analítico y signos de alarma</h3><span class="group-title sub-gt">Control a las 12–24 horas si</span><ul style="margin-bottom:0;"><li>Fiebre persistente.</li><li>PCR y lactato elevados.</li><li>Leucocitosis importante.</li><li>Insuficiencia renal.</li><li>Fragilidad.</li></ul><span class="group-title sub-gt alarm">Signos de alarma</span><ul style="margin-bottom:0;"><li>Signos clínicos y analíticos sugestivos de toxicidad sistémica (sepsis): incremento de PCR, leucocitosis progresiva, lactato elevado, hipotensión arterial, fiebre persistente, deterioro de la función renal…</li><li>Progresión rápida de la lesión a pesar de &gt; 24 horas de antibioterapia IV.</li><li>Sospecha de infección necrotizante (dolor desproporcionado, ampollas hemorrágicas, crepitación).</li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><h3>Pruebas de imagen</h3><span class="group-title sub-gt">Ecografía de partes blandas</span><ul style="margin-bottom:0;"><li>Sospecha de absceso, fluctuación a la palpación.</li><li>Mala evolución clínica.</li></ul><span class="group-title sub-gt">TC urgente</span><ul style="margin-bottom:0;"><li>Sospecha de fascitis necrotizante.</li><li>Afectación profunda.</li><li>Sospecha de osteomielitis.</li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
       </section>
 
@@ -4728,7 +4730,7 @@
         <h1>Cuidados de enfermería y destino</h1>
         
 
-        <div class="card section-block" style="border-color:#f2c9bd;"><h3>Controles de enfermería</h3><ul style="margin-bottom:0;"><li>Constantes según protocolo.</li><li>Registro del dolor (0–10) al menos una vez por turno.</li><li>Respuesta analgésica.</li><li>Vigilancia de tolerancia antibiótica.</li><li>Delimitación y registro del eritema.</li><li>Vigilancia de progresión o regresión.</li><li>Vigilancia de flictenas, necrosis, exudado o fluctuación.</li><li>Elevación de la extremidad afectada.</li></ul><span class="group-title sub-gt">Signos de alarma</span><ul style="margin-bottom:0;"><li>Extensión del eritema más allá del marcaje.</li><li>Dolor ≥ 7/10 o progresivo.</li><li>Fiebre &gt; 38 ºC persistente.</li><li>TAS &lt; 100 mmHg.</li><li>FC &gt; 110 lpm.</li><li>Deterioro clínico.</li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
+        <div class="card section-block" style="border-color:#f2c9bd;"><h3>Controles de enfermería</h3><ul style="margin-bottom:0;"><li>Constantes según protocolo.</li><li>Registro del dolor (0–10) al menos una vez por turno.</li><li>Respuesta analgésica.</li><li>Vigilancia de tolerancia antibiótica.</li><li>Delimitación y registro del eritema.</li><li>Vigilancia de progresión o regresión.</li><li>Vigilancia de flictenas, necrosis, exudado o fluctuación.</li><li>Elevación de la extremidad afectada.</li></ul><span class="group-title sub-gt alarm">Signos de alarma</span><ul style="margin-bottom:0;"><li>Extensión del eritema más allá del marcaje.</li><li>Dolor ≥ 7/10 o progresivo.</li><li>Fiebre &gt; 38 ºC persistente.</li><li>TAS &lt; 100 mmHg.</li><li>FC &gt; 110 lpm.</li><li>Deterioro clínico.</li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><h3>Destino evolutivo</h3><span class="group-title sub-gt">Alta domiciliaria</span><ul style="margin-bottom:0;"><li>Estabilidad hemodinámica.</li><li>Mejoría del dolor y edema, y afebril durante un mínimo de 8–12 horas.</li><li>Eritema estable o en regresión.</li><li>Tolerancia oral.</li></ul><span class="group-title sub-gt">Hospitalización a domicilio (HAD)</span><p style="margin-bottom:6px;">Valorar si precisa continuidad asistencial o antibioterapia IV. La aceptación dependerá de cobertura geográfica, disponibilidad, apoyo domiciliario y criterios propios de HAD.</p><span class="group-title sub-gt">Hospital Fundación de Avilés (HFA)</span><p style="margin-bottom:6px;">Valorar si precisa continuidad asistencial hospitalaria o cuidados intermedios y no es candidato a HAD.</p><span class="group-title sub-gt">Ingreso en Medicina Interna</span><ul style="margin-bottom:0;"><li>Mala evolución clínico-analítica.</li><li>Persistencia de fiebre tras 24–36 h.</li><li>Progresión del eritema.</li><li>Sospecha de bacteriemia.</li><li>Necesidad de antibioterapia compleja.</li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><h3>Recomendaciones al alta</h3><p style="margin-bottom:6px;"><strong>Reconsulta por:</strong></p><ul style="margin-bottom:0;"><li>Fiebre persistente.</li><li>Aumento del dolor.</li><li>Extensión del eritema.</li><li>Fluctuación o supuración.</li><li>Deterioro general.</li></ul><p style="margin-bottom:6px;">Mantener antibioterapia, elevación de extremidad e hidratación adecuada.</p><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><h3>Bibliografía</h3><ul style="margin-bottom:0;"><li>IDSA Practice Guidelines for Skin and Soft Tissue Infections.</li><li>Eron Classification of Cellulitis.</li><li>NICE Guidance on Cellulitis and Erysipelas.</li><li>PROA-SEIMC / PRAN.</li><li>Guías de Terapéutica Antimicrobiana HUCA.</li><li>Protocolos PROA Hospital San Agustín.</li><li>UpToDate: Acute Cellulitis and Erysipelas.</li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
@@ -4780,7 +4782,7 @@
         <h1>Cuidados de enfermería, valoración ORL y destino</h1>
         
 
-        <div class="card section-block" style="border-color:#f2c9bd;"><h3>Controles de enfermería</h3><ul style="margin-bottom:0;"><li>Control de constantes y registro de temperatura según protocolo.</li><li>Registro del dolor (0–10).</li><li>Vigilancia de tolerancia oral.</li><li>Vigilancia de capacidad para deglutir saliva.</li><li>Vigilancia de cambios en la voz y evolución del trismus.</li><li>Vigilancia respiratoria.</li></ul><span class="group-title sub-gt">Signos de alarma</span><ul style="margin-bottom:0;"><li>Estridor.</li><li>Disnea.</li><li>SatO₂ &lt; 94 %.</li><li>Empeoramiento del trismus.</li><li>Deterioro clínico.</li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
+        <div class="card section-block" style="border-color:#f2c9bd;"><h3>Controles de enfermería</h3><ul style="margin-bottom:0;"><li>Control de constantes y registro de temperatura según protocolo.</li><li>Registro del dolor (0–10).</li><li>Vigilancia de tolerancia oral.</li><li>Vigilancia de capacidad para deglutir saliva.</li><li>Vigilancia de cambios en la voz y evolución del trismus.</li><li>Vigilancia respiratoria.</li></ul><span class="group-title sub-gt alarm">Signos de alarma</span><ul style="margin-bottom:0;"><li>Estridor.</li><li>Disnea.</li><li>SatO₂ &lt; 94 %.</li><li>Empeoramiento del trismus.</li><li>Deterioro clínico.</li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><h3>Valoración por ORL</h3><p style="margin-bottom:6px;">Todos los pacientes deberán ser valorados por ORL durante su estancia en UOME. La valoración determinará la necesidad de drenaje, tratamiento conservador, alta o ingreso.</p><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><h3>Destino evolutivo</h3><span class="group-title sub-gt">Alta domiciliaria</span><ul style="margin-bottom:0;"><li>Mejoría clínica.</li><li>Tolerancia oral.</li><li>Dolor controlado.</li><li>Valoración favorable por ORL.</li></ul><span class="group-title sub-gt">Ingreso ORL</span><ul style="margin-bottom:0;"><li>Necesidad de drenaje.</li><li>Persistencia del absceso.</li><li>Mala evolución.</li></ul><span class="group-title sub-gt">Ingreso en Medicina Interna</span><ul style="margin-bottom:0;"><li>Sepsis / paciente complejo por comorbilidades.</li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><h3>Recomendaciones al alta</h3><p style="margin-bottom:6px;">Reconsulta inmediata por disnea, estridor, imposibilidad para deglutir, fiebre persistente o empeoramiento del dolor. Mantener hidratación adecuada y completar la antibioterapia.</p><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
