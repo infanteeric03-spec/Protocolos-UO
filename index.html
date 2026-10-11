@@ -98,6 +98,7 @@
     display:none; list-style:none; margin:0; padding:6px;
     background:var(--paper-raised); border:1px solid var(--line); border-radius:10px;
     box-shadow:0 12px 30px rgba(0,0,0,.25); position:fixed; z-index:60;
+    overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; max-height:70vh;
   }
   .sidebar-protocol-menu.open{display:block;}
   .sidebar-protocol-menu li{
@@ -151,6 +152,7 @@
     background:var(--ink); border:1px solid rgba(255,255,255,.18); border-radius:10px;
     min-width:230px; max-width:80vw; list-style:none; padding:6px; z-index:60;
     box-shadow:0 12px 30px rgba(0,0,0,.4);
+    max-height:calc(100vh - 90px); overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
   }
   .topbar-protocol-menu.open{display:block;}
   .topbar-protocol-menu li{
@@ -5406,6 +5408,7 @@
       const rect = toggle.getBoundingClientRect();
       const overhang = 10; // cuánto sobresale el recuadro a cada lado del toggle
       menu.style.top = (rect.bottom + 6) + 'px';
+      menu.style.maxHeight = Math.max(160, window.innerHeight - rect.bottom - 18) + 'px';
       menu.style.left = (rect.left - overhang) + 'px';
       menu.style.width = (rect.width + overhang * 2) + 'px';
     }
@@ -5435,10 +5438,15 @@
     });
     // al ser "position:fixed", si se desplaza la barra lateral o la ventana
     // el recuadro dejaría de coincidir con el toggle: lo cerramos en ese caso.
-    document.getElementById('sidebar').addEventListener('scroll', ()=>{
+    document.getElementById('sidebar').addEventListener('scroll', (e)=>{
+      if(e.target === menu) return;
       if(menu.classList.contains('open')) closeMenu();
     });
+    let lastW = window.innerWidth;
     window.addEventListener('resize', ()=>{
+      // los móviles/tablets lanzan 'resize' al scrollear (barra de direcciones): solo cerrar si cambia el ancho
+      if(window.innerWidth === lastW){ if(menu.classList.contains('open')) positionMenu(); return; }
+      lastW = window.innerWidth;
       if(menu.classList.contains('open')) closeMenu();
     });
 
