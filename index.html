@@ -4667,7 +4667,6 @@
       <section class="section" data-protocol="suboclusion" id="sec-sub-resumen">
         <div class="eyebrow">Protocolo · Cirugía · UOME</div>
         <h1>Suboclusión intestinal adhesiva</h1>
-        <p class="lede">Unidad de Observación de Media Estancia (UOME).</p>
 
         <div class="card section-block"><h3>Objetivo</h3><p style="margin:0;">Manejo protocolizado de pacientes con suboclusión intestinal adhesiva valorados por Cirugía General y candidatos a tratamiento conservador en UOME, con estancia máxima prevista de 36 horas.</p><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div id="sub-status" class="status-banner status-banner-criteria status-neutral" data-inc="sub-inc" data-exc="sub-exc" data-mode="all">Marca los criterios para ver la recomendación.</div>
@@ -5189,7 +5188,11 @@
   function navButtons(){ return Array.from(document.querySelectorAll('.nav button')); }
   const allSections = document.querySelectorAll('.section');
 
+  let currentProtocolName = null;
   function switchProtocol(name){
+    // al cambiar de protocolo se reinician las casillas, opciones elegidas y calculadoras
+    if(currentProtocolName && currentProtocolName !== name && typeof resetInteractiveState === 'function') resetInteractiveState();
+    currentProtocolName = name;
     if(protocolSelect.value !== name) protocolSelect.value = name;
     let firstNav = null;
     navButtons().forEach(b=>{
@@ -5214,6 +5217,9 @@
   }
 
   protocolSelect.addEventListener('change', ()=> switchProtocol(protocolSelect.value));
+  // al recargar la página o volver a ella desde la caché, el navegador puede restaurar casillas marcadas: se limpian
+  window.addEventListener('load', ()=> setTimeout(()=>{ if(typeof resetInteractiveState === 'function') resetInteractiveState(); }, 0));
+  window.addEventListener('pageshow', (e)=>{ if(e.persisted && typeof resetInteractiveState === 'function') resetInteractiveState(); });
 
   function syncTopbarProtocol(){
     const opt = protocolSelect.options[protocolSelect.selectedIndex];
