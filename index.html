@@ -434,6 +434,11 @@
   }
   .news2-img-row{margin:4px 0 0; font-size:14px;}
   #news2ImgModal .modal-box{width:min(460px,94vw); padding:20px 22px;}
+  .emrcd-row{margin:2px 0 6px; font-size:13.5px;}
+  #emrcdModal .modal-box{width:min(560px,94vw); padding:20px 22px;}
+  table.emrcd-tab td:last-child, table.emrcd-tab thead th:last-child{text-align:left !important; width:auto !important;}
+  table.emrcd-tab td:first-child{width:46px; font-weight:700; text-align:center;}
+  table.emrcd-tab thead th:first-child{text-align:center;}
   .gbs-link{color:var(--teal); font-weight:700; text-decoration:underline; text-underline-offset:2px; cursor:pointer; background:none; border:0; padding:0; font:inherit; font-weight:700;}
   #gbsTableModal .modal-box{width:min(560px,94vw); padding:20px 22px;}
   .gbs-img-title{font-weight:700; text-align:center; font-size:15px; margin:0 0 10px;}
@@ -1542,6 +1547,7 @@
               <label data-val="1">eMRCD 5a — capaz de lavarse/vestirse solo <span class="pill">+1</span></label>
               <label data-val="2">eMRCD 5b — necesita ayuda para lavarse/vestirse <span class="pill">+2</span></label>
             </div>
+            <div class="emrcd-row"><button type="button" class="gbs-link" id="emrcdLink">Ver escala eMRCD de disnea</button></div>
           </div>
           <div class="edacs-item">
             <div class="q">Eosinopenia (&lt; 0,05 × 10⁹/l)</div>
@@ -4879,6 +4885,23 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="emrcdModal" role="dialog" aria-modal="true" aria-label="Escala eMRCD de disnea">
+  <div class="modal-box">
+    <p class="gbs-img-title">Escala eMRCD · Extended Medical Research Council Dyspnoea</p>
+    <table class="gbs-ref emrcd-tab"><thead><tr><th>Grado</th><th>Descripción</th></tr></thead><tbody>
+      <tr><td>1</td><td>Disnea solo con ejercicio intenso.</td></tr>
+      <tr><td>2</td><td>Disnea al andar deprisa en llano o al subir una pendiente leve.</td></tr>
+      <tr><td>3</td><td>Camina más despacio que las personas de su edad o se detiene al andar en llano a su propio paso.</td></tr>
+      <tr><td>4</td><td>Se detiene tras caminar unos 100 m, o a los pocos minutos, en llano.</td></tr>
+      <tr><td>5a</td><td>Demasiado disneico para salir de casa, pero <strong>independiente</strong> para lavarse y/o vestirse.</td></tr>
+      <tr><td>5b</td><td>Demasiado disneico para salir de casa y <strong>dependiente</strong> para lavarse y vestirse.</td></tr>
+    </tbody></table>
+    <p class="gbs-foot">Los grados 1–4 coinciden con la escala MRC de disnea clásica; la eMRCD divide el grado 5 según la capacidad de realizar el aseo y el vestido. En el índice DECAF: grados 1–4 = 0 puntos; 5a = 1 punto; 5b = 2 puntos. Descripciones traducidas del original en inglés.</p>
+    <p class="gbs-foot gbs-ref-cite"><strong>Fuente:</strong> Steer J, Norman EM, Afolabi OA, Gibson GJ, Bourke SC. Dyspnoea severity and pneumonia as predictors of in-hospital mortality and early readmission in acute exacerbations of COPD. Thorax. 2012;67(2):117-121. doi:10.1136/thoraxjnl-2011-200332.</p>
+    <div class="modal-actions"><button class="secondary" type="button" id="emrcdClose">Cerrar</button></div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="searchModal">
   <div class="modal-box search-modal-box">
     <h3>Buscar en los protocolos</h3>
@@ -7246,6 +7269,17 @@
     document.addEventListener('keydown',e=>{ if(e.key==='Escape' && ov.classList.contains('open')) close(); });
     document.querySelectorAll('.scale-link').forEach(b=>b.addEventListener('click',e=>{ e.preventDefault(); open(b.dataset.scale); }));
     window.resetScaleResults=function(){ Object.keys(saved).forEach(k=>delete saved[k]); Object.keys(defs).forEach(k=>setCell(k,null)); };
+  })();
+
+  // ---- Escala eMRCD flotante (DECAF) ----
+  (function(){
+    const ov=document.getElementById('emrcdModal'), ln=document.getElementById('emrcdLink');
+    if(!ov||!ln) return;
+    const close=()=>ov.classList.remove('open');
+    ln.addEventListener('click',e=>{e.preventDefault(); ov.classList.add('open');});
+    document.getElementById('emrcdClose').addEventListener('click',close);
+    ov.addEventListener('click',e=>{ if(e.target===ov) close(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
   })();
 
   // ---- Tabla GBS flotante ----
