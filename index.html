@@ -256,6 +256,10 @@
   .group-title + .checklist-toggle-row{float:right; margin:0; align-items:center;}
   .group-title[style*="margin-top:14px"] + .checklist-toggle-row{margin-top:14px;}
   .group-title + .checklist-toggle-row + ul.checklist{clear:both;}
+  .group-title.sub-gt.has-toggle{display:inline-block; max-width:calc(100% - 124px); vertical-align:top; margin:14px 0 8px;}
+  h3 + .group-title.sub-gt.has-toggle{margin-top:2px;}
+  .group-title.sub-gt.has-toggle + .checklist-toggle-row{margin-top:14px;}
+  h3 + .group-title.sub-gt.has-toggle + .checklist-toggle-row{margin-top:2px;}
 
 
   .group-title{
@@ -5884,6 +5888,8 @@
       refreshLabel();
       refreshers.push(refreshLabel);
     });
+    // los subtítulos (sub-gt) son bloques: se hacen en línea para que «Seleccionar todo» quede a su misma altura
+    document.querySelectorAll('.group-title.sub-gt + .checklist-toggle-row').forEach(r=> r.previousElementSibling.classList.add('has-toggle'));
     window.__refreshChecklistToggles = ()=> refreshers.forEach(fn=>fn());
   }
   setupChecklistToggles();
