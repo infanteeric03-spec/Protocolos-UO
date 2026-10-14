@@ -798,6 +798,11 @@
   @media (min-width:640px){ul.checklist.cols-2{column-count:2;column-gap:28px;} ul.checklist.cols-2>li{break-inside:avoid;}}
   .card > h3 + .checklist-toggle-row, .section-block > h3 + .checklist-toggle-row{float:right; margin:0; position:relative; z-index:1;}
   h3 + .checklist-toggle-row + ul.checklist{margin-top:2px;}
+  .card:has(> h3:first-child + .checklist-toggle-row){position:relative;}
+  .card > h3:first-child + .checklist-toggle-row{position:absolute; top:21px; right:22px; float:none; margin:0;}
+  .card > h3:first-child + .checklist-toggle-row + ul.checklist{margin-top:10px;}
+  .card > h3:first-child:has(+ .checklist-toggle-row){padding-right:140px;}
+  .card > h3:first-child + .checklist-toggle-row .checklist-toggle-btn{margin-top:0;}
   h3 + .checklist-toggle-row .checklist-toggle-btn{margin-top:6px;}
 </style>
 </head>
