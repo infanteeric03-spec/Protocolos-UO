@@ -795,6 +795,7 @@
   .cdd .cdd-menu label{display:flex;justify-content:space-between;align-items:center;border:0;border-radius:7px;padding:9px 10px;background:transparent;}
   .cdd .cdd-menu label:hover{background:#EAF3F2;}
   .cdd .cdd-menu label.picked{background:#EAF3F2;}
+  @media (min-width:640px){ul.checklist.cols-2{column-count:2;column-gap:28px;} ul.checklist.cols-2>li{break-inside:avoid;}}
 </style>
 </head>
 <body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e" class="pager-floating-active" data-wip-hidden="false">
@@ -2183,7 +2184,7 @@
 
         <div class="card section-block">
           <span class="group-title exclude">Criterios de exclusión — derivación a área crítica o ingreso</span>
-          <ul class="checklist" data-group="fa-exc" data-any-of="true">
+          <ul class="checklist cols-2" data-group="fa-exc" data-any-of="true">
             <li><input type="checkbox" id="fe1"><label for="fe1">Shock</label></li>
             <li><input type="checkbox" id="fe2"><label for="fe2">PAS &lt;90 mmHg persistente</label></li>
             <li><input type="checkbox" id="fe3"><label for="fe3">Dolor torácico isquémico</label></li>
