@@ -807,6 +807,10 @@
   .card > .checklist-toggle-row:first-child, p + .checklist-toggle-row{float:right; margin:0; position:relative; z-index:1;}
   .card > .checklist-toggle-row:first-child + ul.checklist, p + .checklist-toggle-row + ul.checklist{margin-top:2px;}
   .card > .checklist-toggle-row:first-child .checklist-toggle-btn, p + .checklist-toggle-row .checklist-toggle-btn{margin-top:6px;}
+  .card:has(> .group-title:first-child ~ p + .checklist-toggle-row){position:relative;}
+  .card > .group-title:first-child ~ p + .checklist-toggle-row{position:absolute; top:22px; right:22px; float:none; margin:0;}
+  .card > .group-title:first-child ~ p + .checklist-toggle-row .checklist-toggle-btn{margin-top:0;}
+  .card > .group-title:first-child ~ p + .checklist-toggle-row + ul.checklist{margin-top:10px;}
 </style>
 </head>
 <body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e" class="pager-floating-active" data-wip-hidden="false">
