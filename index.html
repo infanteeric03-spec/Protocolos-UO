@@ -782,6 +782,19 @@
   table.pain-risk td:nth-child(2){background:rgba(217,164,58,.10);}
   table.pain-risk td:nth-child(3){background:rgba(63,154,59,.09);}
   @media (max-width:640px){.risk-gradient-label{font-size:11px;}}
+  .cdd{position:relative;max-width:340px;}
+  .cdd-btn{width:100%;display:flex;align-items:center;gap:10px;text-align:left;font:inherit;font-size:14px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);cursor:pointer;}
+  .cdd-btn:hover,.cdd.open .cdd-btn{border-color:var(--teal-dark);}
+  .cdd-val{flex:1;color:var(--ink-soft);}
+  .cdd.has-val .cdd-val{color:var(--teal-dark);font-weight:600;}
+  .cdd-pts{font-size:12px;font-weight:700;color:var(--teal-dark);}
+  .cdd-caret{font-size:12px;transition:transform .15s;}
+  .cdd.open .cdd-caret{transform:rotate(180deg);}
+  .cdd .cdd-menu{position:absolute;z-index:30;left:0;right:0;top:calc(100% + 4px);display:block;max-height:260px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 28px rgba(20,30,40,.18);padding:4px;}
+  .cdd .cdd-menu[hidden]{display:none;}
+  .cdd .cdd-menu label{display:flex;justify-content:space-between;align-items:center;border:0;border-radius:7px;padding:9px 10px;background:transparent;}
+  .cdd .cdd-menu label:hover{background:#EAF3F2;}
+  .cdd .cdd-menu label.picked{background:#EAF3F2;}
 </style>
 </head>
 <body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e" class="pager-floating-active" data-wip-hidden="false">
@@ -1205,7 +1218,7 @@
         <div class="card section-block">
           <div class="edacs-item">
             <div class="q">1 · Edad</div>
-            <div class="opts" data-field="edad">
+            <div class="cdd" id="edadCdd"><button type="button" class="cdd-btn" aria-haspopup="listbox" aria-expanded="false"><span class="cdd-val">Selecciona la edad</span><span class="cdd-pts"></span><span class="cdd-caret">▾</span></button><div class="opts cdd-menu" data-field="edad" role="listbox" hidden>
               <label data-val="2">18–45 <span class="pill">+2</span></label>
               <label data-val="4">46–50 <span class="pill">+4</span></label>
               <label data-val="6">51–55 <span class="pill">+6</span></label>
@@ -1216,7 +1229,7 @@
               <label data-val="16">76–80 <span class="pill">+16</span></label>
               <label data-val="18">81–85 <span class="pill">+18</span></label>
               <label data-val="20">≥86 <span class="pill">+20</span></label>
-            </div>
+            </div></div>
           </div>
 
           <div class="edacs-item">
@@ -8208,4 +8221,12 @@
 
 
 <script>document.addEventListener('click',function(e){var b=e.target.closest('.det-btn');if(!b)return;var d=b.closest('li').querySelector('.det-body');var o=d.hidden;d.hidden=!o;b.setAttribute('aria-expanded',o);b.textContent=o?'Ocultar':'Detallar';});</script>
+<script>(function(){var c=document.getElementById('edadCdd');if(!c)return;var btn=c.querySelector('.cdd-btn'),menu=c.querySelector('.cdd-menu'),val=c.querySelector('.cdd-val'),pts=c.querySelector('.cdd-pts');
+function close(){menu.hidden=true;c.classList.remove('open');btn.setAttribute('aria-expanded','false');}
+function sync(){var p=menu.querySelector('label.picked');c.classList.toggle('has-val',!!p);if(p){val.textContent=p.firstChild.textContent.trim();var pl=p.querySelector('.pill');pts.textContent=pl?pl.textContent:'';}else{val.textContent='Selecciona la edad';pts.textContent='';}}
+btn.addEventListener('click',function(e){e.stopPropagation();var o=menu.hidden;menu.hidden=!o;c.classList.toggle('open',o);btn.setAttribute('aria-expanded',o);});
+menu.addEventListener('click',function(e){if(e.target.closest('label'))setTimeout(close,0);});
+document.addEventListener('click',function(e){if(!c.contains(e.target))close();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+new MutationObserver(sync).observe(menu,{attributes:true,subtree:true,attributeFilter:['class']});sync();})();</script>
 </body></html>
