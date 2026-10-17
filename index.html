@@ -814,6 +814,9 @@
   strong + ul, strong + ol, b + ul, b + ol{margin-top:4px;}
   p:has(> strong:only-child) + ul, p:has(> strong:only-child) + ol{margin-top:0;}
   p:has(> strong:only-child):has(+ ul), p:has(> strong:only-child):has(+ ol){margin-bottom:4px;}
+  .group-title + ul:not(.checklist), .group-title + ol{margin-top:0 !important;}
+  p + ul:not(.checklist), p + ol, h4 + ul:not(.checklist), h4 + ol{margin-top:0;}
+  p:has(+ ul:not(.checklist)), p:has(+ ol){margin-bottom:6px;}
 </style>
 </head>
 <body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e" class="pager-floating-active" data-wip-hidden="false">
