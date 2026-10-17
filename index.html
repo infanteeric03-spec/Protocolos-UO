@@ -822,6 +822,19 @@
   strong + .checklist-toggle-row{float:right; margin:0; position:relative; z-index:1;}
   strong + .checklist-toggle-row + ul.checklist{margin-top:0;}
   .group-title + ul.checklist, .group-title + .checklist-toggle-row + ul.checklist{margin-top:0 !important;}
+  .guide-open-btn{margin-top:18px;font:inherit;font-size:14px;font-weight:600;padding:9px 18px;border-radius:999px;border:1px solid var(--teal-dark);background:transparent;color:var(--teal-dark);cursor:pointer;}
+  .guide-open-btn:hover{background:rgba(24,105,116,.1);}
+  #guideModal .modal-box{width:min(760px,94vw);max-height:88vh;overflow:auto;padding:22px 24px;}
+  .guide-lede{margin:0 0 14px;color:var(--ink-soft);}
+  .guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .guide-item{display:flex;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card,#fff);}
+  .guide-item p{margin:3px 0 0;font-size:13.5px;line-height:1.45;}
+  .guide-num{flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal-dark);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .guide-legend{line-height:1.9 !important;}
+  .gl{display:inline-block;min-width:52px;text-align:center;font-size:11.5px;font-weight:700;color:#fff;border-radius:999px;padding:1px 9px;margin-right:6px;}
+  .gl-green{background:#3d8f5a;} .gl-red{background:#c0432b;} .gl-amber{background:#c98a1a;}
+  .guide-foot{margin:14px 0 0;font-size:12px;color:var(--ink-soft);}
+  @media (max-width:640px){.guide-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e" class="pager-floating-active" data-wip-hidden="false">
@@ -848,6 +861,7 @@
       <option value="torax">Dolor torácico</option><option value="fa">Fibrilación auricular / Flutter</option><option value="ic">Insuficiencia cardiaca</option><option value="epoc">Agudización EPOC</option><option value="asma">Agudización Asma</option><option value="neumonia" style="color: rgb(185, 178, 162);">Neumonía leve / infección respiratoria</option><option value="hematuria" style="">Hematuria macroscópica</option><option value="pielonefritis">Pielonefritis aguda</option><option value="gea">Gastroenteritis aguda</option><option value="hda" style="color: rgb(185, 178, 162);">Hemorragia digestiva alta</option><option value="celulitis">Celulitis bacteriana</option><option value="absceso">Absceso / flemón periamigdalino</option><option value="policontusionado">Pac. policontusionado</option><option value="suboclusion">Suboclusión intestinal adhesiva</option><option value="intox">Intoxicaciones (ISRS, AINE, TCA, BZD, pregabalina)</option></select>
       <ul class="welcome-protocol-menu" id="welcomeProtocolMenu" role="listbox" aria-label="Protocolos"><li data-value="torax" role="option" tabindex="-1">Dolor torácico</li><li data-value="fa" role="option" tabindex="-1">Fibrilación auricular / Flutter</li><li data-value="ic" role="option" tabindex="-1">Insuficiencia cardiaca</li><li data-value="epoc" role="option" tabindex="-1">Agudización EPOC</li><li data-value="asma" role="option" tabindex="-1">Agudización Asma</li><li data-value="neumonia" role="option" tabindex="-1" class="">Neumonía leve / infección respiratoria</li><li data-value="hematuria" role="option" tabindex="-1" class="">Hematuria macroscópica</li><li data-value="pielonefritis" role="option" tabindex="-1">Pielonefritis aguda</li><li data-value="gea" role="option" tabindex="-1">Gastroenteritis aguda</li><li data-value="hda" role="option" tabindex="-1">Hemorragia digestiva alta</li><li data-value="celulitis" role="option" tabindex="-1">Celulitis bacteriana</li><li data-value="absceso" role="option" tabindex="-1">Absceso / flemón periamigdalino</li><li data-value="policontusionado" role="option" tabindex="-1">Pac. policontusionado</li><li data-value="suboclusion" role="option" tabindex="-1">Suboclusión intestinal adhesiva</li><li data-value="intox" role="option" tabindex="-1">Intoxicaciones (ISRS, AINE, TCA, BZD, pregabalina)</li></ul>
     </div>
+    <button type="button" class="guide-open-btn" id="guideOpenBtn">📖 Guía rápida de uso</button>
     <p class="welcome-foot">Basado en los protocolos internos de la Gerencia Área de Salud I Occidente.</p>
     <p class="welcome-foot welcome-foot-disclaimer">No sustituye el juicio clínico.</p>
   </div>
@@ -5071,6 +5085,24 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="guideModal" role="dialog" aria-modal="true" aria-label="Guía rápida de uso">
+  <div class="modal-box guide-box">
+    <h3>📖 Guía rápida de uso</h3>
+    <p class="guide-lede">Todo lo esencial para moverte por los protocolos en menos de un minuto.</p>
+    <div class="guide-grid">
+      <div class="guide-item"><span class="guide-num">1</span><div><strong>Elige un protocolo</strong><p>Selecciónalo en la pantalla de inicio. Después puedes cambiar de protocolo desde el menú lateral (en móvil, el botón ☰) y buscar con 🔍 <em>Buscar en los protocolos</em>.</p></div></div>
+      <div class="guide-item"><span class="guide-num">2</span><div><strong>Recorre las pestañas</strong><p>Cada protocolo sigue el mismo orden: objetivo y resumen → inclusión/exclusión → valoración y tratamiento → destino al alta → <em>Consultar PDF</em>. Abajo tienes flechas para ir a la anterior o siguiente.</p></div></div>
+      <div class="guide-item"><span class="guide-num">3</span><div><strong>Marca las casillas</strong><p>Los criterios son interactivos y el aviso de color se actualiza solo. <em>Seleccionar todo</em> marca o desmarca una lista entera. Al cambiar de protocolo o recargar, todo se reinicia.</p></div></div>
+      <div class="guide-item"><span class="guide-num">4</span><div><strong>Lee los colores</strong>
+        <p class="guide-legend"><span class="gl gl-green">Verde</span> inclusión, alta, buena evolución<br><span class="gl gl-red">Rojo</span> exclusión, ingreso, signos de alarma<br><span class="gl gl-amber">Ámbar</span> criterios incompletos o intermedios</p></div></div>
+      <div class="guide-item"><span class="guide-num">5</span><div><strong>Usa las calculadoras y escalas</strong><p>EDACS, CHA₂DS₂-VA, HAS-BLED, NEWS2, DECAF y otras calculan la puntuación al responder. Los enlaces a escalas de consulta (mMRC, NYHA, eMRCD…) abren su tabla con la fuente.</p></div></div>
+      <div class="guide-item"><span class="guide-num">6</span><div><strong>Imprime o abre el PDF</strong><p><em>Imprimir / generar PDF</em> crea un resumen con lo que has marcado. <em>Consultar PDF</em> abre el documento original del protocolo. En móvil, toca las tablas para ampliarlas.</p></div></div>
+    </div>
+    <p class="guide-foot">Herramienta de apoyo basada en los protocolos internos del Servicio de Urgencias. No sustituye el juicio clínico. Los datos que marcas no se guardan ni se envían.</p>
+    <div class="modal-actions"><button class="secondary" type="button" id="guideClose">Cerrar</button></div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="searchModal">
   <div class="modal-box search-modal-box">
     <h3>Buscar en los protocolos</h3>
@@ -8257,4 +8289,6 @@ menu.addEventListener('click',function(e){if(e.target.closest('label'))setTimeou
 document.addEventListener('click',function(e){if(!c.contains(e.target))close();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 new MutationObserver(sync).observe(menu,{attributes:true,subtree:true,attributeFilter:['class']});sync();})();</script>
+<script>(function(){var ov=document.getElementById('guideModal'),b=document.getElementById('guideOpenBtn');if(!ov||!b)return;function c(){ov.classList.remove('open');}
+b.addEventListener('click',function(){ov.classList.add('open');});document.getElementById('guideClose').addEventListener('click',c);ov.addEventListener('click',function(e){if(e.target===ov)c();});document.addEventListener('keydown',function(e){if(e.key==='Escape')c();});})();</script>
 </body></html>
