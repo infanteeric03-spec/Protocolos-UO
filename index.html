@@ -844,7 +844,9 @@
   .tour-tap.on{display:block;}
   .tour-tap i{position:absolute;left:-26px;top:-26px;width:52px;height:52px;border-radius:50%;border:3px solid rgba(255,255,255,.9);animation:tourRing 1.5s infinite ease-out;opacity:0;}
   .tour-tap i:nth-child(2){animation-delay:.6s;}
-  .tour-tap span{position:absolute;left:-6px;top:4px;font-size:40px;line-height:1;filter:drop-shadow(0 3px 5px rgba(0,0,0,.6));animation:tourTapMove 1.5s infinite ease-in-out;}
+  .tour-hand{position:absolute;left:-21px;top:-6px;overflow:visible;filter:drop-shadow(0 3px 5px rgba(0,0,0,.6));animation:tourTapMove 1.5s infinite ease-in-out;}
+  .tour-hand path{fill:rgba(10,18,22,.55);stroke:#fff;stroke-width:3.6;stroke-linecap:round;stroke-linejoin:round;}
+  .tour-hand path+path{fill:none;stroke-width:3;}
   @keyframes tourRing{0%{transform:scale(.3);opacity:.95;}100%{transform:scale(1.5);opacity:0;}}
   @keyframes tourTapMove{0%,100%{transform:translate(8px,10px);}40%{transform:translate(0,0);}}
 </style>
@@ -5100,7 +5102,7 @@
 <div class="tour-layer" id="tourLayer" role="dialog" aria-modal="true" aria-label="Guía rápida de uso">
   <div class="tour-spot none" id="tourSpot"></div>
   <svg class="tour-arrow" id="tourArrow" aria-hidden="true"></svg>
-  <div class="tour-tap" id="tourTap" aria-hidden="true"><i></i><i></i><span>👆</span></div>
+  <div class="tour-tap" id="tourTap" aria-hidden="true"><i></i><i></i><svg class="tour-hand" viewBox="0 0 70 92" width="56" height="74" aria-hidden="true"><path d="M22,52 L22,15 C22,7 32,7 32,15 L32,38 C32,33 42,33 42,40 C42,35 52,35 52,42 C52,38 62,38 62,45 L62,62 C62,76 54,85 44,87 L31,87 C24,87 20,82 16,76 L6,62 C3,56 10,51 15,57 L22,65 Z"/><path d="M32,38 L32,52 M42,40 L42,52 M52,42 L52,52"/></svg></div>
   <div class="tour-text" id="tourText"></div>
   <div class="tour-bar"><button type="button" class="tour-skip" id="tourSkip">✕ Saltar guía</button><span class="tour-count" id="tourCount"></span><button type="button" class="tour-next" id="tourNext">Siguiente</button></div>
 </div>
