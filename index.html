@@ -824,17 +824,17 @@
   .group-title + ul.checklist, .group-title + .checklist-toggle-row + ul.checklist{margin-top:0 !important;}
   .guide-open-btn{margin-top:18px;font:inherit;font-size:14px;font-weight:600;padding:9px 18px;border-radius:999px;border:1px solid var(--teal-dark);background:transparent;color:var(--teal-dark);cursor:pointer;}
   .guide-open-btn:hover{background:rgba(24,105,116,.1);}
-  #guideModal .modal-box{width:min(760px,94vw);max-height:88vh;overflow:auto;padding:22px 24px;}
-  .guide-lede{margin:0 0 14px;color:var(--ink-soft);}
-  .guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .guide-item{display:flex;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card,#fff);}
-  .guide-item p{margin:3px 0 0;font-size:13.5px;line-height:1.45;}
-  .guide-num{flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal-dark);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
-  .guide-legend{line-height:1.9 !important;}
-  .gl{display:inline-block;min-width:52px;text-align:center;font-size:11.5px;font-weight:700;color:#fff;border-radius:999px;padding:1px 9px;margin-right:6px;}
-  .gl-green{background:#3d8f5a;} .gl-red{background:#c0432b;} .gl-amber{background:#c98a1a;}
-  .guide-foot{margin:14px 0 0;font-size:12px;color:var(--ink-soft);}
-  @media (max-width:640px){.guide-grid{grid-template-columns:1fr;}}
+  .tour-layer{position:fixed;inset:0;z-index:10000;display:none;}
+  .tour-layer.on{display:block;}
+  .tour-spot{position:fixed;border-radius:14px;box-shadow:0 0 0 200vmax rgba(6,14,18,.82);border:2px solid rgba(255,255,255,.55);transition:all .28s ease;pointer-events:none;}
+  .tour-spot.none{border-color:transparent;box-shadow:0 0 0 200vmax rgba(6,14,18,.86);}
+  .tour-text{position:fixed;left:50%;transform:translateX(-50%);width:min(560px,90vw);text-align:center;color:#fff;font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.4vw,26px);line-height:1.4;text-shadow:0 2px 10px rgba(0,0,0,.6);transition:top .28s ease;background:rgba(6,14,18,.78);padding:12px 18px;border-radius:16px;box-sizing:border-box;}
+  .tour-text b{font-style:normal;color:#ffe08a;}
+  .tour-bar{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px calc(14px + env(safe-area-inset-bottom));}
+  .tour-skip,.tour-next{font:inherit;font-size:16px;font-weight:700;border-radius:999px;cursor:pointer;padding:12px 22px;}
+  .tour-skip{background:rgba(10,18,22,.9);color:#fff;border:2px solid rgba(255,255,255,.7);}
+  .tour-next{background:#e8b93f;color:#1c1a12;border:3px solid #1c1a12;box-shadow:0 0 0 2px #e8b93f;}
+  .tour-count{color:#fff;font-weight:600;font-size:15px;}
 </style>
 </head>
 <body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e" class="pager-floating-active" data-wip-hidden="false">
@@ -5085,22 +5085,10 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="guideModal" role="dialog" aria-modal="true" aria-label="Guía rápida de uso">
-  <div class="modal-box guide-box">
-    <h3>📖 Guía rápida de uso</h3>
-    <p class="guide-lede">Todo lo esencial para moverte por los protocolos en menos de un minuto.</p>
-    <div class="guide-grid">
-      <div class="guide-item"><span class="guide-num">1</span><div><strong>Elige un protocolo</strong><p>Selecciónalo en la pantalla de inicio. Después puedes cambiar de protocolo desde el menú lateral (en móvil, el botón ☰) y buscar con 🔍 <em>Buscar en los protocolos</em>.</p></div></div>
-      <div class="guide-item"><span class="guide-num">2</span><div><strong>Recorre las pestañas</strong><p>Cada protocolo sigue el mismo orden: objetivo y resumen → inclusión/exclusión → valoración y tratamiento → destino al alta → <em>Consultar PDF</em>. Abajo tienes flechas para ir a la anterior o siguiente.</p></div></div>
-      <div class="guide-item"><span class="guide-num">3</span><div><strong>Marca las casillas</strong><p>Los criterios son interactivos y el aviso de color se actualiza solo. <em>Seleccionar todo</em> marca o desmarca una lista entera. Al cambiar de protocolo o recargar, todo se reinicia.</p></div></div>
-      <div class="guide-item"><span class="guide-num">4</span><div><strong>Lee los colores</strong>
-        <p class="guide-legend"><span class="gl gl-green">Verde</span> inclusión, alta, buena evolución<br><span class="gl gl-red">Rojo</span> exclusión, ingreso, signos de alarma<br><span class="gl gl-amber">Ámbar</span> criterios incompletos o intermedios</p></div></div>
-      <div class="guide-item"><span class="guide-num">5</span><div><strong>Usa las calculadoras y escalas</strong><p>EDACS, CHA₂DS₂-VA, HAS-BLED, NEWS2, DECAF y otras calculan la puntuación al responder. Los enlaces a escalas de consulta (mMRC, NYHA, eMRCD…) abren su tabla con la fuente.</p></div></div>
-      <div class="guide-item"><span class="guide-num">6</span><div><strong>Imprime o abre el PDF</strong><p><em>Imprimir / generar PDF</em> crea un resumen con lo que has marcado. <em>Consultar PDF</em> abre el documento original del protocolo. En móvil, toca las tablas para ampliarlas.</p></div></div>
-    </div>
-    <p class="guide-foot">Herramienta de apoyo basada en los protocolos internos del Servicio de Urgencias. No sustituye el juicio clínico. Los datos que marcas no se guardan ni se envían.</p>
-    <div class="modal-actions"><button class="secondary" type="button" id="guideClose">Cerrar</button></div>
-  </div>
+<div class="tour-layer" id="tourLayer" role="dialog" aria-modal="true" aria-label="Guía rápida de uso">
+  <div class="tour-spot none" id="tourSpot"></div>
+  <div class="tour-text" id="tourText"></div>
+  <div class="tour-bar"><button type="button" class="tour-skip" id="tourSkip">✕ Saltar guía</button><span class="tour-count" id="tourCount"></span><button type="button" class="tour-next" id="tourNext">Siguiente</button></div>
 </div>
 
 <div class="modal-overlay" id="searchModal">
@@ -8289,6 +8277,54 @@ menu.addEventListener('click',function(e){if(e.target.closest('label'))setTimeou
 document.addEventListener('click',function(e){if(!c.contains(e.target))close();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 new MutationObserver(sync).observe(menu,{attributes:true,subtree:true,attributeFilter:['class']});sync();})();</script>
-<script>(function(){var ov=document.getElementById('guideModal'),b=document.getElementById('guideOpenBtn');if(!ov||!b)return;function c(){ov.classList.remove('open');}
-b.addEventListener('click',function(){ov.classList.add('open');});document.getElementById('guideClose').addEventListener('click',c);ov.addEventListener('click',function(e){if(e.target===ov)c();});document.addEventListener('keydown',function(e){if(e.key==='Escape')c();});})();</script>
+<script>(function(){
+var L=document.getElementById('tourLayer'),spot=document.getElementById('tourSpot'),txt=document.getElementById('tourText'),cnt=document.getElementById('tourCount'),nx=document.getElementById('tourNext'),sk=document.getElementById('tourSkip'),btn=document.getElementById('guideOpenBtn');
+if(!L||!btn)return;
+var P='torax',i=0,cur=null;
+function $(q){return document.querySelector(q);}
+function vis(e){return e&&e.offsetParent!==null&&e.getBoundingClientRect().width>0;}
+function sb(){return document.getElementById('sidebar');}
+function mobile(){return getComputedStyle(sb()).display==='none'||sb().classList.contains('open')||window.innerWidth<=900;}
+function openSb(){if(getComputedStyle(sb()).display==='none')sb().classList.add('open');}
+function closeSb(){sb().classList.remove('open');}
+function enter(){if($('#welcomeScreen').style.display!=='none'){window.enterApp?enterApp(P):null;}}
+function tab(txtPart){var b=[].slice.call(document.querySelectorAll('button[data-protocol="'+P+'"][data-section]')).find(function(x){return x.textContent.indexOf(txtPart)>-1;});if(b)b.click();}
+function activeSel(q){return [].slice.call(document.querySelectorAll('.section.active '+q)).find(vis);}
+var steps=[
+ {t:'Empieza aquí: <b>elige el protocolo</b> que necesitas.',pre:function(){if($('#shell').style.display!=='none')$('#backToWelcome').click();},el:function(){return $('#welcomeProtocolToggle');}},
+ {t:'Dentro de un protocolo, puedes <b>cambiar a otro</b> desde este selector.',pre:function(){enter();openSb();},el:function(){return $('#sidebarProtocolToggle');}},
+ {t:'<b>Busca</b> cualquier término en todos los protocolos.',pre:function(){openSb();},el:function(){return $('#searchToggleSidebar');}},
+ {t:'Cada protocolo se divide en <b>pestañas</b>: resumen, inclusión/exclusión, valoración, tratamiento, destino al alta…',pre:function(){openSb();},el:function(){var b=document.querySelector('button[data-protocol="'+P+'"][data-section]');return b?b.parentElement:null;}},
+ {t:'<b>Marca los criterios</b> que cumple el paciente. “Seleccionar todo” marca la lista entera.',pre:function(){closeSb();tab('Inclusi');},el:function(){return activeSel('ul.checklist');}},
+ {t:'Este aviso cambia de color según lo marcado: <b>verde</b> cumple, <b>rojo</b> excluye, <b>ámbar</b> intermedio.',pre:function(){closeSb();},el:function(){return activeSel('.status-banner');}},
+ {t:'<b>Imprime o genera un PDF</b> con lo que has marcado.',pre:function(){closeSb();tab('Resumen');},el:function(){return activeSel('.print-summary-btn')||$('.section.active h1');}},
+ {t:'En <b>“Consultar PDF”</b> está el documento original completo del protocolo.',pre:function(){openSb();},el:function(){var b=document.querySelector('button[data-protocol="'+P+'"][data-section^="pdf"]');return b;}},
+ {t:'Pasa de una pestaña a otra con <b>las flechas</b> de abajo. Al cambiar de protocolo, las casillas se reinician.',pre:function(){closeSb();},el:function(){return $('#pagerNext')&&vis($('#pagerNext'))?$('#pagerNext').parentElement:null;}}
+];
+function place(){
+ var s=steps[i],e=cur;
+ var r=e&&vis(e)?e.getBoundingClientRect():null;
+ if(r){var pad=6;spot.className='tour-spot';spot.style.left=(r.left-pad)+'px';spot.style.top=(r.top-pad)+'px';spot.style.width=(r.width+pad*2)+'px';spot.style.height=(r.height+pad*2)+'px';
+  var th=txt.offsetHeight,below=r.bottom+pad+18,above=r.top-pad-18-th,bar=90;
+  var y=(below+th<innerHeight-bar)?below:(above>10?above:Math.max(10,Math.min(innerHeight-bar-th,r.bottom+18)));txt.style.top=y+'px';}
+ else{spot.className='tour-spot none';spot.style.left='50%';spot.style.top='45%';spot.style.width='0';spot.style.height='0';txt.style.top=Math.max(40,innerHeight/2-txt.offsetHeight/2-30)+'px';}
+}
+function show(){
+ var s=steps[i];
+ try{s.pre&&s.pre();}catch(x){}
+ setTimeout(function(){
+  cur=null;try{cur=s.el&&s.el();}catch(x){}
+  if(cur&&vis(cur)&&!cur.closest('#sidebar')){cur.scrollIntoView({block:'center'});}
+  txt.innerHTML=s.t;cnt.textContent=(i+1)+' / '+steps.length;nx.textContent=i===steps.length-1?'Terminar':'Siguiente';
+  setTimeout(place,60);
+ },i===0?0:260);
+}
+function start(){i=0;L.classList.add('on');show();}
+function end(){L.classList.remove('on');closeSb();var h=$('#backToWelcome');if($('#shell').style.display!=='none'&&h)h.click();window.scrollTo(0,0);}
+L.addEventListener('click',function(e){e.stopPropagation();});btn.addEventListener('click',start);sk.addEventListener('click',end);
+nx.addEventListener('click',function(){if(i>=steps.length-1){end();}else{i++;show();}});
+document.addEventListener('keydown',function(e){if(!L.classList.contains('on'))return;if(e.key==='Escape')end();else if(e.key==='ArrowRight'||e.key==='Enter')nx.click();else if(e.key==='ArrowLeft'&&i>0){i--;show();}});
+window.addEventListener('resize',function(){if(L.classList.contains('on'))place();});
+window.addEventListener('scroll',function(){if(L.classList.contains('on'))place();},true);
+})();</script>
 </body></html>
