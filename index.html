@@ -835,6 +835,18 @@
   .tour-skip{background:rgba(10,18,22,.9);color:#fff;border:2px solid rgba(255,255,255,.7);}
   .tour-next{background:#e8b93f;color:#1c1a12;border:3px solid #1c1a12;box-shadow:0 0 0 2px #e8b93f;}
   .tour-count{color:#fff;font-weight:600;font-size:15px;}
+  .tour-arrow{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;}
+  .tour-arrow path{fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6));}
+  .tour-arrow .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:tourDraw .6s .1s ease forwards;}
+  .tour-arrow .head{opacity:0;animation:tourFade .2s .6s forwards;}
+  @keyframes tourDraw{to{stroke-dashoffset:0;}}@keyframes tourFade{to{opacity:1;}}
+  .tour-tap{position:fixed;width:0;height:0;pointer-events:none;display:none;}
+  .tour-tap.on{display:block;}
+  .tour-tap i{position:absolute;left:-26px;top:-26px;width:52px;height:52px;border-radius:50%;border:3px solid rgba(255,255,255,.9);animation:tourRing 1.5s infinite ease-out;opacity:0;}
+  .tour-tap i:nth-child(2){animation-delay:.6s;}
+  .tour-tap span{position:absolute;left:-6px;top:4px;font-size:40px;line-height:1;filter:drop-shadow(0 3px 5px rgba(0,0,0,.6));animation:tourTapMove 1.5s infinite ease-in-out;}
+  @keyframes tourRing{0%{transform:scale(.3);opacity:.95;}100%{transform:scale(1.5);opacity:0;}}
+  @keyframes tourTapMove{0%,100%{transform:translate(8px,10px);}40%{transform:translate(0,0);}}
 </style>
 </head>
 <body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e" class="pager-floating-active" data-wip-hidden="false">
@@ -5087,6 +5099,8 @@
 
 <div class="tour-layer" id="tourLayer" role="dialog" aria-modal="true" aria-label="Guía rápida de uso">
   <div class="tour-spot none" id="tourSpot"></div>
+  <svg class="tour-arrow" id="tourArrow" aria-hidden="true"></svg>
+  <div class="tour-tap" id="tourTap" aria-hidden="true"><i></i><i></i><span>👆</span></div>
   <div class="tour-text" id="tourText"></div>
   <div class="tour-bar"><button type="button" class="tour-skip" id="tourSkip">✕ Saltar guía</button><span class="tour-count" id="tourCount"></span><button type="button" class="tour-next" id="tourNext">Siguiente</button></div>
 </div>
@@ -8280,7 +8294,7 @@ new MutationObserver(sync).observe(menu,{attributes:true,subtree:true,attributeF
 <script>(function(){
 var L=document.getElementById('tourLayer'),spot=document.getElementById('tourSpot'),txt=document.getElementById('tourText'),cnt=document.getElementById('tourCount'),nx=document.getElementById('tourNext'),sk=document.getElementById('tourSkip'),btn=document.getElementById('guideOpenBtn');
 if(!L||!btn)return;
-var P='torax',i=0,cur=null;
+var P='torax',i=0,cur=null,ar=document.getElementById('tourArrow'),tp=document.getElementById('tourTap');
 function $(q){return document.querySelector(q);}
 function vis(e){return e&&e.offsetParent!==null&&e.getBoundingClientRect().width>0;}
 function sb(){return document.getElementById('sidebar');}
@@ -8291,23 +8305,43 @@ function enter(){if($('#welcomeScreen').style.display!=='none'){window.enterApp?
 function tab(txtPart){var b=[].slice.call(document.querySelectorAll('button[data-protocol="'+P+'"][data-section]')).find(function(x){return x.textContent.indexOf(txtPart)>-1;});if(b)b.click();}
 function activeSel(q){return [].slice.call(document.querySelectorAll('.section.active '+q)).find(vis);}
 var steps=[
- {t:'Empieza aquí: <b>elige el protocolo</b> que necesitas.',pre:function(){if($('#shell').style.display!=='none')$('#backToWelcome').click();},el:function(){return $('#welcomeProtocolToggle');}},
- {t:'Dentro de un protocolo, puedes <b>cambiar a otro</b> desde este selector.',pre:function(){enter();openSb();},el:function(){return $('#sidebarProtocolToggle');}},
- {t:'<b>Busca</b> cualquier término en todos los protocolos.',pre:function(){openSb();},el:function(){return $('#searchToggleSidebar');}},
+ {t:'Empieza aquí: <b>elige el protocolo</b> que necesitas.',pre:function(){if($('#shell').style.display!=='none')$('#backToWelcome').click();},tap:1,el:function(){return $('#welcomeProtocolToggle');}},
+ {t:'Dentro de un protocolo, puedes <b>cambiar a otro</b> desde este selector.',pre:function(){enter();openSb();},tap:1,el:function(){return $('#sidebarProtocolToggle');}},
+ {t:'<b>Busca</b> cualquier término en todos los protocolos.',pre:function(){openSb();},tap:1,el:function(){return $('#searchToggleSidebar');}},
  {t:'Cada protocolo se divide en <b>pestañas</b>: resumen, inclusión/exclusión, valoración, tratamiento, destino al alta…',pre:function(){openSb();},el:function(){var b=document.querySelector('button[data-protocol="'+P+'"][data-section]');return b?b.parentElement:null;}},
- {t:'<b>Marca los criterios</b> que cumple el paciente. “Seleccionar todo” marca la lista entera.',pre:function(){closeSb();tab('Inclusi');},el:function(){return activeSel('ul.checklist');}},
+ {t:'<b>Marca los criterios</b> que cumple el paciente. “Seleccionar todo” marca la lista entera.',pre:function(){closeSb();tab('Inclusi');},tap:'check',el:function(){return activeSel('ul.checklist');}},
  {t:'Este aviso cambia de color según lo marcado: <b>verde</b> cumple, <b>rojo</b> excluye, <b>ámbar</b> intermedio.',pre:function(){closeSb();},el:function(){return activeSel('.status-banner');}},
- {t:'<b>Imprime o genera un PDF</b> con lo que has marcado.',pre:function(){closeSb();tab('Resumen');},el:function(){return activeSel('.print-summary-btn')||$('.section.active h1');}},
- {t:'En <b>“Consultar PDF”</b> está el documento original completo del protocolo.',pre:function(){openSb();},el:function(){var b=document.querySelector('button[data-protocol="'+P+'"][data-section^="pdf"]');return b;}},
- {t:'Pasa de una pestaña a otra con <b>las flechas</b> de abajo. Al cambiar de protocolo, las casillas se reinician.',pre:function(){closeSb();},el:function(){return $('#pagerNext')&&vis($('#pagerNext'))?$('#pagerNext').parentElement:null;}}
+ {t:'<b>Imprime o genera un PDF</b> con lo que has marcado.',pre:function(){closeSb();tab('Resumen');},tap:1,el:function(){return activeSel('.print-summary-btn')||$('.section.active h1');}},
+ {t:'En <b>“Consultar PDF”</b> está el documento original completo del protocolo.',pre:function(){openSb();},tap:1,el:function(){var b=document.querySelector('button[data-protocol="'+P+'"][data-section^="pdf"]');return b;}},
+ {t:'Pasa de una pestaña a otra con <b>las flechas</b> de abajo. Al cambiar de protocolo, las casillas se reinician.',pre:function(){closeSb();},tap:'next',el:function(){return $('#pagerNext')&&vis($('#pagerNext'))?$('#pagerNext').parentElement:null;}}
 ];
+function draw(r,y,th,pad){
+ var W=innerWidth,tw=txt.offsetWidth,tl=(W-tw)/2,below=y>r.top;
+ var sy=below?y-4:y+th+4, ty=below?r.bottom+pad+4:r.top-pad-4;
+ var cx=Math.min(Math.max(r.left+r.width/2,r.left+24),r.right-24); if(r.width>W*0.6)cx=Math.min(Math.max(W*0.22,r.left+30),r.right-30);
+ var sx=Math.min(Math.max(cx,tl+30),tl+tw-30);
+ var dy=ty-sy; if(Math.abs(dy)<26){ar.innerHTML='';return;}
+ var ex=cx,ey=ty, mx=(sx+ex)/2+(sx<ex?-34:34), my=(sy+ey)/2;
+ var d='M'+sx+','+sy+' C'+(sx+(mx-sx)*.2)+','+(sy+dy*.35)+' '+(mx)+','+(my+dy*.1)+' '+ex+','+ey;
+ var a=Math.atan2(ey-(my+dy*.1),ex-mx), hd=16, ang=Math.PI/5.5;
+ var h1=[ex-hd*Math.cos(a-ang),ey-hd*Math.sin(a-ang)],h2=[ex-hd*Math.cos(a+ang),ey-hd*Math.sin(a+ang)];
+ ar.innerHTML='<path class="draw" d="'+d+'"/><path class="head" d="M'+h1[0]+','+h1[1]+' L'+ex+','+ey+' L'+h2[0]+','+h2[1]+'"/>';
+ var p=ar.querySelector('.draw');var len=p.getTotalLength?p.getTotalLength():300;p.style.setProperty('--len',len);
+}
+function tapAt(s,r,e){
+ if(!s.tap){tp.classList.remove('on');return;}
+ var x=r.left+r.width/2,yy=r.top+r.height/2;
+ if(s.tap==='check'){var c=e.querySelector('input');if(c){var cr=c.getBoundingClientRect();x=cr.left+cr.width/2;yy=cr.top+cr.height/2;}}
+ if(s.tap==='next'){var n=$('#pagerNext');if(n){var nr=n.getBoundingClientRect();x=nr.left+nr.width/2;yy=nr.top+nr.height/2;}}
+ tp.style.left=x+'px';tp.style.top=yy+'px';tp.classList.add('on');
+}
 function place(){
  var s=steps[i],e=cur;
  var r=e&&vis(e)?e.getBoundingClientRect():null;
  if(r){var pad=6;spot.className='tour-spot';spot.style.left=(r.left-pad)+'px';spot.style.top=(r.top-pad)+'px';spot.style.width=(r.width+pad*2)+'px';spot.style.height=(r.height+pad*2)+'px';
-  var th=txt.offsetHeight,below=r.bottom+pad+18,above=r.top-pad-18-th,bar=90;
-  var y=(below+th<innerHeight-bar)?below:(above>10?above:Math.max(10,Math.min(innerHeight-bar-th,r.bottom+18)));txt.style.top=y+'px';}
- else{spot.className='tour-spot none';spot.style.left='50%';spot.style.top='45%';spot.style.width='0';spot.style.height='0';txt.style.top=Math.max(40,innerHeight/2-txt.offsetHeight/2-30)+'px';}
+  var th=txt.offsetHeight,below=r.bottom+pad+70,above=r.top-pad-70-th,bar=90;
+  var y=(below+th<innerHeight-bar)?below:(above>10?above:Math.max(10,Math.min(innerHeight-bar-th,r.bottom+18)));txt.style.top=y+'px';draw(r,y,th,pad);tapAt(s,r,e);}
+ else{ar.innerHTML='';tp.classList.remove('on');spot.className='tour-spot none';spot.style.left='50%';spot.style.top='45%';spot.style.width='0';spot.style.height='0';txt.style.top=Math.max(40,innerHeight/2-txt.offsetHeight/2-30)+'px';}
 }
 function show(){
  var s=steps[i];
@@ -8320,7 +8354,7 @@ function show(){
  },i===0?0:260);
 }
 function start(){i=0;L.classList.add('on');show();}
-function end(){L.classList.remove('on');closeSb();var h=$('#backToWelcome');if($('#shell').style.display!=='none'&&h)h.click();window.scrollTo(0,0);}
+function end(){L.classList.remove('on');ar.innerHTML='';tp.classList.remove('on');closeSb();var h=$('#backToWelcome');if($('#shell').style.display!=='none'&&h)h.click();window.scrollTo(0,0);}
 L.addEventListener('click',function(e){e.stopPropagation();});btn.addEventListener('click',start);sk.addEventListener('click',end);
 nx.addEventListener('click',function(){if(i>=steps.length-1){end();}else{i++;show();}});
 document.addEventListener('keydown',function(e){if(!L.classList.contains('on'))return;if(e.key==='Escape')end();else if(e.key==='ArrowRight'||e.key==='Enter')nx.click();else if(e.key==='ArrowLeft'&&i>0){i--;show();}});
