@@ -8330,6 +8330,7 @@ var ALL=[
  {t:'Pasa de una pestaña a otra con <b>las flechas</b> de abajo. Al cambiar de protocolo, las casillas se reinician.',barTop:1,pre:function(){closeSb();window.scrollTo(0,0);},tap:'next',el:function(){return $('#pagerNext')&&vis($('#pagerNext'))?$('#pagerNext').parentElement:null;}},
  {t:'<b>Marca los criterios</b> que cumple el paciente. “Seleccionar todo” marca la lista entera.',pre:function(){closeSb();goTo('.status-banner-criteria');},tap:'check',el:function(){return activeSel('ul.checklist');}},
  {t:'Este aviso cambia de color según lo marcado: <b>verde</b> cumple, <b>rojo</b> excluye, <b>ámbar</b> intermedio.',pre:function(){closeSb();},el:function(){return activeSel('.status-banner');}},
+ {t:'En las <b>calculadoras y escalas</b> (EDACS, CHA₂DS₂-VA, HAS-BLED, NEWS2, DECAF…) responde a cada ítem: la <b>puntuación y su interpretación</b> se calculan solas.',pre:function(){closeSb();goTo('#scorePanel');window.scrollTo(0,0);},tapSel:'#edadCdd .cdd-btn',el:function(){var a=activeSel('.score-panel'),b=activeSel('.edacs-item');return a&&b?[a,b]:(a||b);}},
  {t:'<b>Imprime o genera un PDF</b> con lo que has marcado.',pre:function(){closeSb();goTo('.print-summary-btn');},tap:1,el:function(){return activeSel('.print-summary-btn')||$('.section.active h1');}},
  {mob:1,t:'<b>Toca las tablas</b> para verlas ampliadas a pantalla completa.',pre:function(){closeSb();goTo('.table-tap-hint');},tap:1,el:function(){var h=activeSel('.table-tap-hint');return h?h.parentElement:null;}},
  {t:'En <b>“Consultar PDF”</b> está el documento original completo del protocolo.',pre:function(){openSb();},tap:1,el:function(){var b=document.querySelector('button[data-protocol="'+P+'"][data-section^="pdf"]');return b;}},
@@ -8348,15 +8349,17 @@ function draw(r,y,th,pad){
  var p=ar.querySelector('.draw');var len=p.getTotalLength?p.getTotalLength():300;p.style.setProperty('--len',len);
 }
 function tapAt(s,r,e){
+ if(s.tapSel){var q=$(s.tapSel);if(q&&vis(q)){var qr=q.getBoundingClientRect();tp.style.left=(qr.left+Math.min(qr.width/2,60))+'px';tp.style.top=(qr.top+qr.height/2)+'px';tp.classList.add('on');return;}}
  if(!s.tap){tp.classList.remove('on');return;}
  var x=r.left+r.width/2,yy=r.top+r.height/2;
  if(s.tap==='check'){var c=e.querySelector('input');if(c){var cr=c.getBoundingClientRect();x=cr.left+cr.width/2;yy=cr.top+cr.height/2;}}
  if(s.tap==='next'){var n=$('#pagerNext');if(n){var nr=n.getBoundingClientRect();x=nr.left+nr.width/2;yy=nr.top+nr.height/2;}}
  tp.style.left=x+'px';tp.style.top=yy+'px';tp.classList.add('on');
 }
+function rectOf(e){if(!e)return null;if(Array.isArray(e)){var rs=e.filter(vis).map(function(x){return x.getBoundingClientRect();});if(!rs.length)return null;var l=Math.min.apply(0,rs.map(function(r){return r.left;})),t=Math.min.apply(0,rs.map(function(r){return r.top;})),R=Math.max.apply(0,rs.map(function(r){return r.right;})),B=Math.max.apply(0,rs.map(function(r){return r.bottom;}));return {left:l,top:t,right:R,bottom:B,width:R-l,height:B-t};}return vis(e)?e.getBoundingClientRect():null;}
 function place(){
  var s=steps[i],e=cur;
- var r=e&&vis(e)?e.getBoundingClientRect():null;
+ var r=rectOf(e);
  if(r){var pad=6;spot.className='tour-spot';spot.style.left=(r.left-pad)+'px';spot.style.top=(r.top-pad)+'px';spot.style.width=(r.width+pad*2)+'px';spot.style.height=(r.height+pad*2)+'px';
   var th=txt.offsetHeight,below=r.bottom+pad+70,above=r.top-pad-70-th,bar=document.querySelector('.tour-bar').classList.contains('top')?0:90;
   var y=(below+th<innerHeight-bar)?below:(above>10?above:Math.max(10,Math.min(innerHeight-bar-th,r.bottom+18)));txt.style.top=y+'px';draw(r,y,th,pad);tapAt(s,r,e);}
@@ -8367,7 +8370,7 @@ function show(){
  try{s.pre&&s.pre();}catch(x){}
  setTimeout(function(){
   cur=null;try{cur=s.el&&s.el();}catch(x){}
-  if(cur&&vis(cur)&&!cur.closest('#sidebar')){cur.scrollIntoView({block:'center'});}
+  var c0=Array.isArray(cur)?cur[0]:cur;if(c0&&vis(c0)&&!c0.closest('#sidebar')&&!Array.isArray(cur)){c0.scrollIntoView({block:'center'});}
   pv.hidden=(i===0);document.querySelector('.tour-bar').classList.toggle('top',!!s.barTop&&MOB());txt.innerHTML=s.t;cnt.textContent=(i+1)+' / '+steps.length;nx.textContent=i===steps.length-1?'Terminar':'Siguiente';
   setTimeout(place,60);
  },i===0?0:260);
