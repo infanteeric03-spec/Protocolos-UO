@@ -8326,13 +8326,13 @@ var ALL=[
  {mob:1,t:'En el móvil, el <b>menú</b> con protocolos y pestañas se abre aquí.',pre:function(){enter();closeSb();},tap:1,el:function(){return $('#menuToggle');}},
  {t:'Dentro de un protocolo, puedes <b>cambiar a otro</b> desde este selector.',pre:function(){enter();openSb();},tap:1,el:function(){return $('#sidebarProtocolToggle');}},
  {t:'<b>Busca</b> cualquier término en todos los protocolos.',pre:function(){openSb();},tap:1,el:function(){return $('#searchToggleSidebar');}},
- {t:'En <b>“Consultar PDF”</b> está el documento original completo del protocolo.',pre:function(){openSb();},tap:1,el:function(){var b=document.querySelector('button[data-protocol="'+P+'"][data-section^="pdf"]');return b;}},
  {t:'Cada protocolo se divide en <b>pestañas</b>: resumen, inclusión/exclusión, valoración, tratamiento, destino al alta…',pre:function(){openSb();},el:function(){var b=document.querySelector('button[data-protocol="'+P+'"][data-section]');return b?b.parentElement:null;}},
+ {t:'Pasa de una pestaña a otra con <b>las flechas</b> de abajo. Al cambiar de protocolo, las casillas se reinician.',barTop:1,pre:function(){closeSb();window.scrollTo(0,0);},tap:'next',el:function(){return $('#pagerNext')&&vis($('#pagerNext'))?$('#pagerNext').parentElement:null;}},
  {t:'<b>Marca los criterios</b> que cumple el paciente. “Seleccionar todo” marca la lista entera.',pre:function(){closeSb();goTo('.status-banner-criteria');},tap:'check',el:function(){return activeSel('ul.checklist');}},
  {t:'Este aviso cambia de color según lo marcado: <b>verde</b> cumple, <b>rojo</b> excluye, <b>ámbar</b> intermedio.',pre:function(){closeSb();},el:function(){return activeSel('.status-banner');}},
  {t:'<b>Imprime o genera un PDF</b> con lo que has marcado.',pre:function(){closeSb();goTo('.print-summary-btn');},tap:1,el:function(){return activeSel('.print-summary-btn')||$('.section.active h1');}},
+ {t:'En <b>“Consultar PDF”</b> está el documento original completo del protocolo.',pre:function(){openSb();},tap:1,el:function(){var b=document.querySelector('button[data-protocol="'+P+'"][data-section^="pdf"]');return b;}},
  {mob:1,t:'<b>Toca las tablas</b> para verlas ampliadas a pantalla completa.',pre:function(){closeSb();goTo('.table-tap-hint');},tap:1,el:function(){var h=activeSel('.table-tap-hint');return h?h.parentElement:null;}},
- {t:'Pasa de una pestaña a otra con <b>las flechas</b> de abajo. Al cambiar de protocolo, las casillas se reinician.',barTop:1,pre:function(){closeSb();window.scrollTo(0,0);},tap:'next',el:function(){return $('#pagerNext')&&vis($('#pagerNext'))?$('#pagerNext').parentElement:null;}}
 ];
 function draw(r,y,th,pad){
  var W=innerWidth,tw=txt.offsetWidth,tl=(W-tw)/2,below=y>r.top;
