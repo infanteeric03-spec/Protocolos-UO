@@ -8520,7 +8520,7 @@ window.addEventListener('scroll',function(){if(L.classList.contains('on'))place(
   var btn=document.getElementById('installOpenBtn'),m=document.getElementById('installModal');if(!btn||!m)return;
   var standalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
   if(standalone){btn.style.display='none';return;}
-  var deferred=null,now=document.getElementById('installNowBtn');
+  var deferred=null,now=document.getElementById('installNowBtn');now.hidden=true;
   window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;now.hidden=false;});
   window.addEventListener('appinstalled',function(){btn.style.display='none';m.classList.remove('open');});
   now.addEventListener('click',function(){if(!deferred)return;deferred.prompt();deferred.userChoice.finally(function(){deferred=null;now.hidden=true;});});
@@ -8528,12 +8528,10 @@ window.addEventListener('scroll',function(){if(L.classList.contains('on'))place(
   function guess(){var u=navigator.userAgent||'';if(/android/i.test(u))return 'android';if(/iphone|ipad|ipod/i.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1))return 'apple';if(/Macintosh/.test(u))return 'mac';return 'windows';}
   m.querySelectorAll('.install-tabs button').forEach(function(b){b.addEventListener('click',function(){sel(b.dataset.os);});});
   btn.addEventListener('click',function(){sel(guess());m.classList.add('open');});
-  // si la barra flotante de pestañas ocupa la parte baja, el botón se coloca justo encima
-  function lift(){var pgr=document.getElementById('sectionPager'),sh=document.getElementById('shell'),b=10;
-    if(pgr&&sh&&sh.style.display!=='none'&&pgr.getClientRects().length){var r=pgr.getBoundingClientRect();if(r.top<innerHeight-6&&r.bottom>innerHeight-50)b=Math.round(innerHeight-r.top+8);}
-    btn.style.bottom=b+'px';}
-  ['scroll','resize','click','popstate'].forEach(function(ev){window.addEventListener(ev,function(){requestAnimationFrame(lift);},{passive:true});});
-  setInterval(lift,800);lift();
+  // solo visible en la pantalla de inicio
+  function lift(){var sh=document.getElementById('shell');btn.style.display=(sh&&sh.style.display!=='none')?'none':'';}
+  ['click','popstate','pageshow'].forEach(function(ev){window.addEventListener(ev,function(){requestAnimationFrame(lift);});});
+  setInterval(lift,600);lift();
   document.getElementById('installClose').addEventListener('click',function(){m.classList.remove('open');});
   m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('open');});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')m.classList.remove('open');});
