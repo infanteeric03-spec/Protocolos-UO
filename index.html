@@ -8364,7 +8364,7 @@ var ALL=[
  {t:'<b>Marca los criterios</b> que cumple el paciente. “Seleccionar todo” marca la lista entera.',pre:function(){closeSb();goTo('.status-banner-criteria');},tap:'check',el:function(){return activeSel('ul.checklist');}},
  {t:'Este aviso cambia de color según lo marcado: <b>verde</b> cumple, <b>rojo</b> excluye, <b>ámbar</b> intermedio.',pre:function(){closeSb();},el:function(){return activeSel('.status-banner');}},
  {t:'En las <b>calculadoras y escalas</b> (EDACS, CHA₂DS₂-VA, HAS-BLED, NEWS2, DECAF…) responde a cada ítem: la <b>puntuación y su interpretación</b> se calculan solas.',pre:function(){closeSb();goTo('#scorePanel');window.scrollTo(0,0);},tapSel:'#edadCdd .cdd-btn',el:function(){var a=activeSel('.score-panel'),b=activeSel('.edacs-item');return a&&b?[a,b]:(a||b);}},
- {t:'<b>Imprime o genera un PDF</b> con lo que has marcado.',pre:function(){closeSb();goTo('.print-summary-btn');},tap:1,el:function(){return activeSel('.print-summary-btn')||$('.section.active h1');}},
+ {t:'Si lo necesitas, <b>puedes imprimir o generar un PDF</b> con lo que has marcado.',pre:function(){closeSb();goTo('.print-summary-btn');},tap:1,el:function(){return activeSel('.print-summary-btn')||$('.section.active h1');}},
  {mob:1,t:'<b>Toca las tablas</b> para verlas ampliadas a pantalla completa.',pre:function(){closeSb();goTo('.table-tap-hint');},tap:1,el:function(){var h=activeSel('.table-tap-hint');return h?h.parentElement:null;}},
  {t:'En <b>“Consultar PDF”</b> está el documento original completo del protocolo.',pre:function(){openSb();},tap:1,el:function(){var b=document.querySelector('button[data-protocol="'+P+'"][data-section^="pdf"]');return b;}},
 ];
