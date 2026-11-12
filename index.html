@@ -863,9 +863,10 @@
     .checklist-toggle-btn{min-height:32px;}
     .opts label{min-height:40px; display:inline-flex; align-items:center;}
   }
+  .pw-forgot{margin:6px 0 0; font-size:12.5px;} .pw-forgot a{color:var(--teal-dark);}
 </style>
 </head>
-<body data-settings-hash="0b8de3faab1f043682707a4fbeb80cd882b9c8b9732af265b3ded7756511082e" class="pager-floating-active" data-wip-hidden="false">
+<body class="pager-floating-active" data-wip-hidden="false">
 
 <div class="welcome-screen" id="welcomeScreen" style="display: flex;">
   <button type="button" class="welcome-settings-btn" id="welcomeSettingsBtn" aria-haspopup="dialog" aria-label="Configuración" title="Configuración"><span class="icon-gear" aria-hidden="true"></span></button>
@@ -5229,6 +5230,7 @@
     <div id="pwCurrentRow" style="display:none;">
       <label for="pwCurrentInput">Contraseña actual</label>
       <input type="password" id="pwCurrentInput" autocomplete="off">
+      <p class="pw-forgot"><a href="#" class="pw-forgot-link">¿Has olvidado la contraseña?</a></p>
     </div>
     <label for="pwNewInput">Nueva contraseña</label>
     <input type="password" id="pwNewInput" autocomplete="off">
@@ -5253,6 +5255,7 @@
     <p class="modal-sub">Introduce la contraseña para desbloquear la sesión.</p>
     <input type="password" id="pwUnlockInput" autocomplete="off" placeholder="Contraseña" style="margin-top:4px;">
     <p id="pwUnlockError" style="color: var(--high); font-size: 12.5px; display: none; margin-top: 10px;">Contraseña incorrecta.</p>
+    <p class="pw-forgot"><a href="#" class="pw-forgot-link">¿Has olvidado la contraseña?</a></p>
     <div class="modal-actions">
       <button class="primary" id="pwUnlockSubmit">Entrar</button>
       <button class="secondary" id="pwUnlockCancel">Cancelar</button>
@@ -6500,8 +6503,11 @@
         return;
       }
       document.body.dataset.settingsHash = await sha256Hex(pwNewInput.value);
+      const rcode = newRecoveryCode();
+      document.body.dataset.recoveryHash = await sha256Hex(normCode(rcode));
       setLocked(true);
       pwModal.classList.remove('open');
+      window.prompt('CÓDIGO DE RECUPERACIÓN — cópialo y guárdalo en un lugar seguro (por ejemplo, en tus notas o en un correo a ti mismo).\n\nSi olvidas la contraseña, pulsa «¿Has olvidado la contraseña?» e introduce este código para quitarla y crear una nueva. No se volverá a mostrar.', rcode);
       await persistAfterPasswordChange('Contraseña guardada.');
     });
 
@@ -6513,10 +6519,38 @@
         return;
       }
       delete document.body.dataset.settingsHash;
+      delete document.body.dataset.recoveryHash;
       setLocked(false);
       pwModal.classList.remove('open');
       await persistAfterPasswordChange('Contraseña eliminada.');
     });
+
+    // -- recuperación con el código generado al crear la contraseña --
+    function newRecoveryCode(){
+      const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789', b=new Uint8Array(12); crypto.getRandomValues(b);
+      const c=Array.from(b, x=>A[x % A.length]).join('');
+      return c.slice(0,4)+'-'+c.slice(4,8)+'-'+c.slice(8,12);
+    }
+    function normCode(c){ return (c||'').toUpperCase().replace(/[^A-Z0-9]/g,''); }
+    async function recoverPassword(e){
+      if(e) e.preventDefault();
+      const rh = document.body.dataset.recoveryHash;
+      if(!rh){
+        window.alert('Esta contraseña no tiene código de recuperación (se creó antes de existir esta opción).\n\nPara restablecerla hay que quitar el atributo data-settings-hash de la etiqueta <body> en el archivo index.html del repositorio de GitHub. Después podrás crear una nueva desde Configuración.');
+        return;
+      }
+      const code = window.prompt('Introduce el código de recuperación que se mostró al crear la contraseña:');
+      if(code === null) return;
+      if(await sha256Hex(normCode(code)) !== rh){ window.alert('El código de recuperación no es correcto.'); return; }
+      delete document.body.dataset.settingsHash;
+      delete document.body.dataset.recoveryHash;
+      setLocked(false);
+      pwModal.classList.remove('open');
+      unlockModal.classList.remove('open');
+      window.alert('Contraseña eliminada. Ahora puedes crear una nueva desde Configuración → «Editar contraseña».');
+      await persistAfterPasswordChange('Contraseña restablecida.');
+    }
+    document.querySelectorAll('.pw-forgot-link').forEach(a=> a.addEventListener('click', recoverPassword));
 
     // La contraseña solo vive en el HTML del documento (atributo data- del <body>).
     // Si no se publica o descarga justo después de cambiarla, se pierde al recargar
@@ -8389,4 +8423,47 @@ window.addEventListener('load',function(){setTimeout(function(){var seen=null;tr
 window.addEventListener('resize',function(){if(L.classList.contains('on'))place();});
 window.addEventListener('scroll',function(){if(L.classList.contains('on'))place();},true);
 })();</script>
+<script>
+/* ---- Botón «atrás» del navegador/móvil: vuelve a la pestaña o pantalla anterior ---- */
+(function(){
+  if(!window.history || !history.pushState) return;
+  var restoring=false, pending=false;
+  function tourOn(){var t=document.getElementById('tourLayer');return t&&t.classList.contains('on');}
+  function current(){
+    var shell=document.getElementById('shell');
+    if(!shell||shell.style.display==='none') return {v:'home'};
+    var a=document.querySelector('.nav button.active[data-protocol="'+currentProtocolName+'"]');
+    return {v:'sec',p:currentProtocolName,s:a?a.dataset.section:null};
+  }
+  function same(a,b){return a&&b&&a.v===b.v&&a.p===b.p&&a.s===b.s;}
+  function record(){
+    if(restoring||tourOn()||pending) return;
+    pending=true;
+    setTimeout(function(){pending=false;if(restoring||tourOn())return;var st=current();if(!same(st,history.state))history.pushState(st,'');},0);
+  }
+  ['activateNavButton','switchProtocol','returnToWelcome','enterApp'].forEach(function(n){
+    var f=window[n]; if(typeof f!=='function') return;
+    window[n]=function(){var r=f.apply(this,arguments);record();return r;};
+  });
+  history.replaceState({v:'home'},'');
+  window.addEventListener('popstate',function(e){
+    var st=e.state; if(!st) return;
+    if(tourOn()) return;
+    restoring=true;
+    try{
+      ['passwordUnlockModal','passwordSettingsModal','searchModal'].forEach(function(id){var m=document.getElementById(id);if(m)m.classList.remove('open');});
+      if(st.v==='home'){ if(document.getElementById('shell').style.display!=='none') returnToWelcome(); }
+      else{
+        var shell=document.getElementById('shell');
+        if(shell.style.display==='none'||currentProtocolName!==st.p) enterApp(st.p);
+        var b=st.s&&document.querySelector('.nav button[data-protocol="'+st.p+'"][data-section="'+st.s+'"]');
+        if(b&&!b.classList.contains('active')) activateNavButton(b);
+      }
+    }finally{ setTimeout(function(){restoring=false;},0); }
+  });
+  // al terminar la guía, el historial vuelve a empezar en la pantalla de inicio
+  var tl=document.getElementById('tourLayer');
+  if(tl) new MutationObserver(function(){ if(!tourOn()) history.replaceState(current(),''); }).observe(tl,{attributes:true,attributeFilter:['class']});
+})();
+</script>
 </body></html>
