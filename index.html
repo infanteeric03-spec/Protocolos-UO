@@ -864,8 +864,8 @@
     .opts label{min-height:40px; display:inline-flex; align-items:center;}
   }
   .pw-forgot{margin:6px 0 0; font-size:12.5px;} .pw-forgot a{color:var(--teal-dark);}
-  .install-open-btn{position:absolute; left:50%; bottom:max(18px, env(safe-area-inset-bottom)); transform:translateX(-50%); font:inherit; font-size:13.5px; font-weight:600; color:var(--teal-dark); background:transparent; border:0; padding:8px 14px; border-radius:999px; cursor:pointer; text-decoration:underline; text-underline-offset:3px;}
-  .install-open-btn:hover{background:rgba(47,122,120,.08);}
+  .install-open-btn{position:fixed; left:50%; bottom:10px; transform:translateX(-50%); z-index:26; font:inherit; font-size:12px; font-weight:700; letter-spacing:.01em; color:var(--teal-dark); background:rgba(247,245,240,.92); border:1px solid var(--teal); border-radius:20px; padding:5px 12px; cursor:pointer; box-shadow:0 2px 8px rgba(22,50,79,.12); white-space:nowrap;}
+  .install-open-btn:hover{background:#EAF3F2;}
   #installModal .modal-box{width:min(520px,94vw); max-height:88vh; overflow:auto;}
   .install-now{width:100%; margin:4px 0 12px;}
   .install-tabs{display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 10px;}
@@ -874,6 +874,7 @@
   .install-panel{display:none;} .install-panel.on{display:block;}
   .install-panel ol{margin:0; padding-left:22px;} .install-panel li{margin:0 0 8px; line-height:1.45;}
   .install-note{font-size:12.5px; color:var(--ink-soft); margin:8px 0 0;}
+  @media print{.install-open-btn{display:none !important;}}
 </style>
 </head>
 <body class="" data-wip-hidden="false" data-settings-hash="873fb94a8fa102a12b3e5ab6f5a8ec479d926d0e47797fb145fcbcb2d5b1e630" data-recovery-hash="c1084fc7acc1246d157eebcdb3d9db464d121cffe38064e38b044533922c0b6f">
@@ -903,7 +904,6 @@
     <p class="welcome-foot">Basado en los protocolos internos de la Gerencia Área de Salud I Occidente.</p>
     <p class="welcome-foot welcome-foot-disclaimer">No sustituye el juicio clínico.</p>
   </div>
-  <button type="button" class="install-open-btn" id="installOpenBtn">📲 Instalar app</button>
 </div>
 
 <div class="shell" id="shell" style="display: none;">
@@ -8377,6 +8377,7 @@
 </script>
 
 <div class="wip-badge" style="">🚧 En obras</div>
+<button type="button" class="install-open-btn" id="installOpenBtn">📲 Instalar app</button>
 
 
 
@@ -8527,6 +8528,12 @@ window.addEventListener('scroll',function(){if(L.classList.contains('on'))place(
   function guess(){var u=navigator.userAgent||'';if(/android/i.test(u))return 'android';if(/iphone|ipad|ipod/i.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1))return 'apple';if(/Macintosh/.test(u))return 'mac';return 'windows';}
   m.querySelectorAll('.install-tabs button').forEach(function(b){b.addEventListener('click',function(){sel(b.dataset.os);});});
   btn.addEventListener('click',function(){sel(guess());m.classList.add('open');});
+  // si la barra flotante de pestañas ocupa la parte baja, el botón se coloca justo encima
+  function lift(){var pgr=document.getElementById('sectionPager'),sh=document.getElementById('shell'),b=10;
+    if(pgr&&sh&&sh.style.display!=='none'&&pgr.getClientRects().length){var r=pgr.getBoundingClientRect();if(r.top<innerHeight-6&&r.bottom>innerHeight-50)b=Math.round(innerHeight-r.top+8);}
+    btn.style.bottom=b+'px';}
+  ['scroll','resize','click','popstate'].forEach(function(ev){window.addEventListener(ev,function(){requestAnimationFrame(lift);},{passive:true});});
+  setInterval(lift,800);lift();
   document.getElementById('installClose').addEventListener('click',function(){m.classList.remove('open');});
   m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('open');});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')m.classList.remove('open');});
