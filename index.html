@@ -877,7 +877,7 @@
   @media print{.install-open-btn{display:none !important;}}
 </style>
 </head>
-<body class="" data-wip-hidden="false" data-settings-hash="873fb94a8fa102a12b3e5ab6f5a8ec479d926d0e47797fb145fcbcb2d5b1e630" data-recovery-hash="c1084fc7acc1246d157eebcdb3d9db464d121cffe38064e38b044533922c0b6f">
+<body class="pager-floating-active" data-wip-hidden="true" data-settings-hash="873fb94a8fa102a12b3e5ab6f5a8ec479d926d0e47797fb145fcbcb2d5b1e630" data-recovery-hash="c1084fc7acc1246d157eebcdb3d9db464d121cffe38064e38b044533922c0b6f">
 
 <div class="welcome-screen" id="welcomeScreen" style="display: flex;">
   <div class="welcome-card">
@@ -5020,10 +5020,10 @@
         <div class="card section-block"><div class="pdf-open-row"><a href="pdf/absceso-periamigdalino.pdf" class="pdf-open-btn" target="_blank" rel="noopener">📄 Abrir PDF del protocolo</a></div><p class="pdf-open-note">Se abre en una ventana nueva.</p><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
       </section>
 
-      <nav class="section-pager" id="sectionPager" style="display: none;">
-        <button type="button" class="pager-btn" id="pagerPrev"><span class="pager-arrow">←</span> <span id="pagerPrevLabel">Tratamiento y cuidados</span></button>
-        <span class="pager-pos" id="pagerPos">5 / 6</span>
-        <button type="button" class="pager-btn" id="pagerNext"><span id="pagerNextLabel">Cuidados de enfermería</span> <span class="pager-arrow">→</span></button>
+      <nav class="section-pager pager-floating" id="sectionPager" style="display: none;">
+        <button type="button" class="pager-btn" id="pagerPrev" disabled=""><span class="pager-arrow">←</span> <span id="pagerPrevLabel">Anterior</span></button>
+        <span class="pager-pos" id="pagerPos">1 / 7</span>
+        <button type="button" class="pager-btn" id="pagerNext"><span id="pagerNextLabel">Inclusión / exclusión</span> <span class="pager-arrow">→</span></button>
       </nav>
 
       <div class="disclaimer" style="margin-top:50px;">
@@ -5136,12 +5136,12 @@
   <div class="modal-box install-box">
     <h3>📲 Instalar la app</h3>
     <p class="modal-sub">Instálala para abrirla desde un icono, a pantalla completa y también sin conexión.</p>
-    <button type="button" class="primary install-now" id="installNowBtn" hidden>Instalar ahora</button>
+    <button type="button" class="primary install-now" id="installNowBtn">Instalar ahora</button>
     <div class="install-tabs" role="tablist">
-      <button type="button" role="tab" data-os="android">Android</button>
-      <button type="button" role="tab" data-os="apple">iPhone / iPad</button>
-      <button type="button" role="tab" data-os="mac">Mac</button>
-      <button type="button" role="tab" data-os="windows">Windows</button>
+      <button type="button" role="tab" data-os="android" class="" aria-selected="false">Android</button>
+      <button type="button" role="tab" data-os="apple" aria-selected="false" class="">iPhone / iPad</button>
+      <button type="button" role="tab" data-os="mac" aria-selected="false" class="">Mac</button>
+      <button type="button" role="tab" data-os="windows" aria-selected="true" class="on">Windows</button>
     </div>
     <div class="install-panel" data-os="android"><ol>
       <li>Abre la web en <strong>Chrome</strong>.</li>
@@ -5159,7 +5159,7 @@
       <li>En <strong>Safari</strong>: menú <strong>Archivo</strong> → <strong>«Añadir al Dock»</strong>.</li>
       <li>En <strong>Chrome</strong>: pulsa el icono de instalar en la barra de direcciones (pantalla con una flecha) y luego <strong>«Instalar»</strong>.</li>
     </ol></div>
-    <div class="install-panel" data-os="windows"><ol>
+    <div class="install-panel on" data-os="windows"><ol>
       <li>Abre la web en <strong>Chrome</strong> o <strong>Edge</strong>.</li>
       <li>Pulsa el icono de instalar en la barra de direcciones (pantalla con una flecha).</li>
       <li>Si no lo ves: en Chrome, menú <strong>⋮</strong> → «Transmitir, guardar y compartir» → <strong>«Instalar página como aplicación»</strong>; en Edge, menú <strong>…</strong> → «Aplicaciones» → <strong>«Instalar este sitio como una aplicación»</strong>.</li>
@@ -5257,15 +5257,15 @@
   <div class="modal-box">
     <h3><span class="icon-gear" aria-hidden="true" style="margin-right:6px;"></span>Configuración</h3>
     <div class="settings-panel" id="settingsPanel">
-      <button class="edit-toggle-btn lock-dim" id="editToggle" aria-disabled="true">✏️ Editar contenido</button>
-      <button class="edit-toggle-btn lock-dim" id="publishConfigBtn" style="display: none;" aria-disabled="true"><span class="icon-gear" aria-hidden="true" style="margin-right:6px;"></span>Configurar publicación en GitHub</button>
-      <button class="edit-toggle-btn lock-dim" id="reorderBtn" aria-disabled="true">↕️ Reordenar protocolos y apartados</button>
-      <button class="edit-toggle-btn lock-dim" id="hideWipBtn" aria-disabled="true">🚧 Ocultar aviso "En obras"</button>
+      <button class="edit-toggle-btn" id="editToggle">✏️ Editar contenido</button>
+      <button class="edit-toggle-btn" id="publishConfigBtn" style="display: none;"><span class="icon-gear" aria-hidden="true" style="margin-right:6px;"></span>Configurar publicación en GitHub</button>
+      <button class="edit-toggle-btn" id="reorderBtn">↕️ Reordenar protocolos y apartados</button>
+      <button class="edit-toggle-btn" id="hideWipBtn">🚧 Mostrar aviso "En obras"</button>
       <button class="edit-toggle-btn" id="passwordSettingsBtn">🔑 Editar contraseña</button>
     </div>
     <div class="modal-actions">
       <button class="secondary" id="settingsCloseBtn">Cerrar</button>
-      <button class="secondary" id="sessionLockBtn" type="button" aria-label="Desbloquear sesión" title="Desbloquear sesión">🔒</button>
+      <button class="secondary unlocked" id="sessionLockBtn" type="button" aria-label="Bloquear sesión" title="Bloquear sesión">🔓</button>
     </div>
   </div>
 </div>
@@ -5302,7 +5302,7 @@
     <h3>Contraseña necesaria</h3>
     <p class="modal-sub">Introduce la contraseña para desbloquear la sesión.</p>
     <input type="password" id="pwUnlockInput" autocomplete="off" placeholder="Contraseña" style="margin-top:4px;">
-    <p id="pwUnlockError" style="color: var(--high); font-size: 12.5px; display: none; margin-top: 10px;">Contraseña incorrecta.</p>
+    <p id="pwUnlockError" style="color: var(--high); font-size: 12.5px; display: block; margin-top: 10px;">Contraseña incorrecta.</p>
     <p class="pw-forgot"><a href="#" class="pw-forgot-link">¿Has olvidado la contraseña?</a></p>
     <div class="modal-actions">
       <button class="primary" id="pwUnlockSubmit">Entrar</button>
@@ -8376,8 +8376,8 @@
   }
 </script>
 
-<div class="wip-badge" style="">🚧 En obras</div>
-<button type="button" class="install-open-btn" id="installOpenBtn">📲 Instalar app</button>
+<div class="wip-badge" style="display: none;">🚧 En obras</div>
+<button type="button" class="install-open-btn" id="installOpenBtn" style="bottom: 76px;">📲 Instalar app</button>
 
 
 
@@ -8528,10 +8528,12 @@ window.addEventListener('scroll',function(){if(L.classList.contains('on'))place(
   function guess(){var u=navigator.userAgent||'';if(/android/i.test(u))return 'android';if(/iphone|ipad|ipod/i.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1))return 'apple';if(/Macintosh/.test(u))return 'mac';return 'windows';}
   m.querySelectorAll('.install-tabs button').forEach(function(b){b.addEventListener('click',function(){sel(b.dataset.os);});});
   btn.addEventListener('click',function(){sel(guess());m.classList.add('open');});
-  // solo visible en la pantalla de inicio
-  function lift(){var sh=document.getElementById('shell');btn.style.display=(sh&&sh.style.display!=='none')?'none':'';}
-  ['click','popstate','pageshow'].forEach(function(ev){window.addEventListener(ev,function(){requestAnimationFrame(lift);});});
-  setInterval(lift,600);lift();
+  // si la barra flotante de pestañas ocupa la parte baja, el botón se coloca justo encima
+  function lift(){var pgr=document.getElementById('sectionPager'),sh=document.getElementById('shell'),b=10;
+    if(pgr&&sh&&sh.style.display!=='none'&&pgr.getClientRects().length){var r=pgr.getBoundingClientRect();if(r.top<innerHeight-6&&r.bottom>innerHeight-50)b=Math.round(innerHeight-r.top+8);}
+    btn.style.bottom=b+'px';}
+  ['scroll','resize','click','popstate'].forEach(function(ev){window.addEventListener(ev,function(){requestAnimationFrame(lift);},{passive:true});});
+  setInterval(lift,800);lift();
   document.getElementById('installClose').addEventListener('click',function(){m.classList.remove('open');});
   m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('open');});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')m.classList.remove('open');});
