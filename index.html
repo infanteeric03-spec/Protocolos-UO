@@ -864,6 +864,16 @@
     .opts label{min-height:40px; display:inline-flex; align-items:center;}
   }
   .pw-forgot{margin:6px 0 0; font-size:12.5px;} .pw-forgot a{color:var(--teal-dark);}
+  .install-open-btn{position:absolute; left:50%; bottom:max(18px, env(safe-area-inset-bottom)); transform:translateX(-50%); font:inherit; font-size:13.5px; font-weight:600; color:var(--teal-dark); background:transparent; border:0; padding:8px 14px; border-radius:999px; cursor:pointer; text-decoration:underline; text-underline-offset:3px;}
+  .install-open-btn:hover{background:rgba(47,122,120,.08);}
+  #installModal .modal-box{width:min(520px,94vw); max-height:88vh; overflow:auto;}
+  .install-now{width:100%; margin:4px 0 12px;}
+  .install-tabs{display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 10px;}
+  .install-tabs button{font:inherit; font-size:13px; font-weight:600; padding:7px 12px; border-radius:999px; border:1px solid var(--line); background:transparent; color:var(--ink); cursor:pointer;}
+  .install-tabs button.on{background:var(--teal); border-color:var(--teal); color:#fff;}
+  .install-panel{display:none;} .install-panel.on{display:block;}
+  .install-panel ol{margin:0; padding-left:22px;} .install-panel li{margin:0 0 8px; line-height:1.45;}
+  .install-note{font-size:12.5px; color:var(--ink-soft); margin:8px 0 0;}
 </style>
 </head>
 <body class="" data-wip-hidden="false" data-settings-hash="873fb94a8fa102a12b3e5ab6f5a8ec479d926d0e47797fb145fcbcb2d5b1e630" data-recovery-hash="c1084fc7acc1246d157eebcdb3d9db464d121cffe38064e38b044533922c0b6f">
@@ -893,6 +903,7 @@
     <p class="welcome-foot">Basado en los protocolos internos de la Gerencia Área de Salud I Occidente.</p>
     <p class="welcome-foot welcome-foot-disclaimer">No sustituye el juicio clínico.</p>
   </div>
+  <button type="button" class="install-open-btn" id="installOpenBtn">📲 Instalar app</button>
 </div>
 
 <div class="shell" id="shell" style="display: none;">
@@ -5121,6 +5132,44 @@
   <div class="tour-bar"><button type="button" class="tour-skip" id="tourSkip">✕ Saltar guía</button><span class="tour-mid"><button type="button" class="tour-prev" id="tourPrev" aria-label="Paso anterior">‹</button><span class="tour-count" id="tourCount"></span></span><button type="button" class="tour-next" id="tourNext">Siguiente</button></div>
 </div>
 
+<div class="modal-overlay" id="installModal" role="dialog" aria-modal="true" aria-label="Instalar la app">
+  <div class="modal-box install-box">
+    <h3>📲 Instalar la app</h3>
+    <p class="modal-sub">Instálala para abrirla desde un icono, a pantalla completa y también sin conexión.</p>
+    <button type="button" class="primary install-now" id="installNowBtn" hidden>Instalar ahora</button>
+    <div class="install-tabs" role="tablist">
+      <button type="button" role="tab" data-os="android">Android</button>
+      <button type="button" role="tab" data-os="apple">iPhone / iPad</button>
+      <button type="button" role="tab" data-os="mac">Mac</button>
+      <button type="button" role="tab" data-os="windows">Windows</button>
+    </div>
+    <div class="install-panel" data-os="android"><ol>
+      <li>Abre la web en <strong>Chrome</strong>.</li>
+      <li>Toca el menú <strong>⋮</strong> (arriba a la derecha).</li>
+      <li>Pulsa <strong>«Añadir a pantalla de inicio»</strong> o <strong>«Instalar aplicación»</strong>.</li>
+      <li>Confirma con <strong>«Instalar»</strong>. El icono aparecerá en tu pantalla de inicio.</li>
+    </ol><p class="install-note">En <strong>Samsung Internet</strong>: menú <strong>≡</strong> → «Añadir página a» → «Pantalla de inicio».</p></div>
+    <div class="install-panel" data-os="apple"><ol>
+      <li>Abre la web en <strong>Safari</strong>.</li>
+      <li>Toca <strong>Compartir</strong> (el cuadrado con una flecha hacia arriba).</li>
+      <li>Desliza hacia abajo y pulsa <strong>«Añadir a pantalla de inicio»</strong>.</li>
+      <li>Pulsa <strong>«Añadir»</strong> arriba a la derecha.</li>
+    </ol></div>
+    <div class="install-panel" data-os="mac"><ol>
+      <li>En <strong>Safari</strong>: menú <strong>Archivo</strong> → <strong>«Añadir al Dock»</strong>.</li>
+      <li>En <strong>Chrome</strong>: pulsa el icono de instalar en la barra de direcciones (pantalla con una flecha) y luego <strong>«Instalar»</strong>.</li>
+    </ol></div>
+    <div class="install-panel" data-os="windows"><ol>
+      <li>Abre la web en <strong>Chrome</strong> o <strong>Edge</strong>.</li>
+      <li>Pulsa el icono de instalar en la barra de direcciones (pantalla con una flecha).</li>
+      <li>Si no lo ves: en Chrome, menú <strong>⋮</strong> → «Transmitir, guardar y compartir» → <strong>«Instalar página como aplicación»</strong>; en Edge, menú <strong>…</strong> → «Aplicaciones» → <strong>«Instalar este sitio como una aplicación»</strong>.</li>
+      <li>Confirma con <strong>«Instalar»</strong>. Quedará en el menú Inicio y podrás anclarla a la barra de tareas.</li>
+    </ol></div>
+    <p class="install-note">Los nombres de los menús pueden variar ligeramente según la versión del navegador.</p>
+    <div class="modal-actions"><button class="secondary" type="button" id="installClose">Cerrar</button></div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="searchModal">
   <div class="modal-box search-modal-box">
     <h3>Buscar en los protocolos</h3>
@@ -8463,6 +8512,24 @@ window.addEventListener('scroll',function(){if(L.classList.contains('on'))place(
   // al terminar la guía, el historial vuelve a empezar en la pantalla de inicio
   var tl=document.getElementById('tourLayer');
   if(tl) new MutationObserver(function(){ if(!tourOn()) history.replaceState(current(),''); }).observe(tl,{attributes:true,attributeFilter:['class']});
+})();
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('installOpenBtn'),m=document.getElementById('installModal');if(!btn||!m)return;
+  var standalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+  if(standalone){btn.style.display='none';return;}
+  var deferred=null,now=document.getElementById('installNowBtn');
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;now.hidden=false;});
+  window.addEventListener('appinstalled',function(){btn.style.display='none';m.classList.remove('open');});
+  now.addEventListener('click',function(){if(!deferred)return;deferred.prompt();deferred.userChoice.finally(function(){deferred=null;now.hidden=true;});});
+  function sel(os){m.querySelectorAll('.install-tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.os===os);b.setAttribute('aria-selected',b.dataset.os===os);});m.querySelectorAll('.install-panel').forEach(function(p){p.classList.toggle('on',p.dataset.os===os);});}
+  function guess(){var u=navigator.userAgent||'';if(/android/i.test(u))return 'android';if(/iphone|ipad|ipod/i.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1))return 'apple';if(/Macintosh/.test(u))return 'mac';return 'windows';}
+  m.querySelectorAll('.install-tabs button').forEach(function(b){b.addEventListener('click',function(){sel(b.dataset.os);});});
+  btn.addEventListener('click',function(){sel(guess());m.classList.add('open');});
+  document.getElementById('installClose').addEventListener('click',function(){m.classList.remove('open');});
+  m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('open');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')m.classList.remove('open');});
 })();
 </script>
 </body></html>
