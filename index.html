@@ -8771,8 +8771,7 @@ window.addEventListener('scroll',function(){if(L.classList.contains('on'))place(
       var m=items(ls,'exc',true);if(!m.length)m=items(ls,null,true);
       if(m.length)h='<b>'+(m.length>1?'Motivos':'Motivo')+':</b>'+ul(m);
     }else if(st==='low'){
-      var ok=items(ls,'inc',true);
-      if(ok.length)h='<b>Se cumple:</b>'+ul(ok)+(hasExc?'Sin ningún criterio de exclusión marcado.':'');
+      return; // en verde no se detalla: el aviso ya lo dice y el detalle va en «Generar comentario»
     }else{
       var pend=[];ls.forEach(function(x){if(x.k==='inc'&&!x.any)pend=pend.concat(items([x],null,false));});
       var ex=items(ls,'exc',true);
