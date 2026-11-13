@@ -899,6 +899,8 @@
   #commentModal .modal-box{width:min(560px,94vw); max-height:88vh; overflow:auto;}
   .comment-text{border:1px solid var(--line); border-radius:10px; padding:14px 16px; background:var(--paper); font-size:15px; line-height:1.55; white-space:pre-wrap; user-select:text; -webkit-user-select:text;}
   @media print{.gen-comment-row{display:none !important;}}
+  .gen-comment-btn.is-off{color:var(--ink-soft); border-color:var(--line); opacity:.6; cursor:not-allowed;}
+  .gen-comment-btn.is-off:hover{background:transparent;}
 /* ==== MODO OSCURO (auto) ==== */
   :root{color-scheme:light dark;}
   @media screen and (prefers-color-scheme: dark){
@@ -1374,6 +1376,7 @@
         <p class="lede">Marca los ítems que cumple el paciente. Para aceptar el ingreso en la Unidad de Observación deben cumplirse <strong>todos</strong> los criterios de inclusión y <strong>ninguno</strong> de exclusión.</p>
 
         <div id="admission-status" class="status-banner status-banner-criteria status-neutral">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn" data-comment="torax">📝 Generar comentario</button></div>
 
         <div class="card section-block">
           <span class="group-title include">Inclusión · A · Estabilidad clínica</span>
@@ -1827,6 +1830,7 @@
         <p class="lede">Marca los ítems que cumple el paciente para orientar la indicación de ingreso en la Unidad de Observación.</p>
 
         <div id="epoc-status" class="status-banner status-banner-criteria status-neutral">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn" data-comment="epoc">📝 Generar comentario</button></div>
 
         <div class="card section-block">
           <span class="group-title include">Criterios de ingreso en UO</span>
@@ -2186,6 +2190,7 @@
         <p class="lede">Referidos a agudizaciones leves/moderadas (Tabla 4.2) con respuesta incompleta al tratamiento pautado en Urgencias.</p>
 
         <div id="asma-status" class="status-banner status-banner-criteria status-neutral">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn" data-comment="asma">📝 Generar comentario</button></div>
 
         <div class="card section-block">
           <span class="group-title include">Criterios de admisión</span>
@@ -2874,6 +2879,7 @@
         </tbody></table><span class="table-tap-hint">🔍 Toca para ampliar</span></div>
 
         <div id="gea-status" class="status-banner status-banner-criteria status-neutral">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn is-off" aria-disabled="true" title="No disponible todavía en este protocolo">📝 Generar comentario</button></div>
 
         <div class="card section-block">
           <span class="group-title include">Condiciones mínimas — deben cumplirse todas</span>
@@ -3310,6 +3316,7 @@
         <p class="lede">Marca los ítems que cumple el paciente para orientar la indicación de ingreso en la Unidad de Observación.</p>
 
         <div id="hematuria-status" class="status-banner status-banner-criteria status-neutral">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn is-off" aria-disabled="true" title="No disponible todavía en este protocolo">📝 Generar comentario</button></div>
 
         <div class="card section-block">
           <span class="group-title include">Criterios de admisión — todos los siguientes</span>
@@ -3736,6 +3743,7 @@
         <p class="lede">Deben cumplirse <strong>todos</strong>. Los pacientes que no los cumplan ingresarán en Digestivo o UCI según gravedad.</p>
 
         <div id="hda-status" class="status-banner status-banner-criteria status-neutral">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn is-off" aria-disabled="true" title="No disponible todavía en este protocolo">📝 Generar comentario</button></div>
 
         <div class="card section-block">
           <span class="group-title include">Criterios de ingreso en UOME — todos los siguientes</span>
@@ -3957,6 +3965,7 @@
         <p style="font-size:12.5px; color:var(--ink-soft); margin-top:14px;">0–1: bajo riesgo (candidato a UO) · 2: riesgo intermedio (valorar según contexto) · ≥3: alto riesgo (ingreso hospitalario).</p>
 
         <div id="neumonia-status" class="status-banner status-banner-criteria status-neutral">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn" data-comment="neumonia">📝 Generar comentario</button></div>
 
         <div class="card section-block">
           <span class="group-title include">Criterios de inclusión — deben cumplirse todos</span>
@@ -4253,6 +4262,7 @@
         <p class="lede">Marca los ítems que cumple el paciente para orientar la indicación de ingreso en la Unidad de Observación.</p>
 
         <div id="pielonefritis-status" class="status-banner status-banner-criteria status-neutral">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn is-off" aria-disabled="true" title="No disponible todavía en este protocolo">📝 Generar comentario</button></div>
 
         <div class="card section-block">
           <span class="group-title include">Condiciones mínimas — deben cumplirse todas</span>
@@ -4605,6 +4615,7 @@
         <p class="lede">Ingresarán en Observación pacientes con politraumatismo leve o moderado estable, con pruebas complementarias normales (TAC body sin lesiones a ningún nivel).</p>
 
         <div id="poli-status" class="status-banner status-banner-criteria status-neutral">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn is-off" aria-disabled="true" title="No disponible todavía en este protocolo">📝 Generar comentario</button></div>
 
         <div class="card section-block">
           <span class="group-title include">Mecanismo de lesión de alta energía, con pruebas complementarias normales</span>
@@ -4916,6 +4927,7 @@
         <p class="lede">Marca los ítems que cumple el paciente. Para la Unidad de Observación deben cumplirse <strong>todos</strong> los criterios de aptitud y <strong>ninguno</strong> de exclusión.</p>
 
         <div id="intox-status" class="status-banner status-banner-criteria status-neutral" data-inc="intox-inc" data-exc="intox-exc" data-mode="all">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn is-off" aria-disabled="true" title="No disponible todavía en este protocolo">📝 Generar comentario</button></div>
         <div class="card section-block"><span class="group-title include">Aptos para Unidad de Observación — todos los siguientes</span><div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="intox-inc"><li><input type="checkbox" id="nk1"><label for="nk1">Vía aérea protegida, ventilación adecuada y estabilidad hemodinámica.</label></li><li><input type="checkbox" id="nk2"><label for="nk2">Toxicidad ausente o leve, con evolución estable y necesidades previsibles cubiertas por la unidad.</label></li><li><input type="checkbox" id="nk3"><label for="nk3">ECG sin alteraciones de alto riesgo cuando la sustancia pueda producir cardiotoxicidad.</label></li><li><input type="checkbox" id="nk4"><label for="nk4">Posibilidad de reevaluación médica inmediata, monitorización indicada y traslado rápido a críticos.</label></li><li><input type="checkbox" id="nk5"><label for="nk5">Plan de valoración de riesgo suicida y seguridad antes del alta en ingestas intencionales.</label></li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><span class="group-title exclude">Exclusión de observación convencional — cualquiera de los siguientes</span><ul class="checklist" data-group="intox-exc" data-any-of="true"><li><input type="checkbox" id="nk6"><label for="nk6">GCS &lt; 9, pérdida de reflejos protectores, hipoventilación, hipoxemia o aspiración</label></li><li><input type="checkbox" id="nk7"><label for="nk7">Convulsiones, delirium grave, agitación no controlable, hipertermia o síndrome serotoninérgico moderado/grave</label></li><li><input type="checkbox" id="nk8"><label for="nk8">Hipotensión persistente, arritmia, síncope cardiogénico o necesidad de vasopresor</label></li><li><input type="checkbox" id="nk9"><label for="nk9">QRS ≥ 100 ms en posible tricíclico; arritmia ventricular; patrón Brugada; QTc marcadamente prolongado</label></li><li><input type="checkbox" id="nk10"><label for="nk10">Acidosis metabólica significativa, lesión renal aguda, alteración electrolítica relevante o hemorragia digestiva</label></li><li><input type="checkbox" id="nk11"><label for="nk11">Coingesta de opioides, alcoholes tóxicos, paracetamol en dosis tóxica, cardiotóxicos u otra sustancia de cinética prolongada → <strong>aplicar el protocolo de la sustancia de mayor riesgo.</strong></label></li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
       </section>
@@ -5008,6 +5020,7 @@
         <div class="card section-block"><h3>Objetivo general</h3><p style="margin:0;">Estabilización y mejora de pacientes con descompensación aguda leve-moderada de IC en los que persisten síntomas/signos que no permiten alta directa desde SUH; mediante un tratamiento estandarizado y un control evolutivo de &gt;24 h.</p><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><h3>Objetivo secundario</h3><p style="margin:0;">Crear un protocolo de tratamiento y control para los pacientes con IC agudizada que no cumplen criterios de hospitalización, de manera multidisciplinar entre UOME del SUH, HAD y CAR.</p><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div id="ic-status" class="status-banner status-banner-criteria status-neutral" data-inc="ic-inc" data-exc="ic-exc" data-mode="all">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn is-off" aria-disabled="true" title="No disponible todavía en este protocolo">📝 Generar comentario</button></div>
         <div class="card section-block"><span class="group-title include">Criterios de inclusión — IC conocida (o probable) descompensada con:</span><div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="ic-inc"><li><input type="checkbox" id="nk12"><label for="nk12">Persistencia de la clínica de congestión.</label></li><li><input type="checkbox" id="nk13"><label for="nk13">Disnea leve-moderada (NYHA &lt; IV) que no precise VMNI.</label></li><li><input type="checkbox" id="nk14"><label for="nk14">Hipoxemia que no precise VMNI.</label></li><li><input type="checkbox" id="nk15"><label for="nk15">Necesidad de tratamiento IV.</label></li><li><input type="checkbox" id="nk16"><label for="nk16">Plan terapéutico claro.</label></li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><span class="group-title exclude">Criterios de exclusión</span><ul class="checklist" data-group="ic-exc" data-any-of="true"><li><input type="checkbox" id="nk17"><label for="nk17">Disnea en reposo NYHA IV.</label></li><li><input type="checkbox" id="nk18"><label for="nk18">Hipoxemia clínica relevante = insuficiencia respiratoria.</label></li><li><input type="checkbox" id="nk19"><label for="nk19">Necesidad de VMNI.</label></li><li><input type="checkbox" id="nk20"><label for="nk20">Inestabilidad hemodinámica, shock o hipotensión.</label></li><li><input type="checkbox" id="nk21"><label for="nk21">Necesidad de inotrópicos/vasopresores.</label></li><li><input type="checkbox" id="nk22"><label for="nk22">Edema agudo grave.</label></li><li><input type="checkbox" id="nk23"><label for="nk23">Arritmia grave (descompensa enfermedades de base, inestabilidad).</label></li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
       </section>
@@ -5058,6 +5071,7 @@
 
         <div class="card section-block"><h3>Objetivo</h3><p style="margin:0;">Manejo protocolizado de pacientes con suboclusión intestinal adhesiva valorados por Cirugía General y candidatos a tratamiento conservador en UOME, con estancia máxima prevista de 36 horas.</p><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div id="sub-status" class="status-banner status-banner-criteria status-neutral" data-inc="sub-inc" data-exc="sub-exc" data-mode="all">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn is-off" aria-disabled="true" title="No disponible todavía en este protocolo">📝 Generar comentario</button></div>
         <div class="card section-block"><span class="group-title include">Inclusión en UOME sin TC abdominal previa — todos los siguientes</span><div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="sub-inc"><li><input type="checkbox" id="nk24"><label for="nk24">Diagnóstico clínico compatible con suboclusión intestinal adhesiva recurrente.</label></li><li><input type="checkbox" id="nk25"><label for="nk25">Antecedente documentado de obstrucción/suboclusión por bridas o adherencias.</label></li><li><input type="checkbox" id="nk26"><label for="nk26">Valoración por Cirugía General con indicación de tratamiento conservador.</label></li><li><input type="checkbox" id="nk27"><label for="nk27">Estabilidad clínica y analítica.</label></li><li><input type="checkbox" id="nk28"><label for="nk28">Abdomen sin signos de irritación peritoneal ni sospecha de isquemia, perforación o estrangulación intestinal.</label></li><li><input type="checkbox" id="nk29"><label for="nk29">Previsión de resolución con tratamiento conservador en ≤ 36 horas.</label></li></ul><div class="callout-warn"><strong>Si existe sospecha clínica de etiología adhesiva, pero no está previamente documentada → realizar TC abdominal antes del ingreso en UOME.</strong></div><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><span class="group-title exclude">Criterios de exclusión de UOME</span><ul class="checklist" data-group="sub-exc" data-any-of="true"><li><input type="checkbox" id="nk30"><label for="nk30">Inestabilidad hemodinámica o sepsis.</label></li><li><input type="checkbox" id="nk31"><label for="nk31">Dolor continuo o no controlable.</label></li><li><input type="checkbox" id="nk32"><label for="nk32">Signos de irritación peritoneal.</label></li><li><input type="checkbox" id="nk33"><label for="nk33">Sospecha de isquemia, perforación o estrangulación intestinal.</label></li><li><input type="checkbox" id="nk34"><label for="nk34">Alteraciones analíticas de alarma, especialmente hiperlactatemia.</label></li><li><input type="checkbox" id="nk35"><label for="nk35">Necesidad de cirugía urgente.</label></li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
       </section>
@@ -5111,6 +5125,7 @@
 
         <div class="card section-block"><h3>Objetivo</h3><p style="margin:0;">Establecer un protocolo de actuación para pacientes diagnosticados en Urgencias de celulitis bacteriana no necrotizante susceptibles de manejo en UOME mediante antibioterapia intravenosa inicial, monitorización clínica y reevaluación precoz, favoreciendo el alta segura o la derivación al recurso asistencial más adecuado.</p><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div id="cel-status" class="status-banner status-banner-criteria status-neutral" data-inc="cel-inc" data-exc="cel-exc" data-mode="some">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn is-off" aria-disabled="true" title="No disponible todavía en este protocolo">📝 Generar comentario</button></div>
         <div class="card section-block"><span class="group-title include">Criterios de aceptación</span><div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="cel-inc"><li><input type="checkbox" id="nk36"><label for="nk36">Necesidad de antibioterapia intravenosa inicial por fracaso de tratamiento oral.</label></li><li><input type="checkbox" id="nk37"><label for="nk37">Necesidad de monitorización de la extensión de la lesión cutánea las primeras 24 horas.</label></li><li><input type="checkbox" id="nk38"><label for="nk38">Celulitis extensa o con edema importante.</label></li><li><input type="checkbox" id="nk39"><label for="nk39">Afectación moderada-grave. Ausencia de sepsis-shock séptico.</label></li><li><input type="checkbox" id="nk40"><label for="nk40">Ausencia de sospecha de fascitis necrotizante.</label></li><li><input type="checkbox" id="nk41"><label for="nk41">Dudas sobre la adherencia terapéutica o soporte social deficiente a nivel domiciliario.</label></li><li><input type="checkbox" id="nk42"><label for="nk42">Previsible estabilidad clínica y alta ≤ 36 horas.</label></li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><span class="group-title exclude">Criterios de exclusión / ingreso directo</span><ul class="checklist" data-group="cel-exc" data-any-of="true"><li><input type="checkbox" id="nk43"><label for="nk43">Sospecha de fascitis necrotizante (dolor desproporcionado, crepitación, ampollas hemorrágicas, equimosis o anestesia local).</label></li><li><input type="checkbox" id="nk44"><label for="nk44">Absceso profundo que precise drenaje.</label></li><li><input type="checkbox" id="nk45"><label for="nk45">Osteomielitis.</label></li><li><input type="checkbox" id="nk46"><label for="nk46">Infección protésica.</label></li><li><input type="checkbox" id="nk47"><label for="nk47">Sepsis o shock séptico.</label></li><li><input type="checkbox" id="nk48"><label for="nk48">Lactato elevado persistente.</label></li><li><input type="checkbox" id="nk49"><label for="nk49">Neutropenia, inmunosupresión grave.</label></li><li><input type="checkbox" id="nk50"><label for="nk50">ERC estadio IV–V.</label></li><li><input type="checkbox" id="nk51"><label for="nk51">Cirrosis avanzada.</label></li><li><input type="checkbox" id="nk52"><label for="nk52">Fragilidad severa.</label></li><li><input type="checkbox" id="nk53"><label for="nk53">Factores de riesgo de MRSA o multirresistencias que requieran antibioterapia compleja.</label></li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
       </section>
@@ -5164,6 +5179,7 @@
 
         <div class="card section-block"><h3>Objetivo</h3><p style="margin:0;">Establecer un protocolo de actuación para pacientes diagnosticados en Urgencias de absceso o flemón periamigdalino subsidiarios de manejo en UOME mediante observación clínica, antibioterapia intravenosa, analgesia, hidratación y vigilancia de la vía aérea hasta valoración obligatoria por ORL.</p><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div id="abs-status" class="status-banner status-banner-criteria status-neutral" data-inc="abs-inc" data-exc="abs-exc" data-mode="all">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn is-off" aria-disabled="true" title="No disponible todavía en este protocolo">📝 Generar comentario</button></div>
         <div class="card section-block"><span class="group-title include">Criterios de aceptación desde Urgencias — todos los siguientes</span><div class="checklist-toggle-row"><button type="button" class="checklist-toggle-btn">Seleccionar todo</button></div><ul class="checklist" data-group="abs-inc"><li><input type="checkbox" id="nk1"><label for="nk1">Diagnóstico clínico de absceso o flemón periamigdalino.</label></li><li><input type="checkbox" id="nk2"><label for="nk2">Necesidad de antibioterapia IV.</label></li><li><input type="checkbox" id="nk3"><label for="nk3">Necesidad de analgesia e hidratación IV.</label></li><li><input type="checkbox" id="nk4"><label for="nk4">Estabilidad hemodinámica y ausencia de criterios de sepsis.</label></li><li><input type="checkbox" id="nk5"><label for="nk5">SatO₂ ≥ 94 %.</label></li><li><input type="checkbox" id="nk6"><label for="nk6">Ausencia de compromiso inmediato de vía aérea.</label></li><li><input type="checkbox" id="nk7"><label for="nk7">Previsible estabilidad clínica durante estancia ≤ 36 h.</label></li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
         <div class="card section-block"><span class="group-title exclude">Criterios de exclusión / ingreso directo — cualquiera de los siguientes</span><span class="group-title sub-gt">Valoración ORL urgente</span><ul class="checklist" data-group="abs-exc" data-any-of="true"><li><input type="checkbox" id="nk8"><label for="nk8">Compromiso de vía aérea, disnea o estridor.</label></li><li><input type="checkbox" id="nk9"><label for="nk9">Imposibilidad para manejar secreciones.</label></li><li><input type="checkbox" id="nk10"><label for="nk10">Sospecha de absceso cervical profundo.</label></li><li><input type="checkbox" id="nk11"><label for="nk11">Extensión parafaríngea o retrofaríngea.</label></li><li><input type="checkbox" id="nk12"><label for="nk12">Trismus severo progresivo.</label></li></ul><span class="group-title sub-gt">Ingreso en Medicina Interna</span><ul class="checklist" data-group="abs-exc" data-any-of="true"><li><input type="checkbox" id="nk13"><label for="nk13">Sepsis o shock séptico.</label></li><li><input type="checkbox" id="nk14"><label for="nk14">Inmunosupresión grave.</label></li><li><input type="checkbox" id="nk15"><label for="nk15">Neutropenia.</label></li><li><input type="checkbox" id="nk16"><label for="nk16">Fragilidad severa.</label></li></ul><span class="block-drag-handle" title="Arrastrar para reordenar este recuadro" aria-hidden="true">☰</span></div>
       </section>
@@ -8836,36 +8852,90 @@ window.addEventListener('scroll',function(){if(L.classList.contains('on'))place(
 (function(){
   function on(id){var c=document.getElementById(id);return !!(c&&c.checked);}
   function join(a){if(a.length<2)return a.join('');return a.slice(0,-1).join(', ')+' y '+a[a.length-1];}
-  function cap(t){return t.charAt(0).toUpperCase()+t.slice(1);}
-  var GEN={
-    fa:function(){
-      var inc={fi2:'hemodinámicamente estable',fi3:'con respuesta ventricular rápida susceptible de control farmacológico',fi4:'que precisa monitorización tras intervención terapéutica',fi5:'sin indicación de cardioversión urgente',fi6:'candidato a manejo en Unidad de Observación'};
-      var exc={fe1:'shock',fe2:'PAS < 90 mmHg persistente',fe3:'dolor torácico de características isquémicas',fe4:'síndrome coronario agudo',fe5:'edema agudo de pulmón',fe6:'insuficiencia cardiaca aguda',fe7:'síncope de probable origen arrítmico',fe8:'necesidad de cardioversión eléctrica urgente',fe9:'síndrome de preexcitación',fe10:'arritmias complejas asociadas',fe11:'sepsis grave'};
-      var I=Object.keys(inc).filter(on).map(function(k){return inc[k];}),E=Object.keys(exc).filter(on).map(function(k){return exc[k];});
-      var subj=on('fi1')?'Paciente con fibrilación o flutter auricular (conocido o de nuevo diagnóstico)':'Paciente con fibrilación o flutter auricular';
-      if(!I.length&&!E.length&&!on('fi1')) return null;
-      if(E.length){
-        return subj+' que presenta '+join(E)+(E.length>1?', criterios':', criterio')+' de exclusión de la Unidad de Observación.\n\nNo es candidato a ingreso en la UOME. Se recomienda valoración en área de críticos o ingreso hospitalario según la situación clínica.';
-      }
-      return subj+(I.length?', '+join(I):'')+'. No presenta criterios de exclusión.\n\nCumple criterios para ingreso en la Unidad de Observación (UOME) según el protocolo de FA/flutter.';
-    }
+  function pick(map){return Object.keys(map).filter(on).map(function(k){return map[k];});}
+  function state(id){var b=document.getElementById(id);return b?((b.className.match(/status-(neutral|low|mid|high|partial)/)||[])[1]||'neutral'):'neutral';}
+  var EXC_TAIL=function(n){return n>1?', criterios de exclusión de la Unidad de Observación.':', criterio de exclusión de la Unidad de Observación.';};
+  var CFG={
+    fa:{banner:'fa-status',
+      subject:function(){return on('fi1')?'Paciente con fibrilación o flutter auricular (conocido o de nuevo diagnóstico)':'Paciente con fibrilación o flutter auricular';},
+      inc:{fi2:'hemodinámicamente estable',fi3:'con respuesta ventricular rápida susceptible de control farmacológico',fi4:'que precisa monitorización tras intervención terapéutica',fi5:'sin indicación de cardioversión urgente',fi6:'candidato a manejo en Unidad de Observación'},
+      exc:{fe1:'shock',fe2:'PAS < 90 mmHg persistente',fe3:'dolor torácico de características isquémicas',fe4:'síndrome coronario agudo',fe5:'edema agudo de pulmón',fe6:'insuficiencia cardiaca aguda',fe7:'síncope de probable origen arrítmico',fe8:'necesidad de cardioversión eléctrica urgente',fe9:'síndrome de preexcitación',fe10:'arritmias complejas asociadas',fe11:'sepsis grave'},
+      ok:'Cumple criterios para ingreso en la Unidad de Observación (UOME) según el protocolo de FA/flutter.',
+      no:'No es candidato a ingreso en la UOME. Se recomienda valoración en área de críticos o ingreso hospitalario según la situación clínica.'},
+    torax:{banner:'admission-status',
+      subject:function(){return 'Paciente con dolor torácico';},
+      inc:function(){
+        var a=['ia1','ia2','ia3','ia4','ia5'],r=[];
+        if(a.every(on)) r.push('clínicamente estable (TA sistólica ≥ 90 mmHg sin soporte vasoactivo, FC 50–110 lpm, SpO₂ ≥ 92 % o basal, sin deterioro del nivel de conciencia ni insuficiencia respiratoria aguda)');
+        var b=pick({ib1:'sospecha moderada de SCA sin criterios de alto riesgo',ib2:'antecedentes cardiovasculares que requieren observación',ib3:'necesidad de completar el protocolo seriado'});
+        var c=pick({ic1:'dolor torácico sugestivo pero no diagnóstico de SCA',ic2:'dos troponinas iniciales negativas con necesidad de seriación',ic3:'ECG no diagnóstico',ic4:'duda diagnóstica entre origen cardiológico y no cardiológico',ic5:'necesidad de observación tras control sintomático',ic6:'sospecha de angina estable sin criterios de alto riesgo',ic7:'sospecha de pericarditis o miopericarditis estable',ic8:'seguimiento tras control de crisis hipertensiva asociada'});
+        if(b.length||c.length) r.push('con '+join(b.concat(c)));
+        return r;
+      },
+      exc:{ea1:'elevación persistente del ST',ea2:'equivalentes de SCACEST',ea3:'troponina positiva con dinámica compatible',ea4:'cambios dinámicos en el ECG',eb1:'hipotensión persistente',eb2:'shock',eb3:'arritmias significativas',eb4:'necesidad de drogas vasoactivas',ec1:'insuficiencia cardiaca o hipotensión acompañantes',ec2:'angina clase III o superior, reciente y con mala respuesta al tratamiento',ec3:'recurrencia precoz de angina II–III tras revascularización previa',ec4:'ergometría de mal pronóstico conocida',ec5:'angina secundaria a arritmia ventricular, bloqueo AV u otra causa que requiere ingreso',ed1:'sospecha de disección aórtica',ed2:'sospecha de TEP de riesgo intermedio-alto o alto',ed3:'sospecha de taponamiento cardiaco',ed4:'neumotórax significativo',ed5:'sospecha de rotura esofágica',ee1:'insuficiencia cardiaca aguda',ee2:'edema agudo de pulmón',ee3:'dolor recurrente refractario',ee4:'hipoxemia mantenida',ee5:'síncope de probable origen cardiaco',ef1:'necesidad previsible de estancia superior a 36 h',ef2:'necesidad de procedimiento invasivo urgente',ef3:'dependencia funcional que requiere hospitalización convencional'},
+      ok:'Cumple criterios para ingreso en la Unidad de Observación según el protocolo de dolor torácico.',
+      no:'No es candidato a ingreso en la Unidad de Observación. Activar el circuito correspondiente según la sospecha clínica.',
+      mid:function(){return 'No se ha identificado ningún criterio de riesgo intermedio (sospecha moderada de SCA, antecedentes cardiovasculares que requieran observación o necesidad de completar el protocolo seriado). Completar la valoración antes de decidir el ingreso en la Unidad de Observación.';},
+      pend:function(){var n={ia1:'TA sistólica ≥ 90 mmHg sin soporte vasoactivo',ia2:'FC 50–110 lpm',ia3:'SpO₂ ≥ 92 % (o basal)',ia4:'nivel de conciencia conservado',ia5:'ausencia de insuficiencia respiratoria aguda'};return Object.keys(n).filter(function(k){return !on(k);}).map(function(k){return n[k];});}},
+    asma:{banner:'asma-status',
+      subject:function(){return 'Paciente con agudización asmática';}, lead:' que, tras el tratamiento inicial en Urgencias, presenta ',
+      inc:{sai1:'sibilancias espiratorias persistentes o intensas',sai2:'PEF o FEV1 entre el 50 y el 70 %',sai3:'frecuencia respiratoria < 30 rpm',sai4:'estabilidad hemodinámica (FC < 120 lpm, TA normal)',sai5:'habla en frases cortas con preferencia por estar sentado',sai6:'uso frecuente de musculatura accesoria',sai7:'nivel de conciencia conservado',sai8:'ausencia de complicaciones (neumonía, neumotórax) y de comorbilidades como la insuficiencia cardiaca'},
+      exc:{sae1:'FR > 30 rpm con uso continuo de musculatura accesoria',sae2:'SpO₂ < 90 %',sae3:'inestabilidad hemodinámica (hipotensión, FC > 120 lpm)',sae4:'PEF o FEV1 < 50 %',sae5:'incapacidad para hablar, beber o acostarse',sae6:'alteración del nivel de conciencia',sae7:'tórax silencioso',sae8:'insuficiencia respiratoria grave (hipercapnia o alteración del equilibrio ácido-base)',sae9:'enfermedad concomitante (insuficiencia cardiaca o alteraciones ECG sugestivas de isquemia)',sae10:'broncoespasmo secundario a otra etiología (broncoaspiración, cuerpo extraño)',sae11:'necesidad de VMNI',sae12:'necesidad de sulfato de magnesio y/o adrenalina como tratamiento inicial',sae13:'≥ 2 hospitalizaciones o ≥ 3 visitas a Urgencias en el último año',sae14:'antecedente de ingreso en UCI, intubación o ventilación mecánica por asma',sae15:'uso frecuente o abuso de broncodilatadores de rescate (SABA)',sae16:'tratamiento reciente con corticoides orales',sae17:'ausencia de tratamiento con corticoides inhalados',sae18:'falta de seguimiento médico o problemas psiquiátricos o sociales que dificultan el tratamiento'},
+      ok:'Cumple criterios para ingreso en la Unidad de Observación según el protocolo de asma.',
+      no:'No es candidato a ingreso en la Unidad de Observación. Valorar ingreso hospitalario o área de críticos según la gravedad.'},
+    epoc:{banner:'epoc-status',
+      subject:function(){return 'Paciente con agudización de EPOC';}, lead:' que presenta ',
+      inc:{pi1:'insuficiencia respiratoria aguda con hipoxemia moderada corregible con oxigenoterapia de bajo flujo',pi2:'hipercapnia leve sin acidosis (PaCO₂ > 45 mmHg con pH > 7,35)',pi3:'respuesta parcial a los broncodilatadores iniciales, sin haber recuperado aún su situación basal',pi4:'comorbilidades levemente descompensadas (ICC periférica, cardiopatía isquémica estable o arritmias crónicas controladas)',pi5:'limitaciones físicas, cognitivas o sociofamiliares para el tratamiento domiciliario'},
+      exc:{pe1:'acidosis respiratoria establecida (pH 7,30–7,35 con PaCO₂ elevada)',pe2:'hipoxemia grave persistente que requiere FiO₂ elevadas',pe3:'complicaciones agudas graves (neumonía, TEP, neumotórax o arritmias de nuevo diagnóstico con repercusión clínica)',pe4:'perfil de alto riesgo (agudizador frecuente o EPOC muy grave con FEV1 < 30 %)'},
+      ok:'Cumple criterios para ingreso en la Unidad de Observación según el protocolo de EPOC.',
+      no:'No es candidato a ingreso en la Unidad de Observación. Valorar ingreso hospitalario o área de críticos según la gravedad.'},
+    neumonia:{banner:'neumonia-status',
+      subject:function(){return on('ni1')?'Paciente con diagnóstico de neumonía':'Paciente con sospecha de neumonía';},
+      inc:{ni2:'CURB-65 bajo (0–1)',ni3:'hemodinámicamente estable',ni4:'SpO₂ > 91–92 % con oxigenoterapia de bajo flujo o basal',ni5:'tolerancia oral conservada o recuperable en 12–24 h',ni6:'plan terapéutico definido (tratamiento ambulatorio o traslado a HAD/HFA en 12–24 h)'},
+      exc:{ne1:'inestabilidad hemodinámica',ne2:'insuficiencia respiratoria grave',ne3:'necesidad de oxigenoterapia de alto flujo o VMNI',ne4:'sepsis o sospecha de sepsis grave',ne5:'deterioro clínico rápido durante la atención en Urgencias',ne6:'comorbilidad descompensada importante',ne7:'cavitación, derrame pleural y/o afectación bilateral en la radiografía'},
+      ok:'Cumple criterios para ingreso en la Unidad de Observación según el protocolo de neumonía.',
+      no:'No es candidato a ingreso en la Unidad de Observación. Valorar ingreso hospitalario o área de críticos según la gravedad.',
+      pend:function(){var n={ni1:'diagnóstico de neumonía',ni2:'CURB-65 bajo (0–1)',ni3:'estabilidad hemodinámica',ni4:'SpO₂ > 91–92 % con bajo flujo o basal',ni5:'tolerancia oral (o recuperable en 12–24 h)',ni6:'plan terapéutico definido'};return Object.keys(n).filter(function(k){return !on(k);}).map(function(k){return n[k];});}}
   };
+  function generate(key){
+    var c=CFG[key];if(!c)return null;
+    var st=state(c.banner),subj=c.subject(),lead=c.lead||', ';
+    var I=typeof c.inc==='function'?c.inc():pick(c.inc),E=pick(c.exc);
+    if(st==='high'&&E.length) return subj+' que presenta '+join(E)+EXC_TAIL(E.length)+'\n\n'+c.no;
+    if(st==='low') return subj+(I.length?lead+join(I):'')+'. No presenta criterios de exclusión.\n\n'+c.ok;
+    var P=c.pend?c.pend():[],faltan=function(p){return (p.length>1?'faltan ':'falta ')+join(p);};
+    if(!I.length){
+      var sec=document.getElementById(c.banner);sec=sec&&sec.closest('section');
+      if(P.length&&sec&&sec.querySelector('ul.checklist input:checked')) return subj+'. Aún no se cumplen todos los criterios de inclusión: '+faltan(P)+'.\n\nPendiente de completar la valoración antes de decidir el ingreso en la Unidad de Observación.';
+      return null;
+    }
+    var t=subj+lead+join(I)+'.';
+    if(st==='mid'&&c.mid) return t+' '+c.mid();
+    return t+(P.length?' Aún no se cumplen todos los criterios de inclusión: '+faltan(P)+'.':'')+'\n\nPendiente de completar la valoración antes de decidir el ingreso en la Unidad de Observación.';
+  }
   var m=document.getElementById('commentModal'),box=document.getElementById('commentText');if(!m)return;
+  var cp=document.getElementById('commentCopy'),title=m.querySelector('h3'),sub=m.querySelector('.modal-sub');
+  var T0=title.innerHTML,S0=sub.innerHTML;
   document.addEventListener('click',function(e){
     var b=e.target.closest('.gen-comment-btn');if(!b)return;
-    var f=GEN[b.dataset.comment],t=f&&f();
+    title.innerHTML=T0;sub.innerHTML=S0;sub.hidden=false;
+    if(b.classList.contains('is-off')){
+      title.innerHTML='📝 Generar comentario';sub.hidden=true;
+      box.textContent='De momento esta función no está activa para este protocolo. Está disponible en dolor torácico, fibrilación auricular, agudización asmática, agudización de EPOC y neumonía.';
+      cp.style.display='none';m.classList.add('open');return;
+    }
+    var t=generate(b.dataset.comment);
     box.textContent=t||'Marca primero los criterios de inclusión y, si los hay, de exclusión para poder redactar el comentario.';
-    document.getElementById('commentCopy').hidden=!t;
-    m.classList.add('open');
+    cp.style.display=t?'':'none';m.classList.add('open');
   });
   document.getElementById('commentClose').addEventListener('click',function(){m.classList.remove('open');});
   m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('open');});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')m.classList.remove('open');});
-  document.getElementById('commentCopy').addEventListener('click',function(){
+  cp.addEventListener('click',function(){
     var b=this,t=box.textContent;
     function ok(){b.textContent='✓ Copiado';setTimeout(function(){b.textContent='Copiar texto';},1600);}
-    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,function(){fallback();});else fallback();
     function fallback(){var r=document.createRange();r.selectNodeContents(box);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);try{document.execCommand('copy');ok();}catch(x){}}
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,fallback);else fallback();
   });
 })();
 </script>
