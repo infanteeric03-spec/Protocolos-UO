@@ -882,6 +882,13 @@
   .banner-why b{font-weight:700;}
   .banner-why ul{margin:3px 0 0; padding-left:18px;}
   .banner-why li{margin:1px 0;}
+  .move-notice{position:fixed; left:0; right:0; top:0; z-index:9000; display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; padding:10px 44px 10px 16px; padding-top:calc(10px + env(safe-area-inset-top)); background:#B7472A; color:#fff; font-size:14px; line-height:1.4; text-align:center; box-shadow:0 4px 14px rgba(0,0,0,.25);}
+  .move-notice a.mn-go{background:#fff; color:#8a2f17; font-weight:700; text-decoration:none; padding:6px 14px; border-radius:999px; white-space:nowrap;}
+  .move-notice .mn-x{position:absolute; right:8px; top:50%; transform:translateY(-50%); background:transparent; border:0; color:#fff; font-size:22px; line-height:1; cursor:pointer; padding:6px;}
+  .move-notice small{display:block; width:100%; opacity:.9; font-size:12.5px;}
+  body.has-move-notice{padding-top:var(--mn-h,0px);}
+  body.has-move-notice .topbar{top:var(--mn-h,0px);}
+  @media print{.move-notice{display:none !important;} body.has-move-notice{padding-top:0;}}
 /* ==== MODO OSCURO (auto) ==== */
   :root{color-scheme:light dark;}
   @media screen and (prefers-color-scheme: dark){
@@ -8704,7 +8711,8 @@ window.addEventListener('scroll',function(){if(L.classList.contains('on'))place(
   // solo visible en la pantalla de inicio
   function lift(){var sh=document.getElementById('shell');btn.style.display=(sh&&sh.style.display!=='none')?'none':'';}
   ['click','popstate','pageshow'].forEach(function(ev){window.addEventListener(ev,function(){requestAnimationFrame(lift);});});
-  setInterval(lift,600);lift();
+  if(location.hostname==='infanteeric03-spec.github.io'){btn.style.display='none';btn.remove();return;}
+  setInterval(lift,250);lift();
   document.getElementById('installClose').addEventListener('click',function(){m.classList.remove('open');});
   m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('open');});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')m.classList.remove('open');});
@@ -8758,6 +8766,23 @@ window.addEventListener('scroll',function(){if(L.classList.contains('on'))place(
   var t=null;function later(){clearTimeout(t);t=setTimeout(run,30);}
   document.addEventListener('change',later,true);document.addEventListener('click',later,true);
   window.addEventListener('load',later);
+})();
+</script>
+<script>
+/* ---- Aviso de cambio de dirección: solo se muestra en la dirección antigua ---- */
+(function(){
+  var NEW='https://uome-urg.github.io/protocolos/';
+  if(location.hostname!=='infanteeric03-spec.github.io') return;
+  try{ if(sessionStorage.getItem('uoMoveNoticeClosed')) return; }catch(e){}
+  var d=document.createElement('div');d.className='move-notice';d.setAttribute('role','alert');
+  d.innerHTML='<span>⚠️ <b>Esta web ha cambiado de dirección.</b> La nueva es <b>uome-urg.github.io/protocolos</b></span>'+
+    '<a class="mn-go" href="'+NEW+'">Ir a la nueva dirección →</a>'+
+    '<small>Guarda el nuevo enlace. Si tenías la app instalada, desinstálala e instálala de nuevo desde la nueva dirección. Esta dirección dejará de actualizarse.</small>'+
+    '<button type="button" class="mn-x" aria-label="Cerrar aviso">×</button>';
+  document.body.insertBefore(d,document.body.firstChild);document.body.classList.add('has-move-notice');
+  function fit(){document.body.style.setProperty('--mn-h',d.offsetHeight+'px');}
+  fit();window.addEventListener('resize',fit);
+  d.querySelector('.mn-x').addEventListener('click',function(){d.remove();document.body.classList.remove('has-move-notice');try{sessionStorage.setItem('uoMoveNoticeClosed','1');}catch(e){}});
 })();
 </script>
 </body></html>
