@@ -889,6 +889,10 @@
   body.has-move-notice{padding-top:var(--mn-h,0px);}
   body.has-move-notice .topbar{top:var(--mn-h,0px);}
   @media print{.move-notice{display:none !important;} body.has-move-notice{padding-top:0;}}
+  .welcome-card h1 .wtitle{display:inline-block; white-space:nowrap; max-width:100%;}
+  .tour-skip,.tour-next,.tour-count{white-space:nowrap;}
+  .tour-bar{flex-wrap:nowrap;}
+  .tour-mid,.tour-skip,.tour-next{flex:none;}
 /* ==== MODO OSCURO (auto) ==== */
   :root{color-scheme:light dark;}
   @media screen and (prefers-color-scheme: dark){
@@ -1062,7 +1066,7 @@
 <div class="welcome-screen" id="welcomeScreen" style="display: flex;">
   <div class="welcome-card">
     <div class="kicker">Servicio de Urgencias</div>
-    <h1>Unidad de Observación<span class="brand-subtitle">Protocolos</span></h1>
+    <h1><span class="wtitle">Unidad de Observación</span><span class="brand-subtitle">Protocolos</span></h1>
     <div class="welcome-select-wrap">
       <div class="welcome-select-display" id="welcomeProtocolToggle" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">Seleccionar protocolo</div>
       <select id="welcomeProtocolSelect" class="welcome-select" aria-label="Seleccionar protocolo">
@@ -8783,6 +8787,33 @@ window.addEventListener('scroll',function(){if(L.classList.contains('on'))place(
   function fit(){document.body.style.setProperty('--mn-h',d.offsetHeight+'px');}
   fit();window.addEventListener('resize',fit);
   d.querySelector('.mn-x').addEventListener('click',function(){d.remove();document.body.classList.remove('has-move-notice');try{sessionStorage.setItem('uoMoveNoticeClosed','1');}catch(e){}});
+})();
+</script>
+<script>
+/* ---- Ajuste de textos a una sola línea (título de inicio y barra de la guía), sea cual sea el tamaño de letra del navegador ---- */
+(function(){
+  function fitTitle(){
+    document.querySelectorAll('.welcome-card h1 .wtitle').forEach(function(t){
+      t.style.fontSize='';var h=t.parentElement,fs=parseFloat(getComputedStyle(t).fontSize),n=0;
+      while(t.scrollWidth>h.clientWidth+1&&fs>14&&n<60){fs-=1;t.style.fontSize=fs+'px';n++;}
+    });
+  }
+  function fitBar(){
+    var bar=document.querySelector('.tour-bar');if(!bar||!bar.getClientRects().length)return;
+    var els=[].slice.call(bar.querySelectorAll('.tour-skip,.tour-next,.tour-count'));
+    els.forEach(function(e){e.style.fontSize='';e.style.paddingLeft='';e.style.paddingRight='';});
+    var fs=parseFloat(getComputedStyle(els[0]).fontSize),pad=22,n=0;
+    while(bar.scrollWidth>bar.clientWidth+1&&n<40){
+      if(pad>10){pad-=3;}else if(fs>11){fs-=1;}else break;
+      els.forEach(function(e){e.style.fontSize=fs+'px';if(!e.classList.contains('tour-count')){e.style.paddingLeft=pad+'px';e.style.paddingRight=pad+'px';}});n++;
+    }
+  }
+  function all(){fitTitle();fitBar();}
+  window.addEventListener('resize',all);window.addEventListener('load',all);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(all);
+  var tl=document.getElementById('tourLayer');
+  if(tl)new MutationObserver(function(){setTimeout(fitBar,30);}).observe(tl,{attributes:true,attributeFilter:['class']});
+  all();
 })();
 </script>
 </body></html>
