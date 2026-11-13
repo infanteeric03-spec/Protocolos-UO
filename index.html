@@ -8,7 +8,9 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
-<meta name="theme-color" content="#16324F">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#16324F">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0F1C29">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -875,6 +877,172 @@
   .install-panel ol{margin:0; padding-left:22px;} .install-panel li{margin:0 0 8px; line-height:1.45;}
   .install-note{font-size:12.5px; color:var(--ink-soft); margin:8px 0 0;}
   @media print{.install-open-btn{display:none !important;}}
+/* ==== MODO OSCURO (auto) ==== */
+  :root{color-scheme:light dark;}
+  @media screen and (prefers-color-scheme: dark){
+    :root{
+      --ink:#E4EBF0; --ink-soft:#A7B6C2; --paper:#10161B; --paper-raised:#19222A; --line:#34424D;
+      --teal:#2F7A78; --teal-dark:#7ECAC3;
+      --low:#6DC28F; --low-bg:#14301F; --mid:#E3B262; --mid-bg:#33270E; --high:#F08B70; --high-bg:#3B1C14;
+      --vhigh:#BBA0E2; --vhigh-bg:#2A2138;
+    }
+    body{background:var(--paper); color:var(--ink);}
+    img:not([src$=".svg"]){filter:none;}
+    input,select,textarea{color-scheme:dark;}
+    .checklist li{border-bottom-color:var(--line) !important;}
+    [style*="border-color:#f2c9bd"]{border-color:#6b3a2e !important;}
+  }
+
+@media screen and (prefers-color-scheme: dark){.icon-gear{background-color:currentColor;}}
+@media screen and (prefers-color-scheme: dark){body{background:var(--paper);}}
+@media screen and (prefers-color-scheme: dark){.sidebar{background:#0f1c29;}}
+@media screen and (prefers-color-scheme: dark){.brand{border-bottom:1px solid var(--line);}}
+@media screen and (prefers-color-scheme: dark){.protocol-switch select{background:var(--teal) url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" fill=\"var(--paper-raised)\"><path d=\"M5.5 7.5l4.5 5 4.5-5z\"/></svg>") no-repeat right 8px center;}}
+@media screen and (prefers-color-scheme: dark){.protocol-switch select:focus{outline:2px solid var(--line);}}
+@media screen and (prefers-color-scheme: dark){.protocol-switch select option{background:#0f1c29;}}
+@media screen and (prefers-color-scheme: dark){.sidebar-protocol-toggle{background:var(--teal);}}
+@media screen and (prefers-color-scheme: dark){.sidebar-protocol-toggle:hover{background:#2f7a78;}}
+@media screen and (prefers-color-scheme: dark){.sidebar-protocol-toggle:focus-visible{outline:2px solid var(--line);}}
+@media screen and (prefers-color-scheme: dark){.sidebar-protocol-menu{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.sidebar-protocol-menu li:hover{background:#39321f;}}
+@media screen and (prefers-color-scheme: dark){.sidebar-protocol-menu li.active{background:var(--teal);}}
+@media screen and (prefers-color-scheme: dark){.nav button:hover{background:rgba(255,255,255,.06);}}
+@media screen and (prefers-color-scheme: dark){.nav button.active{background:var(--teal);}}
+@media screen and (prefers-color-scheme: dark){.nav .dot{background:currentColor;}}
+@media screen and (prefers-color-scheme: dark){.sidebar-foot{border-top:1px solid var(--line);}}
+@media screen and (prefers-color-scheme: dark){.sidebar-actions{border-top:1px solid var(--line);}}
+@media screen and (prefers-color-scheme: dark){.settings-panel .edit-toggle-btn{background:var(--paper);}}
+@media screen and (prefers-color-scheme: dark){.settings-panel .edit-toggle-btn:hover{background:#39321f;}}
+@media screen and (prefers-color-scheme: dark){.topbar{background:#0f1c29;}}
+@media screen and (prefers-color-scheme: dark){.topbar-protocol-menu{background:#0f1c29;border:1px solid var(--line);}}
+@media screen and (prefers-color-scheme: dark){.topbar-protocol-menu li:hover{background:rgba(255,255,255,.1);}}
+@media screen and (prefers-color-scheme: dark){.topbar-protocol-menu li.active{background:var(--teal);}}
+@media screen and (prefers-color-scheme: dark){.pager-btn{background:rgba(24,105,116,.08);}}
+@media screen and (prefers-color-scheme: dark){.pager-btn:hover{background:rgba(24,105,116,.16);}}
+@media screen and (prefers-color-scheme: dark) and (max-width:900px){.section-pager.pager-floating{background:rgba(33,33,33,0.85);}}
+@media screen and (prefers-color-scheme: dark) and (max-width:900px){.section-pager.pager-floating .pager-btn{background:transparent;}}
+@media screen and (prefers-color-scheme: dark){.card{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.checklist li{border-bottom:1px solid #6c5a38;}}
+@media screen and (prefers-color-scheme: dark){.checklist-toggle-btn{background:rgba(24,105,116,.08);}}
+@media screen and (prefers-color-scheme: dark){.checklist-toggle-btn:hover{background:rgba(24,105,116,.16);}}
+@media screen and (prefers-color-scheme: dark){.group-title{background:var(--ink-soft);}}
+@media screen and (prefers-color-scheme: dark){.scale-pt.pt0{background:#1d3a23;color:#98e1ae;}}
+@media screen and (prefers-color-scheme: dark){.scale-pt.pt1{background:#433816;color:#eed58b;}}
+@media screen and (prefers-color-scheme: dark){.scale-pt.pt2{background:#452f17;color:#eebd8b;}}
+@media screen and (prefers-color-scheme: dark){.scale-pt.pt3{background:#421616;color:#ea9090;}}
+@media screen and (prefers-color-scheme: dark){.scale-grid select, .scale-grid input[type=number], #scaleCalcModal .scale-body select{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.scale-chips button{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.scale-chips button.sel{background:var(--teal);}}
+@media screen and (prefers-color-scheme: dark){.scale-live{background:rgba(24,105,116,.08);}}
+@media screen and (prefers-color-scheme: dark){.group-title.exclude{background:#b7472a;}}
+@media screen and (prefers-color-scheme: dark){.group-title.include{background:#3f8f5f;}}
+@media screen and (prefers-color-scheme: dark){.group-title.warn{background:#B8690A;}}
+@media screen and (prefers-color-scheme: dark){.callout-warn{background:#413416;border:1px solid #725f31;color:#eecb8b;}}
+@media screen and (prefers-color-scheme: dark){.card-hl{background:#3b1914;}}
+@media screen and (prefers-color-scheme: dark){.card-hl h3.hl-title{background:#D62828;}}
+@media screen and (prefers-color-scheme: dark){.group-title.alarm{background:#D62828;}}
+@media screen and (prefers-color-scheme: dark){.status-neutral{background:#39321f;}}
+@media screen and (prefers-color-scheme: dark){.status-low{background:var(--low-bg);border-color:#366d4a;}}
+@media screen and (prefers-color-scheme: dark){.status-mid{background:var(--mid-bg);border-color:#725e31;}}
+@media screen and (prefers-color-scheme: dark){.status-high{background:var(--high-bg);border-color:#724031;}}
+@media screen and (prefers-color-scheme: dark){.opts label{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.opts label.picked{background:#1f3633;}}
+@media screen and (prefers-color-scheme: dark){.score-panel{background:#0f1c29;}}
+@media screen and (prefers-color-scheme: dark){.score-panel.low{background:#3f8f5f;}}
+@media screen and (prefers-color-scheme: dark){.score-panel.high{background:#b7472a;}}
+@media screen and (prefers-color-scheme: dark){.score-panel.mid{background:#a8741f;}}
+@media screen and (prefers-color-scheme: dark){.curb-row:hover{background:#3c331b;}}
+@media screen and (prefers-color-scheme: dark){.curb-row.picked{background:#1f3633;}}
+@media screen and (prefers-color-scheme: dark){.calc-field input[type=number]{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.flow-box{border:1.5px solid #0f1c29;background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.risk-card.low{background:var(--low-bg);color:#9fdbb7;}}
+@media screen and (prefers-color-scheme: dark){.risk-card.mid{background:var(--mid-bg);color:#e6c593;}}
+@media screen and (prefers-color-scheme: dark){.risk-card.high{background:var(--high-bg);color:#e9a590;}}
+@media screen and (prefers-color-scheme: dark){.risk-card.vhigh{background:var(--vhigh-bg);color:#b89fdb;}}
+@media screen and (prefers-color-scheme: dark){table.pain th{background:#3a311e;}}
+@media screen and (prefers-color-scheme: dark){table.pain td.sev-label.leve{background:#3f8f5f;}}
+@media screen and (prefers-color-scheme: dark){table.pain td.sev-label.moderado{background:#a8741f;}}
+@media screen and (prefers-color-scheme: dark){table.pain td.sev-label.grave{background:#b7472a;}}
+@media screen and (prefers-color-scheme: dark){table.pain td.sev-cell.leve{background:var(--low-bg);}}
+@media screen and (prefers-color-scheme: dark){table.pain td.sev-cell.moderado{background:var(--mid-bg);}}
+@media screen and (prefers-color-scheme: dark){table.pain td.sev-cell.grave{background:var(--high-bg);}}
+@media screen and (prefers-color-scheme: dark){table.pain td.sev-cell.muygrave{background:var(--vhigh-bg);}}
+@media screen and (prefers-color-scheme: dark) and (max-width:900px){.table-wrap::after{background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(33,33,33,0.96));}}
+@media screen and (prefers-color-scheme: dark) and (max-width:900px){.table-tap-hint{background:var(--teal);}}
+@media screen and (prefers-color-scheme: dark) and (max-width:900px){table.scale-table tr{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.gbs-link{background:none;}}
+@media screen and (prefers-color-scheme: dark){.table-modal-overlay{background:rgba(10,20,30,.72);}}
+@media screen and (prefers-color-scheme: dark){.table-modal-close{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.table-modal-body{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.pill{background:#3a311e;}}
+@media screen and (prefers-color-scheme: dark){.welcome-screen{background:var(--paper);}}
+@media screen and (prefers-color-scheme: dark){.welcome-settings-btn:hover{background:rgba(0,0,0,.06);}}
+@media screen and (prefers-color-scheme: dark){.welcome-select-display{background:var(--teal);}}
+@media screen and (prefers-color-scheme: dark){.welcome-select-display::after{background:url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" fill=\"var(--paper-raised)\"><path d=\"M5.5 7.5l4.5 5 4.5-5z\"/></svg>") no-repeat center;}}
+@media screen and (prefers-color-scheme: dark){.welcome-select-wrap:hover .welcome-select-display{background:#2f7a78;}}
+@media screen and (prefers-color-scheme: dark){.welcome-protocol-menu{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.welcome-protocol-menu li:hover, .welcome-protocol-menu li:focus{background:#39321f;}}
+@media screen and (prefers-color-scheme: dark){.edit-toggle-btn{background:rgba(255,255,255,.08);border:1px dashed var(--line);}}
+@media screen and (prefers-color-scheme: dark){.edit-toggle-btn:hover{background:rgba(255,255,255,.14);}}
+@media screen and (prefers-color-scheme: dark){.edit-toggle-btn.on{background:#a8741f;color:#eece8b;}}
+@media screen and (prefers-color-scheme: dark){body.edit-mode [contenteditable="true"]:hover{background:#403215;}}
+@media screen and (prefers-color-scheme: dark){body.edit-mode [contenteditable="true"]:focus{background:#403215;}}
+@media screen and (prefers-color-scheme: dark){.block-drag-handle{background:#0f1c29;}}
+@media screen and (prefers-color-scheme: dark){.block-drag-handle:hover{background:#2f7a78;}}
+@media screen and (prefers-color-scheme: dark){body.edit-mode .content::before{background:var(--mid-bg);color:#e6c593;border:1px solid #725e31;}}
+@media screen and (prefers-color-scheme: dark){.edit-toolbar{background:#0f1c29;}}
+@media screen and (prefers-color-scheme: dark){.edit-toolbar .btn-save{background:var(--teal);}}
+@media screen and (prefers-color-scheme: dark){.edit-toolbar .btn-save:hover{background:#2f7a78;}}
+@media screen and (prefers-color-scheme: dark){.edit-toolbar .btn-reset{background:rgba(255,255,255,.1);}}
+@media screen and (prefers-color-scheme: dark){.edit-toolbar .btn-reset:hover{background:rgba(255,255,255,.18);}}
+@media screen and (prefers-color-scheme: dark){.edit-toolbar .btn-exit{background:transparent;}}
+@media screen and (prefers-color-scheme: dark){.modal-overlay{background:rgba(10,20,30,.55);}}
+@media screen and (prefers-color-scheme: dark){.modal-box{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){#settingsModal .modal-box{background:rgba(22,50,79,.9);}}
+@media screen and (prefers-color-scheme: dark){.modal-actions .primary{background:var(--teal);}}
+@media screen and (prefers-color-scheme: dark){.modal-actions .primary:hover{background:#2f7a78;}}
+@media screen and (prefers-color-scheme: dark){.modal-actions .secondary{background:#39321f;}}
+@media screen and (prefers-color-scheme: dark){#sessionLockBtn.unlocked{background:#1e3d38;}}
+@media screen and (prefers-color-scheme: dark){.settings-panel .edit-toggle-btn.lock-dim:hover{background:var(--paper);}}
+@media screen and (prefers-color-scheme: dark){.wip-badge{background:rgba(54,46,29,0.85);}}
+@media screen and (prefers-color-scheme: dark){#searchInput{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.search-result-item{background:var(--paper);}}
+@media screen and (prefers-color-scheme: dark){.search-result-item:hover{background:#3a311e;}}
+@media screen and (prefers-color-scheme: dark){.search-result-snippet mark{background:#403215;}}
+@media screen and (prefers-color-scheme: dark){.reorder-select{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.reorder-item{background:#3c2f15;}}
+@media screen and (prefers-color-scheme: dark){.reorder-item.dragging{background:#3a311e;}}
+@media screen and (prefers-color-scheme: dark){.reorder-item .reorder-num{background:var(--teal);}}
+@media screen and (prefers-color-scheme: dark){.reorder-eye:hover{background:#39321f;}}
+@media screen and (prefers-color-scheme: dark){.unavailable-toast{background:#0f1c29;}}
+@media screen and (prefers-color-scheme: dark){.pdf-open-btn{background:var(--teal);}}
+@media screen and (prefers-color-scheme: dark){.pdf-open-btn:hover{background:#2f7a78;}}
+@media screen and (prefers-color-scheme: dark){.print-summary-btn{background:rgba(24,105,116,.06);}}
+@media screen and (prefers-color-scheme: dark){.print-summary-btn:hover{background:rgba(24,105,116,.14);}}
+@media screen and (prefers-color-scheme: dark){#printSummaryModal .modal-box{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){#printSummaryContent .ps-header{border-bottom:2px solid #0f1c29;}}
+@media screen and (prefers-color-scheme: dark){.det-btn{border:1px solid var(--line);background:transparent;}}
+@media screen and (prefers-color-scheme: dark){.det-btn:hover{background:rgba(47,125,115,.1);}}
+@media screen and (prefers-color-scheme: dark){.det-body{background:rgba(47,125,115,.06);}}
+@media screen and (prefers-color-scheme: dark){.risk-gradient-label{color:var(--ink-soft,var(--ink));}}
+@media screen and (prefers-color-scheme: dark){table.pain-risk th:nth-child(1){background:#461c18;color:#ed928d;}}
+@media screen and (prefers-color-scheme: dark){table.pain-risk th:nth-child(2){background:#493918;color:#eecb8b;}}
+@media screen and (prefers-color-scheme: dark){table.pain-risk th:nth-child(3){background:#27451b;color:#a4df9b;}}
+@media screen and (prefers-color-scheme: dark){table.pain-risk td:nth-child(1){background:rgba(179,38,30,.08);}}
+@media screen and (prefers-color-scheme: dark){table.pain-risk td:nth-child(2){background:rgba(217,164,58,.10);}}
+@media screen and (prefers-color-scheme: dark){table.pain-risk td:nth-child(3){background:rgba(63,154,59,.09);}}
+@media screen and (prefers-color-scheme: dark){.cdd-btn{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.cdd .cdd-menu{background:var(--paper-raised);}}
+@media screen and (prefers-color-scheme: dark){.cdd .cdd-menu label{background:transparent;}}
+@media screen and (prefers-color-scheme: dark){.cdd .cdd-menu label:hover{background:#1f3633;}}
+@media screen and (prefers-color-scheme: dark){.cdd .cdd-menu label.picked{background:#1f3633;}}
+@media screen and (prefers-color-scheme: dark){.guide-open-btn{background:transparent;}}
+@media screen and (prefers-color-scheme: dark){.guide-open-btn:hover{background:rgba(24,105,116,.1);}}
+@media screen and (prefers-color-scheme: dark){.install-open-btn{background:rgba(54,46,29,0.92);}}
+@media screen and (prefers-color-scheme: dark){.install-open-btn:hover{background:#1f3633;}}
+@media screen and (prefers-color-scheme: dark){.install-tabs button{background:transparent;}}
+@media screen and (prefers-color-scheme: dark){.install-tabs button.on{background:var(--teal);}}
+/* ==== FIN MODO OSCURO ==== */
 </style>
 </head>
 <body class="pager-floating-active" data-wip-hidden="true" data-settings-hash="873fb94a8fa102a12b3e5ab6f5a8ec479d926d0e47797fb145fcbcb2d5b1e630" data-recovery-hash="c1084fc7acc1246d157eebcdb3d9db464d121cffe38064e38b044533922c0b6f">

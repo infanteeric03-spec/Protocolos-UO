@@ -1,0 +1,14 @@
+  :root{color-scheme:light dark;}
+  @media screen and (prefers-color-scheme: dark){
+    :root{
+      --ink:#E4EBF0; --ink-soft:#A7B6C2; --paper:#10161B; --paper-raised:#19222A; --line:#34424D;
+      --teal:#2F7A78; --teal-dark:#7ECAC3;
+      --low:#6DC28F; --low-bg:#14301F; --mid:#E3B262; --mid-bg:#33270E; --high:#F08B70; --high-bg:#3B1C14;
+      --vhigh:#BBA0E2; --vhigh-bg:#2A2138;
+    }
+    body{background:var(--paper); color:var(--ink);}
+    img:not([src$=".svg"]){filter:none;}
+    input,select,textarea{color-scheme:dark;}
+    .checklist li{border-bottom-color:var(--line) !important;}
+    [style*="border-color:#f2c9bd"]{border-color:#6b3a2e !important;}
+  }
