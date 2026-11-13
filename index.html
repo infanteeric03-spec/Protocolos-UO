@@ -893,6 +893,12 @@
   .tour-skip,.tour-next,.tour-count{white-space:nowrap;}
   .tour-bar{flex-wrap:nowrap;}
   .tour-mid,.tour-skip,.tour-next{flex:none;}
+  .gen-comment-row{display:flex; justify-content:flex-end; margin:-6px 0 14px;}
+  .gen-comment-btn{font:inherit; font-size:13.5px; font-weight:600; color:var(--teal-dark); background:transparent; border:1px solid var(--teal); border-radius:999px; padding:7px 14px; cursor:pointer;}
+  .gen-comment-btn:hover{background:rgba(47,122,120,.08);}
+  #commentModal .modal-box{width:min(560px,94vw); max-height:88vh; overflow:auto;}
+  .comment-text{border:1px solid var(--line); border-radius:10px; padding:14px 16px; background:var(--paper); font-size:15px; line-height:1.55; white-space:pre-wrap; user-select:text; -webkit-user-select:text;}
+  @media print{.gen-comment-row{display:none !important;}}
 /* ==== MODO OSCURO (auto) ==== */
   :root{color-scheme:light dark;}
   @media screen and (prefers-color-scheme: dark){
@@ -2433,6 +2439,7 @@
         <p class="lede">Marca los ítems que cumple el paciente para orientar la indicación de ingreso en la Unidad de Observación.</p>
 
         <div id="fa-status" class="status-banner status-banner-criteria status-neutral">Marca los criterios para ver la recomendación.</div>
+        <div class="gen-comment-row"><button type="button" class="gen-comment-btn" data-comment="fa">📝 Generar comentario</button></div>
 
         <div class="card section-block">
           <span class="group-title include">Criterios de inclusión — pacientes con:</span>
@@ -5351,6 +5358,15 @@
     </ol></div>
     <p class="install-note">Los nombres de los menús pueden variar ligeramente según la versión del navegador.</p>
     <div class="modal-actions"><button class="secondary" type="button" id="installClose">Cerrar</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="commentModal" role="dialog" aria-modal="true" aria-label="Comentario generado">
+  <div class="modal-box comment-box">
+    <h3>📝 Comentario</h3>
+    <p class="modal-sub">Redactado a partir de los criterios marcados. Revísalo y adáptalo antes de incorporarlo al informe.</p>
+    <div class="comment-text" id="commentText"></div>
+    <div class="modal-actions"><button class="secondary" type="button" id="commentClose">Cerrar</button><button class="primary" type="button" id="commentCopy">Copiar texto</button></div>
   </div>
 </div>
 
@@ -8814,6 +8830,44 @@ window.addEventListener('scroll',function(){if(L.classList.contains('on'))place(
   var tl=document.getElementById('tourLayer');
   if(tl)new MutationObserver(function(){setTimeout(fitBar,30);}).observe(tl,{attributes:true,attributeFilter:['class']});
   all();
+})();
+</script>
+<script>
+/* ---- «Generar comentario»: redacta un texto clínico a partir de los criterios marcados (por protocolo) ---- */
+(function(){
+  function on(id){var c=document.getElementById(id);return !!(c&&c.checked);}
+  function join(a){if(a.length<2)return a.join('');return a.slice(0,-1).join(', ')+' y '+a[a.length-1];}
+  function cap(t){return t.charAt(0).toUpperCase()+t.slice(1);}
+  var GEN={
+    fa:function(){
+      var inc={fi2:'hemodinámicamente estable',fi3:'con respuesta ventricular rápida susceptible de control farmacológico',fi4:'que precisa monitorización tras intervención terapéutica',fi5:'sin indicación de cardioversión urgente',fi6:'candidato a manejo en Unidad de Observación'};
+      var exc={fe1:'shock',fe2:'PAS < 90 mmHg persistente',fe3:'dolor torácico de características isquémicas',fe4:'síndrome coronario agudo',fe5:'edema agudo de pulmón',fe6:'insuficiencia cardiaca aguda',fe7:'síncope de probable origen arrítmico',fe8:'necesidad de cardioversión eléctrica urgente',fe9:'síndrome de preexcitación',fe10:'arritmias complejas asociadas',fe11:'sepsis grave'};
+      var I=Object.keys(inc).filter(on).map(function(k){return inc[k];}),E=Object.keys(exc).filter(on).map(function(k){return exc[k];});
+      var subj=on('fi1')?'Paciente con fibrilación o flutter auricular (conocido o de nuevo diagnóstico)':'Paciente con fibrilación o flutter auricular';
+      if(!I.length&&!E.length&&!on('fi1')) return null;
+      if(E.length){
+        return subj+' que presenta '+join(E)+(E.length>1?', criterios':', criterio')+' de exclusión de la Unidad de Observación.\n\nNo es candidato a ingreso en la UOME. Se recomienda valoración en área de críticos o ingreso hospitalario según la situación clínica.';
+      }
+      return subj+(I.length?', '+join(I):'')+'. No presenta criterios de exclusión (inestabilidad hemodinámica, isquemia o síndrome coronario agudo, insuficiencia cardiaca aguda, síncope arrítmico, preexcitación ni otros).\n\nCumple criterios para ingreso en la Unidad de Observación (UOME) según el protocolo de FA/flutter.';
+    }
+  };
+  var m=document.getElementById('commentModal'),box=document.getElementById('commentText');if(!m)return;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.gen-comment-btn');if(!b)return;
+    var f=GEN[b.dataset.comment],t=f&&f();
+    box.textContent=t||'Marca primero los criterios de inclusión y, si los hay, de exclusión para poder redactar el comentario.';
+    document.getElementById('commentCopy').hidden=!t;
+    m.classList.add('open');
+  });
+  document.getElementById('commentClose').addEventListener('click',function(){m.classList.remove('open');});
+  m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('open');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')m.classList.remove('open');});
+  document.getElementById('commentCopy').addEventListener('click',function(){
+    var b=this,t=box.textContent;
+    function ok(){b.textContent='✓ Copiado';setTimeout(function(){b.textContent='Copiar texto';},1600);}
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,function(){fallback();});else fallback();
+    function fallback(){var r=document.createRange();r.selectNodeContents(box);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);try{document.execCommand('copy');ok();}catch(x){}}
+  });
 })();
 </script>
 </body></html>
