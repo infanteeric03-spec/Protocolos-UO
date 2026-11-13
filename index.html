@@ -877,6 +877,11 @@
   .install-panel ol{margin:0; padding-left:22px;} .install-panel li{margin:0 0 8px; line-height:1.45;}
   .install-note{font-size:12.5px; color:var(--ink-soft); margin:8px 0 0;}
   @media print{.install-open-btn{display:none !important;}}
+  .status-banner:has(.banner-why){flex-wrap:wrap;}
+  .banner-why{flex:0 0 100%; width:100%; margin-top:8px; padding-top:8px; border-top:1px solid currentColor; border-top-color:rgba(127,127,127,.35); font-weight:400; font-size:13px; line-height:1.45;}
+  .banner-why b{font-weight:700;}
+  .banner-why ul{margin:3px 0 0; padding-left:18px;}
+  .banner-why li{margin:1px 0;}
 /* ==== MODO OSCURO (auto) ==== */
   :root{color-scheme:light dark;}
   @media screen and (prefers-color-scheme: dark){
@@ -8703,6 +8708,56 @@ window.addEventListener('scroll',function(){if(L.classList.contains('on'))place(
   document.getElementById('installClose').addEventListener('click',function(){m.classList.remove('open');});
   m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('open');});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')m.classList.remove('open');});
+})();
+</script>
+<script>
+/* ---- Avisos explicados: añade al aviso de color los motivos concretos (criterios marcados o pendientes) ---- */
+(function(){
+  var SKIP=['chadsva-interpret','hasbled-interpret','decaf-interpret','pafiCalcResult','adp-status'];
+  function txt(li){var l=li.querySelector('label');var t=(l?l.textContent:li.textContent).replace(/\s+/g,' ').trim();return t.replace(/[.:;]$/,'');}
+  function groups(b,k){return (b.dataset[k]||'').split(/[ ,]+/).filter(Boolean);}
+  function listsFor(b){
+    var sec=b.closest('section.section');if(!sec)return [];
+    var gi=groups(b,'inc').concat(groups(b,'dInc')),ge=groups(b,'exc').concat(groups(b,'dExc'));
+    var scope=b.classList.contains('status-banner-criteria')?sec:(b.closest('.card')||sec);
+    var ls=[].slice.call(scope.querySelectorAll('ul.checklist'));
+    if(gi.length||ge.length) ls=[].slice.call(sec.querySelectorAll('ul.checklist')).filter(function(l){return gi.indexOf(l.dataset.group)>-1||ge.indexOf(l.dataset.group)>-1;});
+    return ls.map(function(l){
+      var k;
+      if(gi.indexOf(l.dataset.group)>-1)k='inc';else if(ge.indexOf(l.dataset.group)>-1)k='exc';
+      else{var p=l.previousElementSibling;while(p&&(!p.matches('.group-title,ul.checklist,strong,h4')||p.matches('.group-title.sub-gt')))p=p.previousElementSibling;
+        if(p&&p.matches('strong,h4'))k='inc';else{if(!p||!p.matches('.group-title')){var c=l.closest('.card');p=c&&c.querySelector('.group-title');}
+        k=(p&&(p.classList.contains('exclude')||p.classList.contains('warn')))?'exc':'inc';}}
+      return {l:l,k:k,any:l.dataset.anyOf==='true'};
+    });
+  }
+  function items(ls,kind,checked){var o=[];ls.forEach(function(x){if(kind&&x.k!==kind)return;[].slice.call(x.l.querySelectorAll(':scope > li')).forEach(function(li){var c=li.querySelector('input[type=checkbox]');if(c&&c.checked===checked)o.push(txt(li));});});return o;}
+  function ul(a){return '<ul>'+a.map(function(t){return '<li>'+t.replace(/</g,'&lt;')+'</li>';}).join('')+'</ul>';}
+  function explain(b){
+    if(SKIP.indexOf(b.id)>-1)return;
+    var old=b.querySelector('.banner-why');if(old)old.remove();
+    var st=(b.className.match(/status-(neutral|low|mid|high|partial)/)||[])[1];if(!st||st==='neutral')return;
+    var ls=listsFor(b);if(!ls.length)return;
+    var hasExc=ls.some(function(x){return x.k==='exc';}),h='';
+    if(st==='high'){
+      var m=items(ls,'exc',true);if(!m.length)m=items(ls,null,true);
+      if(m.length)h='<b>'+(m.length>1?'Motivos':'Motivo')+':</b>'+ul(m);
+    }else if(st==='low'){
+      var ok=items(ls,'inc',true);
+      if(ok.length)h='<b>Se cumple:</b>'+ul(ok)+(hasExc?'Sin ningún criterio de exclusión marcado.':'');
+    }else{
+      var pend=[];ls.forEach(function(x){if(x.k==='inc'&&!x.any)pend=pend.concat(items([x],null,false));});
+      var ex=items(ls,'exc',true);
+      if(ex.length)h+='<b>A tener en cuenta:</b>'+ul(ex);
+      if(pend.length)h+='<b>Pendiente de cumplir:</b>'+ul(pend);
+    }
+    if(!h)return;
+    var d=document.createElement('div');d.className='banner-why';d.innerHTML=h;b.appendChild(d);
+  }
+  function run(){document.querySelectorAll('section.section.active .status-banner').forEach(explain);}
+  var t=null;function later(){clearTimeout(t);t=setTimeout(run,30);}
+  document.addEventListener('change',later,true);document.addEventListener('click',later,true);
+  window.addEventListener('load',later);
 })();
 </script>
 </body></html>
